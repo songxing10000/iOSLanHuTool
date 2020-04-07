@@ -106,18 +106,25 @@ function DOMtoString(document_root) {
             returnStr += ' /// @param '+ arrStr +'\n ';
         }
 
-
+        returnStr += '+ (void)  ';
         for (let arrStr of arrStrs) {
             let strs = arrStr.split('\t');
             let name = strs[0];
             let type = strs[2];
+            /// 可空
+            let nullStr = strs[1];
+            if (nullStr === '否') {
+                nullStr = 'nullable ';
+            } else if (nullStr === '是') {
+                nullStr = 'nonnull ';
+            }
             if (type === 'string') {
                 type = 'NSString *';
             }
-            returnStr += name + ':' + '(' + type + ')' + name + '   ';
+            returnStr += name + ':' + '(' + nullStr + type + ')' + name + '   ';
         }
-
-
+        // success:(nullable successBlock)success failure:(failureBlock)failure;
+        returnStr +=  ' success:(nullable successBlock)success failure:(failureBlock)failure;';
 
         let inUrls = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[8]
 
