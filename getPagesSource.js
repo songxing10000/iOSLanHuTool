@@ -53,7 +53,7 @@ function DOMtoString(document_root) {
             let translatedArr = document.getElementsByClassName("ordinary-output target-output clearfix");
             for (let index = 0; index < translatedArr.length; index++) {
                 let desStr = translatedArr[index].innerText;
-                if(desStr.length > 0) {
+                if (desStr.length > 0) {
 
                     translatedStr += desStr + '\n';
                 }
@@ -70,16 +70,16 @@ function DOMtoString(document_root) {
             if (translatedStr.indexOf(",") >= 0) {
                 // 可能是有道翻译
                 // //去除换行 https://www.cnblogs.com/konghou/p/3819029.html
-                translatedStr = translatedStr.replace(/<\/?.+?>/g,""); 
-                translatedStr = translatedStr.replace(/[\r\n]/g, ""); 
-                translatedStr = translatedStr.replace(',', "\n"); 
+                translatedStr = translatedStr.replace(/<\/?.+?>/g, "");
+                translatedStr = translatedStr.replace(/[\r\n]/g, "");
+                translatedStr = translatedStr.replace(',', "\n");
 
             }
             let translatedArray = translatedStr.split("\n")
-            willTranslateArray = willTranslateArray.filter(item => item != '' )
+            willTranslateArray = willTranslateArray.filter(item => item != '')
 
             // translatedArray有可能是     day,,Late at night
-            translatedArray = translatedArray.filter(item => item != '' )
+            translatedArray = translatedArray.filter(item => item != '')
             let str = ''
             for (let index = 0; index < willTranslateArray.length; index++) {
                 const willTranslate = willTranslateArray[index];
@@ -91,6 +91,75 @@ function DOMtoString(document_root) {
         // 一个单词 如，Daily trend chart
 
         return '\"' + willTranslateStr + '\"' + '=' + '\"' + translatedStr + '\";'
+    } else {
+        // https://www.showdoc.cc/mingmiao?page_id=4089639825709213
+        let returnStr = '';
+
+        let des = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[4]
+        returnStr += '/// ' + des + '\n';
+        // 取表格
+        let tableStr = document.getElementById("editor-md").getElementsByTagName('table')[0].getElementsByTagName('tbody')[0].innerText;
+    
+        ///   /// @param pageNum     否    string    默认1
+        let arrStrs = tableStr.split('\n');
+        for (let arrStr of arrStrs) {            
+            returnStr += ' /// @param '+ arrStr +'\n ';
+        }
+
+
+        for (let arrStr of arrStrs) {
+            let strs = arrStr.split('\t');
+            let name = strs[0];
+            let type = strs[2];
+            if (type === 'string') {
+                type = 'NSString *';
+            }
+            returnStr += name + ':' + '(' + type + ')' + name + '   ';
+        }
+
+
+
+        let inUrls = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[8]
+
+        // "http://dev.jingletong.com/api/user/address"
+        returnStr += '\n\nNSString * urlStr = @\"' + inUrls.split('.com/')[1] + '\";\n';
+         /*
+        addressName	否	string	收货地址别名
+         prov	是	string	省
+         city	是	string	市
+         area	是	string	区 /县
+         street	否	string	街道
+         detail	是	string	详细地址
+         contactName	是	string	联系人名称
+         contactPhone	是	string	联系人电话
+        */
+        /* NSDictionary *dict = @{@"pageNum": @(MAX(1, pageNum)).stringValue,
+                              @"pageSize": @(MAX(1, pageSize)).stringValue};
+                              */
+
+        returnStr +=  '\nNSDictionary *dict = @{\n';                    
+        for (let index = 0; index < arrStrs.length; index++) {
+            const arrStr = arrStrs[index];
+            let strs = arrStr.split('\t');
+            let name = strs[0];
+            if (index == arrStrs.length - 1) {
+                returnStr += '@\"'+ name +'\": ' + name + '};\n\n\n';
+            } else {
+                returnStr += '@\"'+ name +'\": ' + name + ',\n';
+            }
+            
+        }
+
+        let methodStr = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[12]
+        if (methodStr === 'POST') {
+            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodPOST success:success failure:failure];'
+        } else {
+            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodGET success:success failure:failure];'
+        }
+
+        return returnStr;
+
+
     }
     /// 根据网页抓取property
     return "未处理的url";
