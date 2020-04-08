@@ -124,7 +124,7 @@ function DOMtoString(document_root) {
             returnStr += name + ':' + '(' + nullStr + type + ')' + name + '   ';
         }
         // success:(nullable successBlock)success failure:(failureBlock)failure;
-        returnStr +=  ' success:(nullable successBlock)success failure:(failureBlock)failure;';
+        returnStr +=  ' success:(nullable successBlock)success failure:(failureBlock)failure {';
 
         let inUrls = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[8]
 
@@ -159,9 +159,9 @@ function DOMtoString(document_root) {
 
         let methodStr = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[12]
         if (methodStr === 'POST') {
-            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodPOST success:success failure:failure];'
+            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodPOST success:success failure:failure];\n}'
         } else {
-            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodGET success:success failure:failure];'
+            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodGET success:success failure:failure];\n}'
         }
 
         return returnStr;
