@@ -120,6 +120,9 @@ function DOMtoString(document_root) {
             }
             if (type === 'string') {
                 type = 'NSString *';
+            } else if (type === 'int') {
+                type = 'NSUInteger';
+                nullStr = '';
             }
             returnStr += name + ':' + '(' + nullStr + type + ')' + name + '   ';
         }
@@ -130,6 +133,30 @@ function DOMtoString(document_root) {
 
         // "http://dev.jingletong.com/api/user/address"
         returnStr += '\n\nNSString * urlStr = @\"' + inUrls.split('.com/')[1] + '\";\n';
+        /**
+         * NSMutableDictionary *muDict = @{}.mutableCopy;
+         *   [muDict safeAddKey:@"recordId" value:recordId];
+         */
+        let canEmptyArr = [];
+        let noEmptyArr = [];
+        for (let arrStr of arrStrs) {
+            let strs = arrStr.split('\t');
+            let canEmpty = strs[1];
+            if (canEmpty === '否') {
+                canEmptyArr.push(arrStr);
+            } else {
+                noEmptyArr.push(arrStr);
+            }
+        }  
+         returnStr += 'NSMutableDictionary *muDict = @{}.mutableCopy;\n';
+         for(let canEmptyStr of canEmptyArr) {
+            let strs = canEmptyStr.split('\t');
+            let name = strs[0];
+            returnStr += '[muDict safeAddKey:@"' + name + '" value:' + name + '];\n';
+         }
+         
+
+
          /*
         addressName	否	string	收货地址别名
          prov	是	string	省
@@ -144,24 +171,26 @@ function DOMtoString(document_root) {
                               @"pageSize": @(MAX(1, pageSize)).stringValue};
                               */
 
-        returnStr +=  '\nNSDictionary *dict = @{\n';                    
-        for (let index = 0; index < arrStrs.length; index++) {
-            const arrStr = arrStrs[index];
+        returnStr +=  '\nNSDictionary *dict = @{\n'; 
+                        
+        for (let index = 0; index < noEmptyArr.length; index++) {
+            const arrStr = noEmptyArr[index];
             let strs = arrStr.split('\t');
-            let name = strs[0];
-            if (index == arrStrs.length - 1) {
+            let name = strs[0];            
+            if (index == noEmptyArr.length - 1) {
                 returnStr += '@\"'+ name +'\": ' + name + '};\n\n\n';
             } else {
                 returnStr += '@\"'+ name +'\": ' + name + ',\n';
             }
             
         }
-
+        //        [muDict addEntriesFromDictionary:dict];
+        returnStr += '[muDict addEntriesFromDictionary:dict];\n';
         let methodStr = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[12]
         if (methodStr === 'POST') {
-            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodPOST success:success failure:failure];\n}'
+            returnStr += '[self requestUrlStr:urlStr dict:muDict method:MARequestMethodPOST success:success failure:failure];\n}'
         } else {
-            returnStr += '[self requestUrlStr:urlStr dict:dict method:MARequestMethodGET success:success failure:failure];\n}'
+            returnStr += '[self requestUrlStr:urlStr dict:muDict method:MARequestMethodGET success:success failure:failure];\n}'
         }
 
         return returnStr;
