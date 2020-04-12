@@ -97,6 +97,7 @@ function DOMtoString(document_root) {
 
         let des = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[4]
         returnStr += '/// ' + des + '\n';
+        returnStr += '/// 文档地址：' + loadUrl + '\n';
         // 取表格
         let tableStr = document.getElementById("editor-md").getElementsByTagName('table')[0].getElementsByTagName('tbody')[0].innerText;
     
