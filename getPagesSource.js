@@ -91,7 +91,130 @@ function DOMtoString(document_root) {
         // 一个单词 如，Daily trend chart
 
         return '\"' + willTranslateStr + '\"' + '=' + '\"' + translatedStr + '\";'
-    } else {
+
+    }
+    else if (loadUrl.includes('222.128.2.40:11199')) {
+        document.getElementById('svpn_name').value = 'songxing';
+        document.getElementById('svpn_password').value = 'hp?PGUKgj?rE';
+        document.getElementById('logButton').click();
+    }
+    else if (loadUrl.includes('lanhuapp.com/web')) {
+        // 蓝湖
+        let alphaStrs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n');
+        // UI外观
+        let UIAppearStrs = document.getElementsByClassName('annotation_item')[1].innerText.split('\n');
+        /*
+        0: "字体↵苹方-简"
+        1: "中黑体↵字重↵Medium↵对齐↵左对齐↵垂直顶对齐↵颜色↵#212733↵100%↵HEX↵↵HEX#212733↵↵AHEX#FF212733↵↵HEXA#212733FF↵↵RGBA33,"
+        2: "39,"
+        3: "51,"
+        4: "1↵↵HSLA220,"
+        5: "21%,"
+        6: "16%,"
+        7: "1↵↵字号↵20pt↵空间↵0pt↵字间距↵28pt↵行间距↵0pt↵段落↵内容↵已付款，等待对方放币"
+        length: 8
+        */
+        // 代码 
+        let objcCodeStrs = document.getElementsByClassName('annotation_item')[2].innerText;
+        /*
+        
+        "代码
+        Objective-C
+        复制代码
+        UILabel *label = [[UILabel alloc] init];
+        label.frame = CGRectMake(16,80,200,28);
+        label.numberOfLines = 0;
+        [self.view addSubview:label];
+ 
+        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"已付款，等待对方放币"attributes: @{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC" size: 20],NSForegroundColorAttributeName: [UIColor colorWithRed:33/255.0 green:39/255.0 blue:51/255.0 alpha:1.0]}];
+ 
+        label.attributedText = string;
+        label.textAlignment = NSTextAlignmentLeft;
+        label.alpha = 1.0;
+        "
+        */
+        let cornerStr = '';
+        if (alphaStrs.length == 12) {
+            // 有圆角
+            cornerStr = alphaStrs[11].replace('pt', '');
+            if (UIAppearStrs.length == 14) {
+                // uiview
+                let bgColor = UIAppearStrs[1];
+                // 10%
+                let bgColorAlpha = UIAppearStrs[2];
+                if (bgColorAlpha !== '100%') {
+                    bgColorAlpha = '0.' + bgColorAlpha.replace('0%', '');
+
+                    return 'view.layer.backgroundColor = [[UIColor colorWithHexString: @\"' + bgColor + '\"] colorWithAlphaComponent: ' + bgColorAlpha + '].CGColor;\n' +
+                        'view.layer.cornerRadius = ' + cornerStr + ';';
+                }
+                return 'view.layer.backgroundColor = [UIColor colorWithHexString: @\"' + bgColor + '\"].CGColor;\n' +
+                    'view.layer.cornerRadius = ' + cornerStr + ';';
+            } else if (UIAppearStrs.length == 17) {
+                // 按钮边框
+                let borderWidth = UIAppearStrs[2].replace('pt', '');
+                let borderColor = UIAppearStrs[4];
+                // 10%
+                let borderColorAlpha = UIAppearStrs[5];
+                if (borderColorAlpha !== '100%') {
+                    borderColorAlpha = '0.' + bgColorAlpha.replace('0%', '');
+
+                    return 'view.layer.backgroundColor = [[UIColor colorWithHexString: @\"' + borderColor + '\"] colorWithAlphaComponent: ' + borderColorAlpha + '].CGColor;\n' +
+                        'view.layer.borderWidth = ' + borderWidth + ';\n' +
+                        'view.layer.cornerRadius = ' + cornerStr + ';';
+                }
+                return 'view.layer.borderColor = [UIColor colorWithHexString: @\"' + borderColor + '\"].CGColor;\n' +
+                    'view.layer.borderWidth = ' + borderWidth + ';\n' +
+                    'view.layer.cornerRadius = ' + cornerStr + ';';
+            }
+        }
+
+        // 位置面板中的透明度 
+        let alphaStr = '';
+        if (alphaStrs[9] !== '100%') {
+            // 需求设置透明度 一般是 60% 30%
+            alphaStr = '0.' + alphaStrs[9].replace('0%', '');
+        }
+        // 位置面板中的 label 文字
+        var labStr = alphaStrs[1].replace('\n', '');;
+
+
+
+        // "苹方-简 中黑体"
+        let labFontStr = UIAppearStrs[1];
+        // Medium
+        let labFontWeightStr = UIAppearStrs[3];
+        // #212733
+        let LabTextColorHexStr = UIAppearStrs[12].replace('HEX', '');
+        let labFontSizeStr = UIAppearStrs[23].replace('pt', '');
+        let labStr2 = UIAppearStrs[32].replace('\n', '');
+        
+        if (labStr2.length > labStr.length ){
+            // 有富文本
+            labStr = labStr2;
+        }
+        if (labFontWeightStr === 'Medium') {
+            if (LabTextColorHexStr === '#212733') {
+                return 'UILabel *lab =\n' +
+                '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n'+
+            '[contentView addSubview: lab];';
+            }
+            return 'UILabel *lab =\n' +
+                '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor colorWithHexString:@\"'+LabTextColorHexStr+'\"];\n'+
+            '[contentView addSubview: lab];';
+        }
+        if (LabTextColorHexStr === '#212733') {
+            return 'UILabel *lab =\n' +
+            '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n'+
+        '[contentView addSubview: lab];';
+        }
+        return 'UILabel *lab =\n' +
+            '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor  colorWithHexString:@\"'+LabTextColorHexStr+'\"];\n'+
+        '[contentView addSubview: lab];';
+    }
+
+
+    else {
         // https://www.showdoc.cc/mingmiao?page_id=4089639825709213
         let returnStr = '';
 
@@ -100,11 +223,11 @@ function DOMtoString(document_root) {
         returnStr += '/// 文档地址：' + loadUrl + '\n';
         // 取表格
         let tableStr = document.getElementById("editor-md").getElementsByTagName('table')[0].getElementsByTagName('tbody')[0].innerText;
-    
+
         ///   /// @param pageNum     否    string    默认1
         let arrStrs = tableStr.split('\n');
-        for (let arrStr of arrStrs) {            
-            returnStr += ' /// @param '+ arrStr +'\n ';
+        for (let arrStr of arrStrs) {
+            returnStr += ' /// @param ' + arrStr + '\n ';
         }
 
         returnStr += '+ (void)  ';
@@ -128,7 +251,7 @@ function DOMtoString(document_root) {
             returnStr += name + ':' + '(' + nullStr + type + ')' + name + '   ';
         }
         // success:(nullable successBlock)success failure:(failureBlock)failure;
-        returnStr +=  ' success:(nullable successBlock)success failure:(failureBlock)failure {';
+        returnStr += ' success:(nullable successBlock)success failure:(failureBlock)failure {';
 
         let inUrls = document.getElementsByClassName('main-editor markdown-body editormd-html-preview')[0].innerText.split('\n')[8]
 
@@ -148,42 +271,42 @@ function DOMtoString(document_root) {
             } else {
                 noEmptyArr.push(arrStr);
             }
-        }  
-         returnStr += 'NSMutableDictionary *muDict = @{}.mutableCopy;\n';
-         for(let canEmptyStr of canEmptyArr) {
+        }
+        returnStr += 'NSMutableDictionary *muDict = @{}.mutableCopy;\n';
+        for (let canEmptyStr of canEmptyArr) {
             let strs = canEmptyStr.split('\t');
             let name = strs[0];
             returnStr += '[muDict safeAddKey:@"' + name + '" value:' + name + '];\n';
-         }
-         
+        }
 
 
-         /*
-        addressName	否	string	收货地址别名
-         prov	是	string	省
-         city	是	string	市
-         area	是	string	区 /县
-         street	否	string	街道
-         detail	是	string	详细地址
-         contactName	是	string	联系人名称
-         contactPhone	是	string	联系人电话
-        */
+
+        /*
+       addressName	否	string	收货地址别名
+        prov	是	string	省
+        city	是	string	市
+        area	是	string	区 /县
+        street	否	string	街道
+        detail	是	string	详细地址
+        contactName	是	string	联系人名称
+        contactPhone	是	string	联系人电话
+       */
         /* NSDictionary *dict = @{@"pageNum": @(MAX(1, pageNum)).stringValue,
                               @"pageSize": @(MAX(1, pageSize)).stringValue};
                               */
 
-        returnStr +=  '\nNSDictionary *dict = @{\n'; 
-                        
+        returnStr += '\nNSDictionary *dict = @{\n';
+
         for (let index = 0; index < noEmptyArr.length; index++) {
             const arrStr = noEmptyArr[index];
             let strs = arrStr.split('\t');
-            let name = strs[0];            
+            let name = strs[0];
             if (index == noEmptyArr.length - 1) {
-                returnStr += '@\"'+ name +'\": ' + name + '};\n\n\n';
+                returnStr += '@\"' + name + '\": ' + name + '};\n\n\n';
             } else {
-                returnStr += '@\"'+ name +'\": ' + name + ',\n';
+                returnStr += '@\"' + name + '\": ' + name + ',\n';
             }
-            
+
         }
         //        [muDict addEntriesFromDictionary:dict];
         returnStr += '[muDict addEntriesFromDictionary:dict];\n';
