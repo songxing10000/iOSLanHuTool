@@ -92,11 +92,6 @@ function DOMtoString(document_root) {
         return '\"' + willTranslateStr + '\"' + '=' + '\"' + translatedStr + '\";'
 
     }
-    else if (loadUrl.includes('222.128.2.40:11199')) {
-        document.getElementById('svpn_name').value = 'songxing';
-        document.getElementById('svpn_password').value = 'hp?PGUKgj?rE';
-        document.getElementById('logButton').click();
-    }
     else if (loadUrl.includes('lanhuapp.com/web')) {
         // 蓝湖
         let alphaStrs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n');
