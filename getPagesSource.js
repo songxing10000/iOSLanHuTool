@@ -67,14 +67,13 @@ function DOMtoString(document_root) {
             // 多个单词 如，Daily trend chart, monthly trend chart
             let willTranslateArray = willTranslateStr.split("\n")
             //translatedArray有道翻译后是这样的         Today,,,Tomorrow,
-            if (translatedStr.indexOf(",") >= 0) {
+            // if (translatedStr.indexOf(",") >= 0) {
                 // 可能是有道翻译
                 // //去除换行 https://www.cnblogs.com/konghou/p/3819029.html
-                translatedStr = translatedStr.replace(/<\/?.+?>/g, "");
-                translatedStr = translatedStr.replace(/[\r\n]/g, "");
-                translatedStr = translatedStr.replace(',', "\n");
-
-            }
+                // translatedStr = translatedStr.replace(/<\/?.+?>/g, "");
+                // translatedStr = translatedStr.replace(/[\r\n]/g, "");
+                // translatedStr = translatedStr.replace(',', "\n");
+            // }
             let translatedArray = translatedStr.split("\n")
             willTranslateArray = willTranslateArray.filter(item => item != '')
 
