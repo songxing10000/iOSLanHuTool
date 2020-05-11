@@ -68,11 +68,11 @@ function DOMtoString(document_root) {
             let willTranslateArray = willTranslateStr.split("\n")
             //translatedArray有道翻译后是这样的         Today,,,Tomorrow,
             // if (translatedStr.indexOf(",") >= 0) {
-                // 可能是有道翻译
-                // //去除换行 https://www.cnblogs.com/konghou/p/3819029.html
-                // translatedStr = translatedStr.replace(/<\/?.+?>/g, "");
-                // translatedStr = translatedStr.replace(/[\r\n]/g, "");
-                // translatedStr = translatedStr.replace(',', "\n");
+            // 可能是有道翻译
+            // //去除换行 https://www.cnblogs.com/konghou/p/3819029.html
+            // translatedStr = translatedStr.replace(/<\/?.+?>/g, "");
+            // translatedStr = translatedStr.replace(/[\r\n]/g, "");
+            // translatedStr = translatedStr.replace(',', "\n");
             // }
             let translatedArray = translatedStr.split("\n")
             willTranslateArray = willTranslateArray.filter(item => item != '')
@@ -92,6 +92,17 @@ function DOMtoString(document_root) {
         return '\"' + willTranslateStr + '\"' + '=' + '\"' + translatedStr + '\";'
 
     }
+    else if (loadUrl.includes('222.128.2.40:11199')) {
+        let loginBtns = document.getElementsByClassName('btn');
+        if (loginBtns.length > 0) {
+            loginBtns[0].click();
+        } else {
+            document.getElementById('svpn_name').value = 'songxing';
+            document.getElementById('svpn_password').value = 'hp?PGUKgj?rE';
+            document.getElementById('logButton').click();
+        }
+    }
+
     else if (loadUrl.includes('lanhuapp.com/web')) {
         // 蓝湖
         let alphaStrs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n');
@@ -182,29 +193,29 @@ function DOMtoString(document_root) {
         let LabTextColorHexStr = UIAppearStrs[12].replace('HEX', '');
         let labFontSizeStr = UIAppearStrs[23].replace('pt', '');
         let labStr2 = UIAppearStrs[32].replace('\n', '');
-        
-        if (labStr2.length > labStr.length ){
+
+        if (labStr2.length > labStr.length) {
             // 有富文本
             labStr = labStr2;
         }
         if (labFontWeightStr === 'Medium') {
             if (LabTextColorHexStr === '#212733') {
                 return 'UILabel *lab =\n' +
-                '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n'+
-            '[contentView addSubview: lab];';
+                    '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n' +
+                    '[contentView addSubview: lab];';
             }
             return 'UILabel *lab =\n' +
-                '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor colorWithHexString:@\"'+LabTextColorHexStr+'\"];\n'+
-            '[contentView addSubview: lab];';
+                '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor colorWithHexString:@\"' + LabTextColorHexStr + '\"];\n' +
+                '[contentView addSubview: lab];';
         }
         if (LabTextColorHexStr === '#212733') {
             return 'UILabel *lab =\n' +
-            '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n'+
-        '[contentView addSubview: lab];';
+                '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n' +
+                '[contentView addSubview: lab];';
         }
         return 'UILabel *lab =\n' +
-            '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor  colorWithHexString:@\"'+LabTextColorHexStr+'\"];\n'+
-        '[contentView addSubview: lab];';
+            '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor  colorWithHexString:@\"' + LabTextColorHexStr + '\"];\n' +
+            '[contentView addSubview: lab];';
     }
 
 
