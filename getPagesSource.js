@@ -192,7 +192,30 @@ function DOMtoString(document_root) {
         // Medium
         let labFontWeightStr = UIAppearStrs[3];
         // #212733
-        let LabTextColorHexStr = UIAppearStrs[12].replace('HEX', '');
+        let LabTextColorHexStr = '';
+        if (typeof (UIAppearStrs[12]) != "undefined") {
+
+            LabTextColorHexStr = UIAppearStrs[12].replace('HEX', '');
+        }
+        if (LabTextColorHexStr === '' || !LabTextColorHexStr.startsWith("#")) {
+            if (typeof (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1]) != "undefined") {
+                if (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1].innerText === 'PNG') {
+                    return '\
+                    UIImage *img = [UIImage imageNamed: [NSString homeFastBuyIcon]];\n\
+                    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];\n\
+                    [self.view addSubview: imgV];\n\
+                    [imgV sizeToFit];\n\
+                    imgV.right = 16;\n\
+                    imgV.top = 16;\n\
+                    ';
+
+                } else {
+                    alert('??');
+                }
+            }
+        }
+        
+
         let labFontSizeStr = '12';
         if (typeof (UIAppearStrs[23]) != "undefined") {
             labFontSizeStr = UIAppearStrs[23].replace('pt', '');
