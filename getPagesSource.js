@@ -176,9 +176,11 @@ function DOMtoString(document_root) {
 
         // 位置面板中的透明度 
         let alphaStr = '';
-        if (alphaStrs[9] !== '100%') {
-            // 需求设置透明度 一般是 60% 30%
-            alphaStr = '0.' + alphaStrs[9].replace('0%', '');
+        if (typeof (alphaStrs[9]) != "undefined") {
+            if (alphaStrs[9] !== '100%') {
+                // 需求设置透明度 一般是 60% 30%
+                alphaStr = '0.' + alphaStrs[9].replace('0%', '');
+            }
         }
         // 位置面板中的 label 文字
         var labStr = alphaStrs[1].replace('\n', '');;
@@ -191,13 +193,17 @@ function DOMtoString(document_root) {
         let labFontWeightStr = UIAppearStrs[3];
         // #212733
         let LabTextColorHexStr = UIAppearStrs[12].replace('HEX', '');
-        let labFontSizeStr = UIAppearStrs[23].replace('pt', '');
-        let labStr2 = UIAppearStrs[32].replace('\n', '');
+        let labFontSizeStr = '12';
+        if (typeof (UIAppearStrs[23]) != "undefined") {
+            labFontSizeStr = UIAppearStrs[23].replace('pt', '');
+            let labStr2 = UIAppearStrs[32].replace('\n', '');
 
-        if (labStr2.length > labStr.length) {
-            // 有富文本
-            labStr = labStr2;
+            if (labStr2.length > labStr.length) {
+                // 有富文本
+                labStr = labStr2;
+            }
         }
+        
         if (labFontWeightStr === 'Medium') {
             if (LabTextColorHexStr === '#212733') {
                 return 'UILabel *lab =\n' +
