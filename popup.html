@@ -1,9 +1,32 @@
+
 <!DOCTYPE html>
-<html style=''>
+<html>
 <head>
-<script src='popup.js'></script>
+	<meta charset="utf-8"/>
+	<style>
+	body{font-size: 16px;width: 400px; height: 300px;padding: 10px;font-family: 'Microsoft Yahei'; }
+	#status {color:red;}
+	</style>
+	<title>插件配置页</title>
 </head>
-<body style="width:400px;">
-<div id='message'>Injecting Script....</div>
+<body>
+	<div>
+		<label>请选择popup页面背景色：</label>
+		<select id="color">
+			<option value="white">white</option>
+			<option value="red">red</option>
+			<option value="green">green</option>
+			<option value="blue">blue</option>
+			<option value="yellow">yellow</option>
+		</select>
+	</div>
+	<div>
+		<label><input type="checkbox" id="show_image"/>允许网页显示图片</label>
+	</div>
+	<a href="javascript:;" id="save">保存配置</a>
+	<div id="status"></div>
+    <div id='message'>Injecting Script....</div>
+
+	<script src="popup.js"></script>
 </body>
 </html>

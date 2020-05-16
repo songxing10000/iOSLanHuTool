@@ -6,5 +6,5 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["clipboardWrite","contextMenus", "tabs", "<all_urls>"]
+  "permissions": ["clipboardWrite","contextMenus", "tabs", "<all_urls>", "storage"]
 }
