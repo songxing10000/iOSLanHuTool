@@ -63,7 +63,6 @@ function DOMtoString(document_root) {
             translatedStr = document.getElementsByClassName('input__target__text')[0].innerText
         }
         // return  willTranslateStr + '\n' +  translatedStr;
-        if (willTranslateStr.indexOf("\n") >= 0) {
             // 多个单词 如，Daily trend chart, monthly trend chart
             let willTranslateArray = willTranslateStr.split("\n")
             //translatedArray有道翻译后是这样的         Today,,,Tomorrow,
@@ -86,12 +85,6 @@ function DOMtoString(document_root) {
                 dict[willTranslate]=translated.replace(',', '');
             }
             return dict
-        }
-        // 一个单词 如，Daily trend chart
-        let sss = (willTranslateStr+'');
-        let dict22 = [];
-        return dict22[sss]= translatedStr;
-
     }
     else if (loadUrl.includes('222.128.2.40:11199')) {
         let loginBtns = document.getElementsByClassName('btn');
