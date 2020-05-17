@@ -2,7 +2,7 @@
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == "getSource") {
-      message.innerText = request.source;
+    message.innerText = request.source;
   }
 });
 
@@ -24,34 +24,40 @@ function onWindowLoad() {
 window.onload = onWindowLoad;
 
 /// 新加面板
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // 默认配置
-  var defaultConfig = {color: 'white', showImage: true};
-	// 读取数据，第一个参数是指定要读取的key以及设置默认值
-	chrome.storage.sync.get(defaultConfig, function(items) {
-		document.getElementById('color').value = items.color;
-		document.getElementById('show_image').checked = items.showImage;
+  var defaultConfig = { color: 'white', showImage: true };
+  // 读取数据，第一个参数是指定要读取的key以及设置默认值
+  chrome.storage.sync.get(defaultConfig, function (items) {
+    document.getElementById('color').value = items.color;
+    document.getElementById('show_image').checked = items.showImage;
   });
 });
 
-document.getElementById('save').addEventListener('click', function() {
-	var color = document.getElementById('color').value;
-	var showImage = document.getElementById('show_image').checked;
-	chrome.storage.sync.set({color: color, showImage: showImage}, function() {
-		document.getElementById('status').textContent = '保存成功！';
-		setTimeout(() => {document.getElementById('status').textContent = '';}, 800);
-	});
+document.getElementById('save').addEventListener('click', function () {
+  var color = document.getElementById('color').value;
+  var showImage = document.getElementById('show_image').checked;
+  chrome.storage.sync.set({ color: color, showImage: showImage }, function () {
+    document.getElementById('status').textContent = '保存成功！';
+    setTimeout(() => { document.getElementById('status').textContent = ''; }, 800);
+  });
 });
-document.getElementById('show_image').addEventListener('change', function() {
-  document.getElementById('show_btn').checked = false;
-  document.getElementById('show_lab').checked = false;
+
+
+let img = document.getElementById('show_image');
+let btn = document.getElementById('show_btn');
+let lab = document.getElementById('show_lab');
+
+img.addEventListener('change', function () {
+  btn.checked = false;
+  lab.checked = false;
 });
-document.getElementById('show_btn').addEventListener('change', function() {
-  document.getElementById('show_image').checked = false;
-  document.getElementById('show_lab').checked = false;
+document.getElementById('show_btn').addEventListener('change', function () {
+  img.checked = false;
+  lab.checked = false;
 });
-document.getElementById('show_lab').addEventListener('change', function() {
-  document.getElementById('show_image').checked = false;
-  document.getElementById('show_btn').checked = false;
+document.getElementById('show_lab').addEventListener('change', function () {
+  img.checked = false;
+  btn.checked = false;
 });
 

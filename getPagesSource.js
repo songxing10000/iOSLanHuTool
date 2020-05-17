@@ -246,7 +246,16 @@ function DOMtoString(document_root) {
             '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor  colorWithHexString:@\"' + LabTextColorHexStr + '\"];\n' +
             '[contentView addSubview: lab];';
     }
-
+    else if (loadUrl.indexOf('zentao/bug') >= 0 ) {
+        var bugTitle = document.getElementsByClassName('text')[0].innerText
+        let strs = bugTitle.split('】')
+        if(strs.length > 1) {
+            bugTitle = strs[1]
+        } else {
+            bugTitle = strs[0]
+        }
+        return 'fix ' + loadUrl + ' ' + bugTitle;
+    }
 
     else {
         // https://www.showdoc.cc/mingmiao?page_id=4089639825709213
