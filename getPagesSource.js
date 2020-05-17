@@ -256,7 +256,24 @@ function DOMtoString(document_root) {
         }
         return 'fix ' + loadUrl + ' ' + bugTitle;
     }
+    else if (loadUrl.indexOf('/merge_requests/new') >= 0) {
+        /// 提交代码时 ，自动抓提交记录文字
+        var msgs = document.getElementsByClassName('commit-row-message');
 
+        var msgStrs = []
+        for (i = 0; i < msgs.length; i++) {
+            var msgStr = document.getElementsByClassName('commit-row-message')[i].innerText;
+            if (msgStr != 'Merge branch \'master\' of ') {
+                msgStrs.push(msgStr)
+            }
+        }
+        var des = msgStrs.join('、')
+        document.getElementById('merge_request_title').innerText = des;
+        document.getElementById('merge_request_description').innerText = des;
+        document.getElementById('merge_request_title').value = des;
+        document.getElementById('merge_request_description').value = des;
+        return ''
+    } 
     else {
         // https://www.showdoc.cc/mingmiao?page_id=4089639825709213
         let returnStr = '';
