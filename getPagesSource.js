@@ -79,17 +79,16 @@ function DOMtoString(document_root) {
 
             // translatedArray有可能是     day,,Late at night
             translatedArray = translatedArray.filter(item => item != '')
-            let str = ''
+            let dict = {};
             for (let index = 0; index < willTranslateArray.length; index++) {
                 const willTranslate = willTranslateArray[index];
                 let translated = translatedArray[index];
-                str += '\"' + willTranslate + '\"' + '=' + '\"' + translated.replace(',', '') + '\";\n'
+                dict[willTranslate]=translated.replace(',', '');
             }
-            return str
+            return dict
         }
         // 一个单词 如，Daily trend chart
-
-        return '\"' + willTranslateStr + '\"' + '=' + '\"' + translatedStr + '\";'
+        return {willTranslateStr:translatedStr};
 
     }
     else if (loadUrl.includes('222.128.2.40:11199')) {
