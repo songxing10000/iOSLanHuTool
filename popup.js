@@ -1,5 +1,9 @@
 var title;
 var url;
+let img = document.getElementById('show_image');
+let btn = document.getElementById('show_btn');
+let lab = document.getElementById('show_lab');
+
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == "getSource") {
@@ -7,12 +11,22 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     if (url.indexOf('translate.google.cn') >= 0) {
       let op = document.getElementById('op').value;
       if (op === 'lang') {
-        var str='';
+        var str = '';
         for (const [key, value] of Object.entries(request.source)) {
           str += '\"' + key + '\"' + '=' + '\"' + value.replace(',', '') + '\";\n'
         }
         message.innerText = str;
-      } else {
+      }
+      else if (op === 'oc_code' || op === 'swift_code') {
+        if (btn.checked == true) {
+          let str2 = '';
+          for (const [key, value] of Object.entries(request.source)) {
+            str2 += translate(key, value.replace(',', ''), 'btn', (op === 'swift_code'))+'\n';
+          }
+          message.innerText = str2;
+        }
+      }
+      else {
         message.innerText = request.source;
       }
     } else {
@@ -47,22 +61,41 @@ window.onload = onWindowLoad;
 /// 新加面板
 document.addEventListener('DOMContentLoaded', function () {
   // 默认配置
-  var defaultConfig = { op: 'lang', showImage: true };
+  var defaultConfig = { 'op': 'lang', 'ocCode': 'btn'};
   // 读取数据，第一个参数是指定要读取的key以及设置默认值
   chrome.storage.sync.get(defaultConfig, function (items) {
     document.getElementById('op').value = items.op;
-    document.getElementById('show_image').checked = items.showImage;
+    let ocCodeStr = items.ocCode;
+    if (ocCodeStr === 'img') {
+      img.checked = true;
+    } else if (ocCodeStr === 'btn') {
+      btn.checked = true;
+    } else if (ocCodeStr === 'lab') {
+      lab.checked = true;
+    }
   });
 });
-let img = document.getElementById('show_image');
-let btn = document.getElementById('show_btn');
-let lab = document.getElementById('show_lab');
+
 
 // 保存配置事件
 document.getElementById('save').addEventListener('click', function () {
   let op = document.getElementById('op').value;
+  let ocCodeStr = '';
+  if (img.checked) {
+    ocCodeStr = 'img';
+  }
+  else if (btn.checked) {
+    ocCodeStr = 'btn';
+  }
+  else if (lab.checked) {
+    ocCodeStr = 'lab';
+  }
   let showImage = img.checked;
-  chrome.storage.sync.set({ op: op, showImage: showImage }, function () {
+  let saveDict = {
+    op: op,
+    ocCode: ocCodeStr
+  };
+  chrome.storage.sync.set(saveDict, function () {
     document.getElementById('status').textContent = '保存成功！';
     setTimeout(() => { document.getElementById('status').textContent = ''; }, 800);
   });
@@ -83,3 +116,69 @@ document.getElementById('show_lab').addEventListener('change', function () {
   btn.checked = false;
 });
 
+/// 处理一个单词 ，str 定义自符串，label 定义连线label
+function translate(willTranslateStr, translatedStr, outTypeStr, isSwift) {
+  // 一个单词 如，Daily trend chart
+  let array = translatedStr.split(' ')
+  if (array.length === 1) {
+    /// 如 曾经  被翻译 成 once
+    translatedStr = array[0]
+    /// 再来一次首字母小写
+    translatedStr = lowerCaseFirstLetter(translatedStr)
+  } else {
+    let str = ''
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      if (index == 0) {
+        // 首字母小写
+        str += lowerCaseFirstLetter(element)
+      } else {
+        // 首字母大写
+        str += upperCaseFirstLetter(element)
+      }
+    }
+    /// 再来一次首字母小写
+    translatedStr = lowerCaseFirstLetter(str);
+  }
+  if (outTypeStr === 'str') {
+    return "/// " + willTranslateStr + "\n" + "NSString *" + translatedStr + "Str" + " = @\"" + willTranslateStr + "\";"
+  } else if (outTypeStr === 'label') {
+    // return "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet UILabel *m_" + translatedStr + "Label;"
+    let restr = "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet KYLabelTextFieldView *m_" + translatedStr + "View;"
+    return restr;
+  } else if (outTypeStr === 'btn') {
+    let controlName = upperCaseFirstLetter(translatedStr);
+    if (!isSwift) {
+          alert(willTranslateStr)
+      return "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet UIButton *m_" + translatedStr + "Btn;"
+    }
+    return "\n/// " + willTranslateStr + "\n" + "var m_" + translatedStr + "Label: UILabel!" +
+      "\n/// " + willTranslateStr + "\n" + "@IBOutlet weak var m_" + translatedStr + "Label: UILabel!" +
+      "\n/// " + willTranslateStr + "\n" + "var m_" + translatedStr + "Btn: UIButton!" +
+      "\n/// " + willTranslateStr + "\n" + "@IBOutlet weak var m_" + translatedStr + "Btn: UIButton!" +
+
+      "\n\nm_" + translatedStr + "Btn.addTarget(self, action: #selector(on" + controlName + "BtnClick(btn:)), for: .touchUpInside)" +
+      "\n// MARK: - " + willTranslateStr + " 按钮事件" +
+      "\n/// " + willTranslateStr + " 按钮事件" +
+      "\nfunc on" + controlName + "BtnClick(btn: UIButton) {" +
+      "\n\n" +
+      "}"
+  }
+  return "/// " + willTranslateStr + "\n" + "NSString *" + translatedStr + "Str" + " = @\"" + willTranslateStr + "\";"
+}
+/**
+ * 只把首字母进行大写，其余字字符串不改变之前的大小写样式
+ * @param {string} str 
+ */
+function upperCaseFirstLetter(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+
+}
+/**
+* 只把首字母进行小写，其余字字符串不改变之前的大小写样式
+* @param {string} str 
+*/
+function lowerCaseFirstLetter(str) {
+  return str.charAt(0).toLowerCase() + str.slice(1);
+
+}

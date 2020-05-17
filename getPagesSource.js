@@ -88,7 +88,9 @@ function DOMtoString(document_root) {
             return dict
         }
         // 一个单词 如，Daily trend chart
-        return {willTranslateStr:translatedStr};
+        let sss = (willTranslateStr+'');
+        let dict22 = [];
+        return dict22[sss]= translatedStr;
 
     }
     else if (loadUrl.includes('222.128.2.40:11199')) {
