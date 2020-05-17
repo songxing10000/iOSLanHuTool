@@ -25,12 +25,13 @@ window.onload = onWindowLoad;
 
 /// 新加面板
 document.addEventListener('DOMContentLoaded', function() {
-	var defaultConfig = {color: 'white', showImage: true}; // 默认配置
+  // 默认配置
+  var defaultConfig = {color: 'white', showImage: true};
 	// 读取数据，第一个参数是指定要读取的key以及设置默认值
 	chrome.storage.sync.get(defaultConfig, function(items) {
 		document.getElementById('color').value = items.color;
 		document.getElementById('show_image').checked = items.showImage;
-	});
+  });
 });
 
 document.getElementById('save').addEventListener('click', function() {
@@ -41,3 +42,16 @@ document.getElementById('save').addEventListener('click', function() {
 		setTimeout(() => {document.getElementById('status').textContent = '';}, 800);
 	});
 });
+document.getElementById('show_image').addEventListener('change', function() {
+  document.getElementById('show_btn').checked = false;
+  document.getElementById('show_lab').checked = false;
+});
+document.getElementById('show_btn').addEventListener('change', function() {
+  document.getElementById('show_image').checked = false;
+  document.getElementById('show_lab').checked = false;
+});
+document.getElementById('show_lab').addEventListener('change', function() {
+  document.getElementById('show_image').checked = false;
+  document.getElementById('show_btn').checked = false;
+});
+

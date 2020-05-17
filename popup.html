@@ -11,9 +11,9 @@
 </head>
 <body>
 	<div>
-		<label>请选择popup页面背景色：</label>
+		<!-- 大选项 -->
 		<select id="color">
-			<option value="white">white</option>
+			<option value="oc_code">oc_code</option>
 			<option value="red">red</option>
 			<option value="green">green</option>
 			<option value="blue">blue</option>
@@ -21,7 +21,11 @@
 		</select>
 	</div>
 	<div>
-		<label><input type="checkbox" id="show_image"/>允许网页显示图片</label>
+		<!-- 小选项 -->
+		<label><input type="checkbox" id="show_image"/>img</label>
+		<label><input type="checkbox" id="show_btn"/>btn</label>
+		<label><input type="checkbox" id="show_lab"/>label</label>
+
 	</div>
 	<a href="javascript:;" id="save">保存配置</a>
 	<div id="status"></div>
@@ -30,3 +34,4 @@
 	<script src="popup.js"></script>
 </body>
 </html>
+
