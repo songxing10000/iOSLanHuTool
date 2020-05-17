@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// 保存配置事件
 document.getElementById('save').addEventListener('click', function () {
   var color = document.getElementById('color').value;
   var showImage = document.getElementById('show_image').checked;
@@ -43,7 +44,7 @@ document.getElementById('save').addEventListener('click', function () {
   });
 });
 
-
+// checked 事件互斥
 let img = document.getElementById('show_image');
 let btn = document.getElementById('show_btn');
 let lab = document.getElementById('show_lab');
