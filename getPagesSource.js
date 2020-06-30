@@ -102,40 +102,16 @@ function DOMtoString(document_root) {
         let alphaStrs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n');
         // UI外观
         let UIAppearStrs = document.getElementsByClassName('annotation_item')[1].innerText.split('\n');
-        /*
-        0: "字体↵苹方-简"
-        1: "中黑体↵字重↵Medium↵对齐↵左对齐↵垂直顶对齐↵颜色↵#212733↵100%↵HEX↵↵HEX#212733↵↵AHEX#FF212733↵↵HEXA#212733FF↵↵RGBA33,"
-        2: "39,"
-        3: "51,"
-        4: "1↵↵HSLA220,"
-        5: "21%,"
-        6: "16%,"
-        7: "1↵↵字号↵20pt↵空间↵0pt↵字间距↵28pt↵行间距↵0pt↵段落↵内容↵已付款，等待对方放币"
-        length: 8
-        */
         // 代码 
         let objcCodeStrs = document.getElementsByClassName('annotation_item')[2].innerText;
-        /*
-        
-        "代码
-        Objective-C
-        复制代码
-        UILabel *label = [[UILabel alloc] init];
-        label.frame = CGRectMake(16,80,200,28);
-        label.numberOfLines = 0;
-        [self.view addSubview:label];
- 
-        NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithString:@"已付款，等待对方放币"attributes: @{NSFontAttributeName: [UIFont fontWithName:@"PingFangSC" size: 20],NSForegroundColorAttributeName: [UIColor colorWithRed:33/255.0 green:39/255.0 blue:51/255.0 alpha:1.0]}];
- 
-        label.attributedText = string;
-        label.textAlignment = NSTextAlignmentLeft;
-        label.alpha = 1.0;
-        "
-        */
         let cornerStr = '';
         if (alphaStrs.length == 12) {
             // 有圆角
-            cornerStr = alphaStrs[11].replace('pt', '');
+            let cornerObj = alphaStrs[13];
+            if (typeof(cornerObj) != "undefined" && cornerObj.indexOf('pt') >= 0) {
+                cornerStr = cornerObj.replace('pt', '');
+            }
+            
             if (UIAppearStrs.length == 14) {
                 // uiview
                 let bgColor = UIAppearStrs[1];
@@ -187,9 +163,10 @@ function DOMtoString(document_root) {
         let labFontWeightStr = UIAppearStrs[3];
         // #212733
         let LabTextColorHexStr = '';
-        if (typeof (UIAppearStrs[12]) != "undefined") {
+        let textColorStrObj = UIAppearStrs[11];
+        if (typeof (textColorStrObj) != "undefined") {
 
-            LabTextColorHexStr = UIAppearStrs[12].replace('HEX', '');
+            LabTextColorHexStr = textColorStrObj.replace('HEX', '');
         }
         if (LabTextColorHexStr === '' || !LabTextColorHexStr.startsWith("#")) {
             if (typeof (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1]) != "undefined") {
@@ -204,16 +181,21 @@ function DOMtoString(document_root) {
                     ';
 
                 } else {
-                    alert('??');
+                    // 这里是啥
                 }
             }
         }
         
 
         let labFontSizeStr = '12';
-        if (typeof (UIAppearStrs[23]) != "undefined") {
-            labFontSizeStr = UIAppearStrs[23].replace('pt', '');
-            let labStr2 = UIAppearStrs[32].replace('\n', '');
+        let fontSizeStrObj = UIAppearStrs[22];
+        if (typeof (fontSizeStrObj) != "undefined") {
+            labFontSizeStr = fontSizeStrObj.replace('pt', '');
+            let labStr2 = '';
+            if(UIAppearStrs[29] != "undefined") {
+                labStr2 = UIAppearStrs[29].replace('\n', '');
+            }
+                
 
             if (labStr2.length > labStr.length) {
                 // 有富文本
