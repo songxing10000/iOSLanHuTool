@@ -250,6 +250,11 @@ function DOMtoString(document_root) {
         document.getElementById('merge_request_description').value = des;
         return ''
     } 
+    else if (loadUrl.indexOf('csdn') >= 0) {
+        // 移除csdn登录二维码
+        document.getElementsByClassName('login-mark')[0].remove()
+        document.getElementsByClassName('login-box')[0].remove()
+    }
     else {
         // https://www.showdoc.cc/mingmiao?page_id=4089639825709213
         let returnStr = '';
