@@ -210,8 +210,8 @@ function DOMtoString(document_root) {
                     '[contentView addSubview: lab];';
             }
             return 'UILabel *lab =\n' +
-                '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor colorWithHexString:@\"' + LabTextColorHexStr + '\"];\n' +
-                '[contentView addSubview: lab];';
+            '[UILabel text: @\"' + labStr + '\" font: [UIFont pFMediumSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
+            '[contentView addSubview: lab];';
         }
         if (LabTextColorHexStr === '#212733') {
             return 'UILabel *lab =\n' +
