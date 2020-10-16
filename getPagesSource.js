@@ -219,7 +219,7 @@ function DOMtoString(document_root) {
                 '[contentView addSubview: lab];';
         }
         return 'UILabel *lab =\n' +
-            '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor  colorWithHexString:@\"' + LabTextColorHexStr + '\"];\n' +
+            '[UILabel text: @\"' + labStr + '\" font: [UIFont pFBlodSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
             '[contentView addSubview: lab];';
     }
     else if (loadUrl.indexOf('zentao/bug') >= 0 ) {
