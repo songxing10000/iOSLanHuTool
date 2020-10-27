@@ -87,16 +87,16 @@ function DOMtoString(document_root) {
             }
             return dict
     }
-    else if (loadUrl.includes('222.128.2.40:11199')) {
-        let loginBtns = document.getElementsByClassName('btn');
-        if (loginBtns.length > 0) {
-            loginBtns[0].click();
-        } else {
-            document.getElementById('svpn_name').value = 'songxing';
-            document.getElementById('svpn_password').value = 'hp?PGUKgj?rE';
-            document.getElementById('logButton').click();
-        }
-    }
+    // else if (loadUrl.includes('222.128.2.40:11199')) {
+    //     let loginBtns = document.getElementsByClassName('btn');
+    //     if (loginBtns.length > 0) {
+    //         loginBtns[0].click();
+    //     } else {
+    //         document.getElementById('svpn_name').value = 'songxing';
+    //         document.getElementById('svpn_password').value = 'hp?PGUKgj?rE';
+    //         document.getElementById('logButton').click();
+    //     }
+    // }
 
     else if (loadUrl.includes('lanhuapp.com/web')) {
         // 蓝湖
