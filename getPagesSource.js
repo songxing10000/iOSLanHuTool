@@ -81,7 +81,8 @@ function DOMtoString(document_root) {
             let dict = {};
             for (let index = 0; index < willTranslateArray.length; index++) {
                 const willTranslate = willTranslateArray[index];
-                let translated = translatedArray[index];
+                /// 国际化，第一个单词一定要大写
+                let translated = upperCaseFirstLetter(translatedArray[index]);
                 dict[willTranslate]=translated.replace(',', '');
             }
             return dict
