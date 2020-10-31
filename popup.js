@@ -34,6 +34,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       // 在博客完时，只是追加日期而，面板不用显示出来
       document.body.hidden = true
     }
+    else if(url.indexOf('csdn') >= 0) {
+      // 在csdn里，只是移除登录框，不显示面板
+      document.body.hidden = true
+    }
     else {
 
       message.innerText = request.source;
