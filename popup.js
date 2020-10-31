@@ -29,7 +29,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       else {
         message.innerText = request.source;
       }
-    } else {
+    }
+    else if(url.indexOf('cnblogs.com') >= 0) {
+      // 在博客完时，只是追加日期而，面板不用显示出来
+      document.body.hidden = true
+    }
+    else {
 
       message.innerText = request.source;
     }
