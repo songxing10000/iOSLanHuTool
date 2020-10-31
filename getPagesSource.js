@@ -256,6 +256,13 @@ function DOMtoString(document_root) {
         document.getElementsByClassName('login-mark')[0].remove()
         document.getElementsByClassName('login-box')[0].remove()
     }
+    else if (loadUrl.indexOf('cnblogs.com') >= 0) {
+        // 把博客园的博客的发布日期放标题上来
+        let titleElement = document.getElementById('cb_post_title_url')
+        let dateElement = document.getElementById('post-date')
+        let title = titleElement.innerText
+        titleElement.innerText = title + ' 发布日期：' + dateElement.innerText
+    }
     else {
         // https://www.showdoc.cc/mingmiao?page_id=4089639825709213
         let returnStr = '';
