@@ -202,22 +202,37 @@ function DOMtoString(document_root) {
                 labStr = labStr2;
             }
         }
-        
-        if (labFontWeightStr === 'Medium') {
-            return 'UILabel *lab = ({\n' +
-                        '\tUILabel *lab =\n'+
-                        '\t[UILabel text: @\"' + labStr + '\" font: [UIFont pFMediumSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
-                        '\t[contentView addSubview: lab];\n' +
-                        '\tlab;\n' +
-                        '\t});\n';
+        //  Medium Bold
+        let ocFontMethodName = 'pFSize';
+        if (labFontWeightStr === 'Regular') {
+            // 粗体
+            ocFontMethodName = 'pFSize';
+        } 
+        else if (labFontWeightStr === 'Medium') {
+            // 中体
+            ocFontMethodName = 'pFMediumSize';
+        } 
+        else if (labFontWeightStr === 'Bold') {
+            // 粗体
+            ocFontMethodName = 'pFBlodSize';
         }
+        else {
+            // 使用系统默认的字体
+            ocFontMethodName = 'systemFontOfSize';
+        }
+        return `UILabel *lab = ({
+        UILabel *lab =
+        ` +
+
+        '[UILabel text: @\"' + labStr + '\" font: [UIFont ' + ocFontMethodName + ': ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
         
-        return 'UILabel *lab = ({\n' +
-        '\tUILabel *lab =\n'+
-        '\t[UILabel text: @\"' + labStr + '\" font: [UIFont pFBlodSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
-        '\t[contentView addSubview: lab];\n' +
-        '\tlab;\n' +
-        '\t});\n';
+        `[contentView addSubview: lab];
+        [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(contentView).offset(15);
+            make.leading.equalTo(contentView).offset(28);
+        }];
+        lab;
+        });\n`;
         
 
 
