@@ -21,7 +21,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         if (btn.checked == true) {
           let str2 = '';
           for (const [key, value] of Object.entries(request.source)) {
-            str2 += translate(key, value.replace(',', ''), 'btn', (op === 'swift_code'))+'\n';
+            str2 += translate(key, value.replace(',', ''), 'btn', (op === 'swift_code')) + '\n';
           }
           message.innerText = str2;
         }
@@ -30,13 +30,42 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         message.innerText = request.source;
       }
     }
-    else if(url.indexOf('cnblogs.com') >= 0) {
+    else if (url.indexOf('cnblogs.com') >= 0) {
       // 在博客完时，只是追加日期而，面板不用显示出来
       document.body.hidden = true
     }
-    else if(url.indexOf('csdn') >= 0) {
+    else if (url.indexOf('csdn') >= 0) {
       // 在csdn里，只是移除登录框，不显示面板
       document.body.hidden = true
+    }
+    else if (url.includes('lanhuapp.com/web')) {
+      let strs = request.source;
+      if (lab.checked) {
+        message.innerText = 
+        `UILabel *lab = ({ UILabel *lab =
+          [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
+          [contentView addSubview: lab];
+          [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(contentView).offset(15);
+            make.leading.equalTo(contentView).offset(28);
+          }];
+          lab;
+        });\n`;
+      }
+      else if (btn.checked) {
+        // 多行 拼接 变量 ${变量名}
+        message.innerText = 
+        `UIButton *btn = ({
+          UIButton *btn = [UIButton btn];
+          btn.normalTitle = @"${strs[0]}";
+          btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
+          btn.normalTitleColor = @"${strs[3]}".hexColor;
+          
+          btn;
+      });`
+
+
+      }
     }
     else {
 
@@ -70,7 +99,7 @@ window.onload = onWindowLoad;
 /// 新加面板
 document.addEventListener('DOMContentLoaded', function () {
   // 默认配置
-  var defaultConfig = { 'op': 'lang', 'ocCode': 'btn'};
+  var defaultConfig = { 'op': 'lang', 'ocCode': 'btn' };
   // 读取数据，第一个参数是指定要读取的key以及设置默认值
   chrome.storage.sync.get(defaultConfig, function (items) {
     document.getElementById('op').value = items.op;
@@ -171,15 +200,15 @@ function translate(willTranslateStr, translatedStr, outTypeStr, isSwift) {
   } else if (outTypeStr === 'btn') {
     let controlName = upperCaseFirstLetter(translatedStr);
     if (!isSwift) {
-      return "/// " + willTranslateStr + "\n" + "@property (nonatomic) UIButton *m_" + translatedStr + "Btn;\n"+
-      "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet UIButton *m_" + translatedStr + "Btn;"+
+      return "/// " + willTranslateStr + "\n" + "@property (nonatomic) UIButton *m_" + translatedStr + "Btn;\n" +
+        "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet UIButton *m_" + translatedStr + "Btn;" +
 
-      "\n\n[self.m_" + translatedStr + "Btn addTarget:self action:@selector(on" + controlName + "BtnClick:) forControlEvents:UIControlEventTouchUpInside];" +
-      "\n// MARK: - " + willTranslateStr + " 按钮事件" +
-      "\n/// " + willTranslateStr + " 按钮事件" +
-      "\n- (void) click" + controlName + "Btn:(UIButton *)btn {" +
-      "\n\n" +
-      "}"
+        "\n\n[self.m_" + translatedStr + "Btn addTarget:self action:@selector(on" + controlName + "BtnClick:) forControlEvents:UIControlEventTouchUpInside];" +
+        "\n// MARK: - " + willTranslateStr + " 按钮事件" +
+        "\n/// " + willTranslateStr + " 按钮事件" +
+        "\n- (void) click" + controlName + "Btn:(UIButton *)btn {" +
+        "\n\n" +
+        "}"
     }
     return "\n/// " + willTranslateStr + "\n" + "var m_" + translatedStr + "Label: UILabel!" +
       "\n/// " + willTranslateStr + "\n" + "@IBOutlet weak var m_" + translatedStr + "Label: UILabel!" +

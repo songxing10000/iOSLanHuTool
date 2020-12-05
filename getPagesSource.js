@@ -153,6 +153,9 @@ function DOMtoString(document_root) {
                 alphaStr = '0.' + alphaStrs[9].replace('0%', '');
             }
         }
+        if (alphaStrs.length <= 0) {
+            return '未选中控件'
+        }
         // 位置面板中的 label 文字
         var labStr = alphaStrs[1].replace('\n', '');;
 
@@ -220,22 +223,8 @@ function DOMtoString(document_root) {
             // 使用系统默认的字体
             ocFontMethodName = 'systemFontOfSize';
         }
-        return `UILabel *lab = ({\n
-        \t\tUILabel *lab =\n
-        ` +
-
-        '    [UILabel text: @\"' + labStr + '\" font: [UIFont ' + ocFontMethodName + ': ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
+        return  [labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr];
         
-        `[contentView addSubview: lab];
-        [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(contentView).offset(15);
-            make.leading.equalTo(contentView).offset(28);
-        }];
-        lab;
-        });\n`;
-        
-
-
     }
     else if (loadUrl.indexOf('zentao/bug') >= 0 ) {
         var bugTitle = document.getElementsByClassName('text')[0].innerText
