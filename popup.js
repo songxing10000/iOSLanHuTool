@@ -84,7 +84,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 });
+// 复制代码事件
+document.getElementById('copyCode').addEventListener('click', function () {
 
+  let codeStr = document.getElementById('message').innerText;
+  // 复制字符串到粘贴板 http://www.voidcn.com/article/p-effxpdwn-buc.html
+  var input = document.createElement('textarea');
+  document.body.appendChild(input);
+  input.value = codeStr;
+  input.focus();
+  input.select();
+  document.execCommand('Copy');
+  input.remove();
+
+});
 
 // 保存配置事件
 document.getElementById('save').addEventListener('click', function () {

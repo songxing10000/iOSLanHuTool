@@ -220,11 +220,11 @@ function DOMtoString(document_root) {
             // 使用系统默认的字体
             ocFontMethodName = 'systemFontOfSize';
         }
-        return `UILabel *lab = ({
-        UILabel *lab =
+        return `UILabel *lab = ({\n
+        \t\tUILabel *lab =\n
         ` +
 
-        '[UILabel text: @\"' + labStr + '\" font: [UIFont ' + ocFontMethodName + ': ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
+        '    [UILabel text: @\"' + labStr + '\" font: [UIFont ' + ocFontMethodName + ': ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
         
         `[contentView addSubview: lab];
         [lab mas_makeConstraints:^(MASConstraintMaker *make) {
