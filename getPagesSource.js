@@ -162,7 +162,6 @@ function DOMtoString(document_root) {
         let labFontStr = UIAppearStrs[1];
         // Medium
         let labFontWeightStr = UIAppearStrs[3];
-        // #212733
         let LabTextColorHexStr = '';
         let textColorStrObj = UIAppearStrs[11];
         if (typeof (textColorStrObj) != "undefined") {
@@ -205,23 +204,23 @@ function DOMtoString(document_root) {
         }
         
         if (labFontWeightStr === 'Medium') {
-            if (LabTextColorHexStr === '#212733') {
-                return 'UILabel *lab =\n' +
-                    '[UILabel labFont:[UIFont PingFangSCMediumSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n' +
-                    '[contentView addSubview: lab];';
-            }
-            return 'UILabel *lab =\n' +
-            '[UILabel text: @\"' + labStr + '\" font: [UIFont pFMediumSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
-            '[contentView addSubview: lab];';
+            return 'UILabel *lab = ({\n' +
+                        '\tUILabel *lab =\n'+
+                        '\t[UILabel text: @\"' + labStr + '\" font: [UIFont pFMediumSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
+                        '\t[contentView addSubview: lab];\n' +
+                        '\tlab;\n' +
+                        '\t});\n';
         }
-        if (LabTextColorHexStr === '#212733') {
-            return 'UILabel *lab =\n' +
-                '[UILabel labFont:[UIFont PingFangSCRegularSize: ' + labFontSizeStr + '] text: @\"' + labStr + '\" color:[UIColor day212733_nightFFFFFF]];\n' +
-                '[contentView addSubview: lab];';
-        }
-        return 'UILabel *lab =\n' +
-            '[UILabel text: @\"' + labStr + '\" font: [UIFont pFBlodSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
-            '[contentView addSubview: lab];';
+        
+        return 'UILabel *lab = ({\n' +
+        '\tUILabel *lab =\n'+
+        '\t[UILabel text: @\"' + labStr + '\" font: [UIFont pFBlodSize: ' + labFontSizeStr + ']  textColorStr: @\"' + LabTextColorHexStr + '\"];\n' +
+        '\t[contentView addSubview: lab];\n' +
+        '\tlab;\n' +
+        '\t});\n';
+        
+
+
     }
     else if (loadUrl.indexOf('zentao/bug') >= 0 ) {
         var bugTitle = document.getElementsByClassName('text')[0].innerText
