@@ -1,8 +1,8 @@
 {
-  "name": "译 iOS国际化工具",
+  "name": "蓝",
   "version": "1.0",
   "manifest_version": 2,
-  "description": "谷歌翻译，有道翻译，iOS国际化",
+  "description": "蓝湖生成iOS相关代码工具",
   "browser_action": {
     "default_popup": "popup.html"
   },
