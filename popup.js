@@ -202,21 +202,24 @@ function translate(willTranslateStr, translatedStr, outTypeStr, isSwift) {
   if (outTypeStr === 'str') {
     return "/// " + willTranslateStr + "\n" + "NSString *" + translatedStr + "Str" + " = @\"" + willTranslateStr + "\";"
   } else if (outTypeStr === 'label') {
-    // return "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet UILabel *m_" + translatedStr + "Label;"
-    let restr = "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet KYLabelTextFieldView *m_" + translatedStr + "View;"
-    return restr;
+    return `/// ${willTranslateStr} 
+    @property (nonatomic, weak) UILabel *m_${translatedStr}Lab;
+    `
   } else if (outTypeStr === 'btn') {
     let controlName = upperCaseFirstLetter(translatedStr);
     if (!isSwift) {
-      return "/// " + willTranslateStr + "\n" + "@property (nonatomic) UIButton *m_" + translatedStr + "Btn;\n" +
-        "/// " + willTranslateStr + "\n" + "@property (weak, nonatomic) IBOutlet UIButton *m_" + translatedStr + "Btn;" +
+      return `/// ${willTranslateStr}
+      @property (nonatomic, weak) UIButton *m_${translatedStr}Btn;
 
-        "\n\n[self.m_" + translatedStr + "Btn addTarget:self action:@selector(on" + controlName + "BtnClick:) forControlEvents:UIControlEventTouchUpInside];" +
-        "\n// MARK: - " + willTranslateStr + " 按钮事件" +
-        "\n/// " + willTranslateStr + " 按钮事件" +
-        "\n- (void) click" + controlName + "Btn:(UIButton *)btn {" +
-        "\n\n" +
-        "}"
+        
+      [self.m_${translatedStr}Btn addTarget:self action:@selector(on${controlName}BtnClick:) forControlEvents:UIControlEventTouchUpInside];
+      
+      // MARK: - ${willTranslateStr} 按钮事件
+      /// ${willTranslateStr} 按钮事件
+      - (void) click${controlName}Btn:(UIButton *)btn {
+        
+
+      }`
     }
     return "\n/// " + willTranslateStr + "\n" + "var m_" + translatedStr + "Label: UILabel!" +
       "\n/// " + willTranslateStr + "\n" + "@IBOutlet weak var m_" + translatedStr + "Label: UILabel!" +
