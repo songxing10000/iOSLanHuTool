@@ -20,10 +20,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         message.innerText = str;
       }
       else if (op === 'oc_code' || op === 'swift_code') {
-        if (btn.checked == true) {
+        if (btn.checked) {
           let str2 = '';
           for (const [key, value] of Object.entries(request.source)) {
             str2 += translate(key, value.replace(',', ''), 'btn', (op === 'swift_code')) + '\n';
+          }
+          message.innerText = str2;
+        }
+        else if (lab.checked) {
+          let str2 = '';
+          for (const [key, value] of Object.entries(request.source)) {
+            str2 += translate(key, value.replace(',', ''), 'label', (op === 'swift_code')) + '\n';
           }
           message.innerText = str2;
         }
