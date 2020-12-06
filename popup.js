@@ -117,17 +117,20 @@ document.addEventListener('DOMContentLoaded', function () {
 document.getElementById('copyCode').addEventListener('click', function () {
 
   let codeStr = document.getElementById('message').innerText;
+  copyStr(codeStr)
+
+});
+/// 复制字符串到粘贴板
+function copyStr(str) {
   // 复制字符串到粘贴板 http://www.voidcn.com/article/p-effxpdwn-buc.html
   var input = document.createElement('textarea');
   document.body.appendChild(input);
-  input.value = codeStr;
+  input.value = str;
   input.focus();
   input.select();
   document.execCommand('Copy');
   input.remove();
-
-});
-
+}
 // 保存配置事件
 document.getElementById('save').addEventListener('click', function () {
   let op = document.getElementById('op').value;
