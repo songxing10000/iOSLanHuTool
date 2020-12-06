@@ -33,7 +33,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             typeStr = "type=\"boldSystem\""
           }
           // alert(strs[3]) #804F28
-          
+          // TODO： frame id color
           message.innerText = 
           `<label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="${strs[0]}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vit-KM-Fpd">
               <rect key="frame" x="82.5" y="18.5" width="155" height="23"/>
