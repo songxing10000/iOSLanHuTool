@@ -66,7 +66,7 @@ function DOMtoString(document_root) {
             // 多个单词 如，Daily trend chart, monthly trend chart
             let willTranslateArray = willTranslateStr.split("\n")
             //translatedArray有道翻译后是这样的         Today,,,Tomorrow,
-            // if (translatedStr.indexOf(",") >= 0) {
+            // if (translatedStr.includes(",")) {
             // 可能是有道翻译
             // //去除换行 https://www.cnblogs.com/konghou/p/3819029.html
             // translatedStr = translatedStr.replace(/<\/?.+?>/g, "");
@@ -109,7 +109,7 @@ function DOMtoString(document_root) {
         if (alphaStrs.length == 12) {
             // 有圆角
             let cornerObj = alphaStrs[13];
-            if (typeof(cornerObj) != "undefined" && cornerObj.indexOf('pt') >= 0) {
+            if (typeof(cornerObj) != "undefined" && cornerObj.includes('pt')) {
                 cornerStr = cornerObj.replace('pt', '');
             }
             
@@ -226,7 +226,7 @@ function DOMtoString(document_root) {
         return  [labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr];
         
     }
-    else if (loadUrl.indexOf('zentao/bug') >= 0 ) {
+    else if (loadUrl.includes('zentao/bug')) {
         var bugTitle = document.getElementsByClassName('text')[0].innerText
         let strs = bugTitle.split('】')
         if(strs.length > 1) {
@@ -236,7 +236,7 @@ function DOMtoString(document_root) {
         }
         return 'fix ' + loadUrl + ' ' + bugTitle;
     }
-    else if (loadUrl.indexOf('/merge_requests/new') >= 0) {
+    else if (loadUrl.includes('/merge_requests/new')) {
         /// 提交代码时 ，自动抓提交记录文字
         var msgs = document.getElementsByClassName('commit-row-message');
 
@@ -254,12 +254,12 @@ function DOMtoString(document_root) {
         document.getElementById('merge_request_description').value = des;
         return ''
     } 
-    else if (loadUrl.indexOf('csdn') >= 0) {
+    else if (loadUrl.includes('csdn')) {
         // 移除csdn登录二维码
         document.getElementsByClassName('login-mark')[0].remove()
         document.getElementsByClassName('login-box')[0].remove()
     }
-    else if (loadUrl.indexOf('cnblogs.com') >= 0) {
+    else if (loadUrl.includes('cnblogs.com')) {
         // 把博客园的博客的发布日期放标题上来
         let titleElement = document.getElementById('cb_post_title_url')
         let dateElement = document.getElementById('post-date')

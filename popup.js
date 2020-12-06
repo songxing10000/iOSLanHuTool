@@ -8,9 +8,11 @@ let lab = document.getElementById('show_lab');
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == "getSource") {
 
-    if (url.indexOf('translate.google.cn') >= 0) {
+    if (url.includes('translate.google.cn') || url.includes('fanyi.youdao.com')) {
+      
       let op = document.getElementById('op').value;
       if (op === 'lang') {
+        
         var str = '';
         for (const [key, value] of Object.entries(request.source)) {
           str += '\"' + key + '\"' + '=' + '\"' + value.replace(',', '') + '\";\n'
@@ -27,23 +29,25 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
       }
       else {
+        alert('JSON.stringify(request.source)')
+
         message.innerText = request.source;
       }
     }
-    else if (url.indexOf('cnblogs.com') >= 0) {
+    else if (url.includes('cnblogs.com')) {
       // 在博客完时，只是追加日期而，面板不用显示出来
       document.body.hidden = true
     }
-    else if (url.indexOf('csdn') >= 0) {
+    else if (url.includes('csdn')) {
       // 在csdn里，只是移除登录框，不显示面板
       document.body.hidden = true
     }
     else if (url.includes('lanhuapp.com/web')) {
       let strs = request.source;
-        // 多行 拼接 变量 ${变量名} innerText
+      // 多行 拼接 变量 ${变量名} innerText
       if (lab.checked) {
-        message.innerText = 
-        `\nUILabel *lab = ({ UILabel *lab =
+        message.innerText =
+          `\nUILabel *lab = ({ UILabel *lab =
                    [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
                    [contentView addSubview: lab];
                    [lab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -55,8 +59,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         });`;
       }
       else if (btn.checked) {
-        message.innerText = 
-        `\nUIButton *btn = ({
+        message.innerText =
+          `\nUIButton *btn = ({
                UIButton *btn = [UIButton btn];
                btn.normalTitle = @"${strs[0]}";
                btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
@@ -69,7 +73,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       }
     }
     else {
-
+      alert(JSON.stringify(request.source))
       message.innerText = request.source;
     }
   }
