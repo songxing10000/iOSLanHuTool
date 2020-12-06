@@ -40,28 +40,29 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     }
     else if (url.includes('lanhuapp.com/web')) {
       let strs = request.source;
+        // 多行 拼接 变量 ${变量名} innerText
       if (lab.checked) {
         message.innerText = 
-        `UILabel *lab = ({ UILabel *lab =
-          [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
-          [contentView addSubview: lab];
-          [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(contentView).offset(15);
-            make.leading.equalTo(contentView).offset(28);
-          }];
-          lab;
-        });\n`;
+        `\nUILabel *lab = ({ UILabel *lab =
+                   [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
+                   [contentView addSubview: lab];
+                   [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+                          make.top.equalTo(contentView).offset(15);
+                          make.leading.equalTo(contentView).offset(28);
+                     }];
+
+                     lab;
+        });`;
       }
       else if (btn.checked) {
-        // 多行 拼接 变量 ${变量名}
         message.innerText = 
-        `UIButton *btn = ({
-          UIButton *btn = [UIButton btn];
-          btn.normalTitle = @"${strs[0]}";
-          btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
-          btn.normalTitleColor = @"${strs[3]}".hexColor;
+        `\nUIButton *btn = ({
+               UIButton *btn = [UIButton btn];
+               btn.normalTitle = @"${strs[0]}";
+               btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
+               btn.normalTitleColor = @"${strs[3]}".hexColor;
           
-          btn;
+               btn;
       });`
 
 
