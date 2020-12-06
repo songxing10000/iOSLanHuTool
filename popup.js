@@ -20,45 +20,70 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     else if (url.includes('lanhuapp.com/web')) {
       let strs = request.source;
       // 多行 拼接 变量 ${变量名} innerText
-      if (lab.checked) {
-        message.innerText =
-          `\nUILabel *lab = ({ UILabel *lab =
-                   [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
-                   [contentView addSubview: lab];
-                   [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-                          make.top.equalTo(contentView).offset(15);
-                          make.leading.equalTo(contentView).offset(28);
-                     }];
-
-                     lab;
-        });`;
-      }
-      else if (btn.checked) {
-        message.innerText =
-          `\nUIButton *btn = ({
-               UIButton *btn = [UIButton btn];
-               btn.normalTitle = @"${strs[0]}";
-               btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
-               btn.normalTitleColor = @"${strs[3]}".hexColor;
+      let op = document.getElementById('op').value;
+      if (op === 'xml_code') {
+        if (lab.checked) {
+          let fontStr = strs[1]
+          let typeStr = ''
+          if (fontStr === 'pFSize') {
+            typeStr = "type=\"system\""
+          } else if (fontStr === 'pFMediumSize') {
+            typeStr = "type=\"system\" weight=\"medium\""
+          } else if (fontStr === 'pFBlodSize') {
+            typeStr = "type=\"boldSystem\""
+          }
+          // alert(strs[3]) #804F28
           
-               btn;
-          });`
-      } else if (showLine.checked) { 
-        // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
+          message.innerText = 
+          `<label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="${strs[0]}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vit-KM-Fpd">
+              <rect key="frame" x="82.5" y="18.5" width="155" height="23"/>
+              <fontDescription key="fontDescription" ${typeStr} pointSize="${strs[2]}"/>
+              <color key="textColor" red="0.96862745098039216" green="0.52549019607843139" blue="0.023529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+              <nil key="highlightedColor"/>
+          </label>`
+        }
+      } else {
+        if (lab.checked) {
+          message.innerText =
+            `\nUILabel *lab = ({ UILabel *lab =
+                     [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
+                     [contentView addSubview: lab];
+                     [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+                            make.top.equalTo(contentView).offset(15);
+                            make.leading.equalTo(contentView).offset(28);
+                       }];
+  
+                       lab;
+          });`;
+        }
+        else if (btn.checked) {
+          message.innerText =
+            `\nUIButton *btn = ({
+                 UIButton *btn = [UIButton btn];
+                 btn.normalTitle = @"${strs[0]}";
+                 btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
+                 btn.normalTitleColor = @"${strs[3]}".hexColor;
+            
+                 btn;
+            });`
+        } else if (showLine.checked) {
+          // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
 
-        message.innerText =
-        `\nUIView *vLine = ({
-          UIView *vLine = [UIView new];
-          vLine.backgroundColor = @"${strs[3]}".hexColor;
-          [contentView addSubview: vLine];
-          [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.width.equalTo(@0.5);
-              make.top.equalTo(titleLab.mas_bottom).offset(11);
-              make.leading.equalTo(contentView).offset(18);
-              make.bottom.equalTo(contentView).offset(-12);
-          }];
-      });`
+          message.innerText =
+            `\nUIView *vLine = ({
+            UIView *vLine = [UIView new];
+            vLine.backgroundColor = @"${strs[3]}".hexColor;
+            [contentView addSubview: vLine];
+            [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.equalTo(@0.5);
+                make.top.equalTo(titleLab.mas_bottom).offset(11);
+                make.leading.equalTo(contentView).offset(18);
+                make.bottom.equalTo(contentView).offset(-12);
+            }];
+        });`
+        }
       }
+
     }
     else {
       message.innerText = request.source;
@@ -102,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.checked = true;
     } else if (ocCodeStr === 'lab') {
       lab.checked = true;
-    }  else if (ocCodeStr === 'line') {
+    } else if (ocCodeStr === 'line') {
       showLine.checked = true;
     }
   });
