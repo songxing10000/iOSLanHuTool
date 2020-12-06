@@ -120,12 +120,11 @@ function DOMtoString(document_root) {
                 let bgColorAlpha = UIAppearStrs[2];
                 if (bgColorAlpha !== '100%') {
                     bgColorAlpha = '0.' + bgColorAlpha.replace('0%', '');
-
-                    return 'view.layer.backgroundColor = [[UIColor colorWithHexString: @\"' + bgColor + '\"] colorWithAlphaComponent: ' + bgColorAlpha + '].CGColor;\n' +
-                        'view.layer.cornerRadius = ' + cornerStr + ';';
+                    
+                    return ['', '', '', bgColor, cornerStr]
                 }
-                return 'view.layer.backgroundColor = [UIColor colorWithHexString: @\"' + bgColor + '\"].CGColor;\n' +
-                    'view.layer.cornerRadius = ' + cornerStr + ';';
+                // 字 字体 字号 字色 圆角
+                return ['', '', '', bgColor, cornerStr]
             } else if (UIAppearStrs.length == 17) {
                 // 按钮边框
                 let borderWidth = UIAppearStrs[2].replace('pt', '');
@@ -134,7 +133,7 @@ function DOMtoString(document_root) {
                 let borderColorAlpha = UIAppearStrs[5];
                 if (borderColorAlpha !== '100%') {
                     borderColorAlpha = '0.' + bgColorAlpha.replace('0%', '');
-
+                   
                     return 'view.layer.backgroundColor = [[UIColor colorWithHexString: @\"' + borderColor + '\"] colorWithAlphaComponent: ' + borderColorAlpha + '].CGColor;\n' +
                         'view.layer.borderWidth = ' + borderWidth + ';\n' +
                         'view.layer.cornerRadius = ' + cornerStr + ';';
@@ -171,7 +170,9 @@ function DOMtoString(document_root) {
 
             LabTextColorHexStr = textColorStrObj.replace('HEX', '');
         }
+        alert(LabTextColorHexStr)
         if (LabTextColorHexStr === '' || !LabTextColorHexStr.startsWith("#")) {
+            
             if (typeof (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1]) != "undefined") {
                 if (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1].innerText === 'PNG') {
                     return '\
@@ -187,8 +188,17 @@ function DOMtoString(document_root) {
                     // 这里是啥
                 }
             }
+            
+            if(LabTextColorHexStr.includes('RGB')) {
+                // RGBA233, 236, 245, 1 转换 十六进制
+                // #E9ECF5
+                LabTextColorHexStr = document.getElementsByClassName('color_hex')[0].innerText
+                // 100%
+                // let colorAlphaStr = pdocument.getElementsByClassName('color_opacity')[0].innerText
+                alert(LabTextColorHexStr)
+            }
         }
-        
+        alert(LabTextColorHexStr)
 
         let labFontSizeStr = '12';
         let fontSizeStrObj = UIAppearStrs[22];

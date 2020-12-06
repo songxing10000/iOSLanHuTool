@@ -3,7 +3,10 @@ var url;
 let img = document.getElementById('show_image');
 let btn = document.getElementById('show_btn');
 let lab = document.getElementById('show_lab');
-
+/** 
+document.getElementById('show_line');
+*/
+let showLine = document.getElementById('show_line');
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == "getSource") {
@@ -20,6 +23,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         message.innerText = str;
       }
       else if (op === 'oc_code' || op === 'swift_code') {
+        alert('f')
         if (btn.checked) {
           let str2 = '';
           for (const [key, value] of Object.entries(request.source)) {
@@ -33,11 +37,20 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             str2 += translate(key, value.replace(',', ''), 'label', (op === 'swift_code')) + '\n';
           }
           message.innerText = str2;
+          showLine
+        }
+        else if (showLine.checked) {
+          alert('f')
+          let str2 = '';
+          for (const [key, value] of Object.entries(request.source)) {
+            str2 += translate(key, value.replace(',', ''), 'label', (op === 'swift_code')) + '\n';
+          }
+          message.innerText = str2;
+        } else {
+          alert('f')
         }
       }
       else {
-        alert('JSON.stringify(request.source)')
-
         message.innerText = request.source;
       }
     }
@@ -74,13 +87,25 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                btn.normalTitleColor = @"${strs[3]}".hexColor;
           
                btn;
+          });`
+      } else if (showLine.checked) { 
+        // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
+
+        message.innerText =
+        `\nUIView *vLine = ({
+          UIView *vLine = [UIView new];
+          vLine.backgroundColor = @"${strs[3]}".hexColor;
+          [contentView addSubview: vLine];
+          [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
+              make.width.equalTo(@0.5);
+              make.top.equalTo(titleLab.mas_bottom).offset(11);
+              make.leading.equalTo(contentView).offset(18);
+              make.bottom.equalTo(contentView).offset(-12);
+          }];
       });`
-
-
       }
     }
     else {
-      alert(JSON.stringify(request.source))
       message.innerText = request.source;
     }
   }
@@ -122,6 +147,8 @@ document.addEventListener('DOMContentLoaded', function () {
       btn.checked = true;
     } else if (ocCodeStr === 'lab') {
       lab.checked = true;
+    }  else if (ocCodeStr === 'line') {
+      showLine.checked = true;
     }
   });
 });
@@ -156,6 +183,9 @@ document.getElementById('save').addEventListener('click', function () {
   else if (lab.checked) {
     ocCodeStr = 'lab';
   }
+  else if (showLine.checked) {
+    ocCodeStr = 'line';
+  }
   let showImage = img.checked;
   let saveDict = {
     op: op,
@@ -172,16 +202,23 @@ document.getElementById('save').addEventListener('click', function () {
 img.addEventListener('change', function () {
   btn.checked = false;
   lab.checked = false;
+  showLine.checked = false;
 });
 document.getElementById('show_btn').addEventListener('change', function () {
   img.checked = false;
   lab.checked = false;
+  showLine.checked = false;
 });
 document.getElementById('show_lab').addEventListener('change', function () {
   img.checked = false;
   btn.checked = false;
+  showLine.checked = false;
 });
-
+document.getElementById('show_line').addEventListener('change', function () {
+  img.checked = false;
+  btn.checked = false;
+  lab.checked = false;
+});
 /// 处理一个单词 ，str 定义自符串，label 定义连线label
 function translate(willTranslateStr, translatedStr, outTypeStr, isSwift) {
   // 一个单词 如，Daily trend chart
@@ -229,12 +266,7 @@ function translate(willTranslateStr, translatedStr, outTypeStr, isSwift) {
       }`
     }
     return "\n/// " + willTranslateStr + "\n" + "var m_" + translatedStr + "Label: UILabel!" +
-      "\n/// " + willTranslateStr + "\n" + "@IBOutlet weak var m_" + translatedStr + "Label: UILabel!" +
       "\n/// " + willTranslateStr + "\n" + "var m_" + translatedStr + "Btn: UIButton!" +
-      "\n/// " + willTranslateStr + "\n" + "@IBOutlet weak var m_" + translatedStr + "Btn: UIButton!" +
-
-
-
       "\n\nm_" + translatedStr + "Btn.addTarget(self, action: #selector(on" + controlName + "BtnClick(btn:)), for: .touchUpInside)" +
       "\n// MARK: - " + willTranslateStr + " 按钮事件" +
       "\n/// " + willTranslateStr + " 按钮事件" +
