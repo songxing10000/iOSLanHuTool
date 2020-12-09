@@ -17,7 +17,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       // 在csdn里，只是移除登录框，不显示面板
       document.body.hidden = true
     }
-    else if (url.includes('lanhuapp.com/web')) {
+    else if (url.includes('lanhuapp.com/web') ||
+    url.includes('app.mockplus.cn')) {
       let strs = request.source;
       // 多行 拼接 变量 ${变量名} innerText
       let op = document.getElementById('op').value;

@@ -137,6 +137,38 @@ function DOMtoString(document_root) {
         return  [labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr];
         
     }
+    else if (loadUrl.includes('app.mockplus.cn')) {
+
+        let text = document.getElementsByClassName('item-value-content ')[0].innerText
+        // PingFangSC
+        let font = document.getElementsByClassName('copyText')[7].innerText
+        // 20px
+        let fontSize = document.getElementsByClassName('copyText')[8].innerText.replace('px', '')
+        // Regular
+        let labFontWeightStr = document.getElementsByClassName('copyText')[9].innerText
+        // #161616
+        let textColor = document.getElementsByClassName('copyText')[14].innerText
+        //  Medium Bold
+        let ocFontMethodName = 'pFSize';
+        if (labFontWeightStr === 'Regular') {
+            // 粗体
+            ocFontMethodName = 'pFSize';
+        } 
+        else if (labFontWeightStr === 'Medium') {
+            // 中体
+            ocFontMethodName = 'pFMediumSize';
+        } 
+        else if (labFontWeightStr === 'Bold') {
+            // 粗体
+            ocFontMethodName = 'pFBlodSize';
+        }
+        else {
+            // 使用系统默认的字体
+            ocFontMethodName = 'systemFontOfSize';
+        }
+        alert('f')
+        return [text, ocFontMethodName, fontSize, textColor]
+    }
     else if (loadUrl.includes('csdn')) {
         // 移除csdn登录二维码
         document.getElementsByClassName('login-mark')[0].remove()
