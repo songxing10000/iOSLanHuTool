@@ -143,11 +143,15 @@ function DOMtoString(document_root) {
         // PingFangSC
         let font = document.getElementsByClassName('copyText')[7].innerText
         // 20px
-        let fontSize = document.getElementsByClassName('copyText')[8].innerText.replace('px', '')
+        let fontSize = document.getElementsByClassName('copyText')[8].innerText.replace('px', '').replace('pt', '')
         // Regular
         let labFontWeightStr = document.getElementsByClassName('copyText')[9].innerText
         // #161616
         let textColor = document.getElementsByClassName('copyText')[14].innerText
+        if (textColor === 'left') {
+            textColor = document.getElementsByClassName('copyText')[15].innerText
+            fontSize = document.getElementsByClassName('copyText')[9].innerText.replace('px', '').replace('pt', '')
+        }
         //  Medium Bold
         let ocFontMethodName = 'pFSize';
         if (labFontWeightStr === 'Regular') {
@@ -166,7 +170,6 @@ function DOMtoString(document_root) {
             // 使用系统默认的字体
             ocFontMethodName = 'systemFontOfSize';
         }
-        alert('f')
         return [text, ocFontMethodName, fontSize, textColor]
     }
     else if (loadUrl.includes('csdn')) {
