@@ -13,10 +13,10 @@ function DOMtoString(document_root) {
         if (alphaStrs.length == 12) {
             // 有圆角
             let cornerObj = alphaStrs[13];
-            if (typeof(cornerObj) != "undefined" && cornerObj.includes('pt')) {
+            if (typeof (cornerObj) != "undefined" && cornerObj.includes('pt')) {
                 cornerStr = cornerObj.replace('pt', '');
             }
-            
+
             if (UIAppearStrs.length == 14) {
                 // uiview
                 let bgColor = UIAppearStrs[1];
@@ -24,7 +24,7 @@ function DOMtoString(document_root) {
                 let bgColorAlpha = UIAppearStrs[2];
                 if (bgColorAlpha !== '100%') {
                     bgColorAlpha = '0.' + bgColorAlpha.replace('0%', '');
-                    
+
                     return ['', '', '', bgColor, cornerStr]
                 }
                 // 字 字体 字号 字色 圆角
@@ -37,7 +37,7 @@ function DOMtoString(document_root) {
                 let borderColorAlpha = UIAppearStrs[5];
                 if (borderColorAlpha !== '100%') {
                     borderColorAlpha = '0.' + bgColorAlpha.replace('0%', '');
-                   
+
                     return 'view.layer.backgroundColor = [[UIColor colorWithHexString: @\"' + borderColor + '\"] colorWithAlphaComponent: ' + borderColorAlpha + '].CGColor;\n' +
                         'view.layer.borderWidth = ' + borderWidth + ';\n' +
                         'view.layer.cornerRadius = ' + cornerStr + ';';
@@ -75,7 +75,7 @@ function DOMtoString(document_root) {
             LabTextColorHexStr = textColorStrObj.replace('HEX', '');
         }
         if (LabTextColorHexStr === '' || !LabTextColorHexStr.startsWith("#")) {
-            
+
             if (typeof (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1]) != "undefined") {
                 if (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1].innerText === 'PNG') {
                     return '\
@@ -91,8 +91,8 @@ function DOMtoString(document_root) {
                     // 这里是啥
                 }
             }
-            
-            if(LabTextColorHexStr.includes('RGB')) {
+
+            if (LabTextColorHexStr.includes('RGB')) {
                 // RGBA233, 236, 245, 1 转换 十六进制
                 // #E9ECF5
                 LabTextColorHexStr = document.getElementsByClassName('color_hex')[0].innerText
@@ -106,10 +106,10 @@ function DOMtoString(document_root) {
         if (typeof (fontSizeStrObj) != "undefined") {
             labFontSizeStr = fontSizeStrObj.replace('pt', '');
             let labStr2 = '';
-            if(UIAppearStrs[29] != "undefined") {
+            if (UIAppearStrs[29] != "undefined") {
                 labStr2 = UIAppearStrs[29].replace('\n', '');
             }
-                
+
 
             if (labStr2.length > labStr.length) {
                 // 有富文本
@@ -121,11 +121,11 @@ function DOMtoString(document_root) {
         if (labFontWeightStr === 'Regular') {
             // 粗体
             ocFontMethodName = 'pFSize';
-        } 
+        }
         else if (labFontWeightStr === 'Medium') {
             // 中体
             ocFontMethodName = 'pFMediumSize';
-        } 
+        }
         else if (labFontWeightStr === 'Bold') {
             // 粗体
             ocFontMethodName = 'pFBlodSize';
@@ -134,57 +134,69 @@ function DOMtoString(document_root) {
             // 使用系统默认的字体
             ocFontMethodName = 'systemFontOfSize';
         }
-        return  [labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr];
-        
+        return [labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr];
+
     }
     else if (loadUrl.includes('app.mockplus.cn')) {
-        let infoStrs = document.getElementsByClassName('property-panel-wrap property-panel-text-info')[0].innerText.split('\n')
+        let destView = document.getElementsByClassName('property-panel-wrap property-panel-text-info')
 
-        /// 字的内容
-        let text = infoStrs[3]
-        // PingFangSC
-        let font = infoStrs[5]
-        // 20px
-        let fontSize = infoStrs[7].replace('px', '').replace('pt', '')
-        // Regular
-        let labFontWeightStr = infoStrs[9]
-        // #161616
-        let textColor = infoStrs[20]
-        //  Medium Bold
-        let ocFontMethodName = 'pFSize';
-        if (labFontWeightStr === 'Regular') {
-            // 粗体
-            ocFontMethodName = 'pFSize';
-        } 
-        else if (labFontWeightStr === 'Medium') {
-            // 中体
-            ocFontMethodName = 'pFMediumSize';
-        } 
-        else if (labFontWeightStr === 'Bold') {
-            // 粗体
-            ocFontMethodName = 'pFBlodSize';
+
+        if (typeof (destView) != "undefined" && destView.length > 0) {
+
+            let infoStrs = destView[0].innerText.split('\n')
+
+            /// 字的内容
+            let text = infoStrs[3]
+            // PingFangSC
+            let font = infoStrs[5]
+            // 20px
+            let fontSize = infoStrs[7].replace('px', '').replace('pt', '')
+            // Regular
+            let labFontWeightStr = infoStrs[9]
+            // #161616
+            let textColor = infoStrs[20]
+            //  Medium Bold
+            let ocFontMethodName = 'pFSize';
+            if (labFontWeightStr === 'Regular') {
+                // 粗体
+                ocFontMethodName = 'pFSize';
+            }
+            else if (labFontWeightStr === 'Medium') {
+                // 中体
+                ocFontMethodName = 'pFMediumSize';
+            }
+            else if (labFontWeightStr === 'Bold') {
+                // 粗体
+                ocFontMethodName = 'pFBlodSize';
+            }
+            else {
+                // 使用系统默认的字体
+                ocFontMethodName = 'systemFontOfSize';
+            }
+            return [text, ocFontMethodName, fontSize, textColor]
         }
-        else {
-            // 使用系统默认的字体
-            ocFontMethodName = 'systemFontOfSize';
-        }
-        return [text, ocFontMethodName, fontSize, textColor]
     }
     else if (loadUrl.includes('csdn')) {
-        // 移除csdn登录二维码
-        document.getElementsByClassName('login-mark')[0].remove()
-        document.getElementsByClassName('login-box')[0].remove()
+        removeCodeImg()
     }
     else if (loadUrl.includes('cnblogs.com')) {
-        // 把博客园的博客的发布日期放标题上来
-        let titleElement = document.getElementById('cb_post_title_url')
-        let dateElement = document.getElementById('post-date')
-        let title = titleElement.innerText
-        titleElement.innerText = title + ' 发布日期：' + dateElement.innerText
+        moveReleaseDataToTop()
     }
     return "未处理的url";
 }
 
+function removeCodeImg() {
+    // 移除csdn登录二维码
+    document.getElementsByClassName('login-mark')[0].remove()
+    document.getElementsByClassName('login-box')[0].remove()
+}
+/// 把博客园的博客的发布日期放标题上来
+function moveReleaseDataToTop() {
+    let titleElement = document.getElementById('cb_post_title_url')
+    let dateElement = document.getElementById('post-date')
+    let title = titleElement.innerText
+    titleElement.innerText = title + ' 发布日期：' + dateElement.innerText
+}
 // 注入脚本时，自动发送消息getSource，调用DOMtoString方法给返回值
 chrome.runtime.sendMessage({
     action: "getSource",
