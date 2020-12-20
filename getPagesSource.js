@@ -138,20 +138,18 @@ function DOMtoString(document_root) {
         
     }
     else if (loadUrl.includes('app.mockplus.cn')) {
+        let infoStrs = document.getElementsByClassName('property-panel-wrap property-panel-text-info')[0].innerText.split('\n')
 
-        let text = document.getElementsByClassName('item-value-content ')[0].innerText
+        /// 字的内容
+        let text = infoStrs[3]
         // PingFangSC
-        let font = document.getElementsByClassName('copyText')[7].innerText
+        let font = infoStrs[5]
         // 20px
-        let fontSize = document.getElementsByClassName('copyText')[8].innerText.replace('px', '').replace('pt', '')
+        let fontSize = infoStrs[7].replace('px', '').replace('pt', '')
         // Regular
-        let labFontWeightStr = document.getElementsByClassName('copyText')[9].innerText
+        let labFontWeightStr = infoStrs[9]
         // #161616
-        let textColor = document.getElementsByClassName('copyText')[14].innerText
-        if (textColor === 'left') {
-            textColor = document.getElementsByClassName('copyText')[15].innerText
-            fontSize = document.getElementsByClassName('copyText')[9].innerText.replace('px', '').replace('pt', '')
-        }
+        let textColor = infoStrs[20]
         //  Medium Bold
         let ocFontMethodName = 'pFSize';
         if (labFontWeightStr === 'Regular') {
