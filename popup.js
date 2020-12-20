@@ -43,7 +43,54 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               <nil key="highlightedColor"/>
           </label>`
         }
-      } else {
+      }
+      else if (op === 'swift_code') {
+        if (lab.checked) {
+          let colorStr= strs[3].replace('#', '')
+          message.innerText =
+          `\nlet lab: UILabel = {
+            let lab = UILabel()
+            lab.text = "${strs[0]}"
+            lab.textColor = UIColor(rgb: 0x${colorStr})
+            lab.font = UIFont.systemFont(ofSize: calculate(ipadfs: ${strs[2]}))
+            
+            addSubview(lab)
+            lab.snp.makeConstraints { (make) in
+                make.centerX.equalToSuperview()
+                make.top.equalToSuperview().offset(calculate(h: 28.0))
+            }
+            
+            return lab
+        }()`
+        }
+        else if (btn.checked) {
+          message.innerText =
+            `\nUIButton *btn = ({
+                 UIButton *btn = [UIButton btn];
+                 btn.normalTitle = @"${strs[0]}";
+                 btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
+                 btn.normalTitleColor = @"${strs[3]}".hexColor;
+            
+                 btn;
+            });`
+        } else if (showLine.checked) {
+          // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
+
+          message.innerText =
+            `\nUIView *vLine = ({
+            UIView *vLine = [UIView new];
+            vLine.backgroundColor = @"${strs[3]}".hexColor;
+            [contentView addSubview: vLine];
+            [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.width.equalTo(@0.5);
+                make.top.equalTo(titleLab.mas_bottom).offset(11);
+                make.leading.equalTo(contentView).offset(18);
+                make.bottom.equalTo(contentView).offset(-12);
+            }];
+        });`
+        }
+      }
+      else if (op === 'oc_code') {
         if (lab.checked) {
           message.innerText =
             `\nUILabel *lab = ({ UILabel *lab =
