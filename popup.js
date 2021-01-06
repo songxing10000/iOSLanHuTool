@@ -93,14 +93,14 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         if (lab.checked) {
           message.innerText =
             `\nUILabel *lab = ({ UILabel *lab =
-                     [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
-                     [contentView addSubview: lab];
-                     [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-                            make.top.equalTo(contentView).offset(15);
-                            make.leading.equalTo(contentView).offset(28);
-                       }];
+              \xa0\xa0\xa0\xa0\xa0\xa0\xa0[UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
+              \xa0\xa0\xa0\xa0\xa0\xa0\xa0[contentView addSubview: lab];
+              \xa0\xa0\xa0\xa0\xa0\xa0\xa0[lab mas_makeConstraints:^(MASConstraintMaker *make) {
+                \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0make.top.equalTo(contentView).offset(15);
+                \xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0\xa0make.leading.equalTo(contentView).offset(28);
+              \xa0\xa0\xa0\xa0\xa0\xa0\xa0}];
   
-                       lab;
+              \xa0\xa0\xa0\xa0\xa0\xa0\xa0lab;
           });`;
         }
         else if (btn.checked) {
