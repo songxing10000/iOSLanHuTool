@@ -3,6 +3,38 @@
 function DOMtoString(document_root) {
     var loadUrl = document.URL;
     if (loadUrl.includes('lanhuapp.com/web')) {
+        // 图片 文字 bgview
+        let typeStr = document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[1].innerText.split('\n')[0];
+        if (typeStr === '字体') {
+            // UILabel
+        }
+        else if (typeStr === 'PNG' || typeStr.includes('外阴影')) {
+            // UIImageView
+            let str = document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[0].innerText;
+                    let strs = str.split('\n')
+                    let imgX = strs[3].replace('pt','')
+                    let imgY = strs[4].replace('pt','')
+                    return `\nUIImageView *imgV = ({
+
+                                NSString *name = @"图片名";
+                                UIImage *img = [UIImage imageNamed:name];
+                                UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+                                [imgV sizeToFit];
+
+                                UIView *view = contentView;
+                                [view addSubview: imgV];
+                                [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                                    make.leading.equalTo(view).offset(${imgX});
+                                    make.top.equalTo(view).offset(${imgY});
+                                }];
+                                
+                                imgV;
+                            });`
+        }
+        else if (document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[0].innerText.split('\n')[1] === '矩形') {
+            // UIView
+        }
+
         // 蓝湖
         let alphaStrs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n');
         // UI外观
@@ -79,26 +111,7 @@ function DOMtoString(document_root) {
             if (typeof (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1]) != "undefined") {
                 if (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1].innerText === 'PNG') {
                     
-                    let str = document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[0].innerText;
-                    let strs = str.split('\n')
-                    let imgX = strs[3].replace('pt','')
-                    let imgY = strs[4].replace('pt','')
-                    return `\nUIImageView *imgV = ({
-
-                                NSString *name = @"支付课程图";
-                                UIImage *img = [UIImage imageNamed:name];
-                                UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-                                [imgV sizeToFit];
-
-                                UIView *view = contentView;
-                                [view addSubview: imgV];
-                                [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                                    make.leading.equalTo(view).offset(${imgX});
-                                    make.top.equalTo(view).offset(${imgY});
-                                }];
-                                
-                                imgV;
-                            });`
+                    // 图片
 
                 } else {
                     // 这里是啥
