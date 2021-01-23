@@ -18,7 +18,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       document.body.hidden = true
     }
     else if (url.includes('lanhuapp.com/web') ||
-    url.includes('app.mockplus.cn')) {
+      url.includes('app.mockplus.cn')) {
       let strs = request.source;
       // 多行 拼接 变量 ${变量名} innerText
       let op = document.getElementById('op').value;
@@ -34,8 +34,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             typeStr = "type=\"boldSystem\""
           }
           // TODO： frame id color
-          message.innerText = 
-          `<label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="${strs[0]}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vit-KM-Fpd">
+          message.innerText =
+            `<label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="${strs[0]}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vit-KM-Fpd">
               <rect key="frame" x="82.5" y="18.5" width="155" height="23"/>
               <fontDescription key="fontDescription" ${typeStr} pointSize="${strs[2]}"/>
               <color key="textColor" red="0.96862745098039216" green="0.52549019607843139" blue="0.023529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -45,9 +45,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       }
       else if (op === 'swift_code') {
         if (lab.checked) {
-          let colorStr= strs[3].replace('#', '')
+          let colorStr = strs[3].replace('#', '')
           message.innerText =
-          `\nlet lab: UILabel = {
+            `\nlet lab: UILabel = {
             let lab = UILabel()
             lab.text = "${strs[0]}"
             lab.textColor = UIColor(rgb: 0x${colorStr})
@@ -90,27 +90,20 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
       }
       else if (op === 'oc_code') {
-        if (lab.checked) {
-          // 类型判断 typeof strs === 'string'
-          // 以字符串开始 startsWith
-          if(typeof strs === 'string' && strs.startsWith('\nUIImageView')) {
-            // 返回来的就是UIImageView
-            message.innerText = strs
-          } else {
-            message.innerText =
-              `\nUILabel *lab = ({ UILabel *lab =
-                [UILabel text: @"${strs[0]}" font: [UIFont ${strs[1]}:  ${strs[2]}]  textColorStr: @\"${strs[3]}"];
-                [contentView addSubview: lab];
-                [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(contentView).offset(15);
-                  make.leading.equalTo(contentView).offset(28);
-                }];
-    
-                lab;
-            });`;
-          }
+        // 类型判断 typeof strs === 'string'
+        // 以字符串开始 startsWith
+        if (typeof strs === 'string' && strs.startsWith('\nUIImageView')) {
+          // 返回来的就是UIImageView
+          message.innerText = strs
+          return
         }
-        else if (btn.checked) {
+        if (typeof strs === 'string' && strs.startsWith('\nUILabel')) {
+          // 返回来的就是UILabel
+          message.innerText = strs
+          return
+        }
+        
+        if (btn.checked) {
           message.innerText =
             `\nUIButton *btn = ({
                  UIButton *btn = [UIButton btn];
@@ -120,7 +113,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             
                  btn;
             });`
-        } 
+        }
         else if (showLine.checked) {
           // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
 
@@ -136,9 +129,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 make.bottom.equalTo(contentView).offset(-12);
             }];
         });`
-        }
-        else if (img.checked) {
-          message.innerText = strs
         }
       }
 
