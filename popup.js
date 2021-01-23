@@ -119,7 +119,28 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
         
         if (btn.checked) {
-          message.innerText =
+          if(strs.length == 2) {
+            // 图片
+            message.innerText =
+            `\nUIButton *btn = ({
+                 UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+                 NSString *name = @"图片名";
+                  UIImage *img = [UIImage imageNamed:name];
+                 [btn setImage:img forState:UIControlStateNormal];
+                  [btn sizeToFit];
+
+                UIView *view = contentView;
+                [view addSubview: btn];
+                [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+                  make.leading.equalTo(view).offset(${strs[0]});
+                  make.top.equalTo(view).offset(${strs[1]});
+                }];
+
+                 btn;
+            });`
+          }
+          else {
+            message.innerText =
             `\nUIButton *btn = ({
                  UIButton *btn = [UIButton btn];
                  btn.normalTitle = @"${strs[0]}";
@@ -128,6 +149,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             
                  btn;
             });`
+          }
+          
         }
         else if (showLine.checked) {
           // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
