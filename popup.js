@@ -101,7 +101,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
             [imgV sizeToFit];
 
-            UIView *view = contentView;
+            UIView *view = self.view;
             [view addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.leading.equalTo(view).offset(${strs[0]});
@@ -112,24 +112,40 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         });`
           return
         }
-        if (typeof strs === 'string' && strs.startsWith('\nUILabel')) {
+        if (lab.checked) {
           // 返回来的就是UILabel
-          message.innerText = strs
+          message.innerText = `\nUILabel *lab = ({
+
+            UILabel *lab = [UILabel new];
+            lab.text = @"${strs[4]}";
+            lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
+            lab.textColor = @\"${strs[7]}".hexColor;
+            [lab sizeToFit];
+
+            UIView *view = self.view;
+            [view addSubview: lab];
+            [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.leading.equalTo(view).offset(${strs[0]});
+                make.top.equalTo(view).offset(${strs[1]});
+            }];
+
+            lab;
+        });`;
           return
         }
-        
+
         if (btn.checked) {
-          if(strs.length == 2) {
-            // 图片
+          if (strs.length == 2) {
+            // 纯图片按钮
             message.innerText =
-            `\nUIButton *btn = ({
+              `\nUIButton *btn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
                  NSString *name = @"图片名";
                   UIImage *img = [UIImage imageNamed:name];
                  [btn setImage:img forState:UIControlStateNormal];
                   [btn sizeToFit];
 
-                UIView *view = contentView;
+                UIView *view = self.view;
                 [view addSubview: btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
                   make.leading.equalTo(view).offset(${strs[0]});
@@ -140,8 +156,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             });`
           }
           else {
+            // 纯文字按钮
             message.innerText =
-            `\nUIButton *btn = ({
+              `\nUIButton *btn = ({
                  UIButton *btn = [UIButton btn];
                  btn.normalTitle = @"${strs[0]}";
                  btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
@@ -150,11 +167,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  btn;
             });`
           }
-          
+
         }
         else if (showLine.checked) {
           // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
-
           message.innerText =
             `\nUIView *vLine = ({
             UIView *vLine = [UIView new];

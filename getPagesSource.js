@@ -50,23 +50,7 @@ function DOMtoString(document_root) {
                 if (alphaStr !== "100%") {
                     alert('透明度修复')
                 }
-                return `\nUILabel *lab = ({
-
-                    UILabel *lab = [UILabel new];
-                    lab.text = @"${labStr}";
-                    lab.font = [UIFont ${ocFontMethodName}:  ${labFontSizeStr}];
-                    lab.textColor = @\"${LabTextColorHexStr}".hexColor;
-                    [lab sizeToFit];
-
-                    UIView *view = contentView;
-                    [view addSubview: lab];
-                    [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-                        make.leading.equalTo(view).offset(${viewX});
-                        make.top.equalTo(view).offset(${viewY});
-                    }];
-        
-                    lab;
-                });`;
+                return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
             }
             else if (codeStr.includes('UIView')) {
                 // UIView
