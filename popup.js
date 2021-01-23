@@ -155,6 +155,27 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  btn;
             });`
           }
+          else if (strs.length == 6 || strs.length == 7) {
+            // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
+            let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
+            let configBgColorStr = configBgColor('btn', strs[4], strs[5])
+
+            message.innerText =
+              `\nUIButton *btn = ({
+                 UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+                 ${configBgColorStr}
+                 ${corner}
+
+                 UIView *view = self.view;
+                 [view addSubview: btn];
+                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+                   make.leading.equalTo(view).offset(${strs[0]});
+                   make.top.equalTo(view).offset(${strs[1]});
+                 }];
+
+                 btn;
+            });`
+          }
           else {
             // 纯文字按钮
             //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
@@ -187,24 +208,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             WHConst = isVLine ? `make.width.equalTo(@${strs[2]});` : `make.height.equalTo(@${strs[3]});`
           }
           // 圆角
-          let cornerStgr = ''
-          if (strs.length >= 7) {
-            cornerStgr = `line.layer.cornerRadius = ${strs[6]};`
-          }
+          let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
 
-          // 透明度
-          let configBgColor = `line.layer.backgroundColor = @"${strs[4]}".hexColor.CGColor;`
-          if (strs[5] / 100 != 1) {
-            // 透明度         
-            configBgColor = `line.layer.backgroundColor = [@"${strs[4]}".hexColor colorWithAlphaComponent: ${strs[5] / 100.0}].CGColor;`
-          }
+          let configBgColorStr = configBgColor('line', strs[4], strs[5])
+          
 
           message.innerText =
             `\nUIView *vLine = ({
         
               CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
               UIView *line = [[UIView alloc] initWithFrame: frame];
-              ${configBgColor}
+              ${configBgColorStr}
               ${cornerStgr}
 
               UIView *view = self.view;
@@ -226,7 +240,21 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     }
   }
 });
-
+/**
+ * 设置背景色
+ * @param {String} varName 变量名如, line btn lab
+ * @param {String} hexColorStr 十六进制色的字符串如，#9A2037
+ * @param {Number} alphaStr 透明度 100 70
+ */
+function configBgColor(varName, hexColorStr, alphaStr) {
+  // 透明度
+  let returnCodeStr = `${varName}.layer.backgroundColor = @"${hexColorStr}".hexColor.CGColor;`
+  if (alphaStr / 100 != 1) {
+    // 透明度         
+    returnCodeStr = `${varName}.layer.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}].CGColor;`
+  }
+  return returnCodeStr
+}
 function onWindowLoad() {
 
   // 获取 popup.html里的元素进行字符串设定
