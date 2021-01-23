@@ -31,22 +31,7 @@ function DOMtoString(document_root) {
 
         if (!codeStr.startsWith('代码')) {
             // UIImageView
-            return `\nUIImageView *imgV = ({
-
-                        NSString *name = @"图片名";
-                        UIImage *img = [UIImage imageNamed:name];
-                        UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-                        [imgV sizeToFit];
-
-                        UIView *view = contentView;
-                        [view addSubview: imgV];
-                        [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                            make.leading.equalTo(view).offset(${viewX});
-                            make.top.equalTo(view).offset(${viewY});
-                        }];
-                        
-                        imgV;
-                    });`
+            return [viewX, viewY]
         }
         else {
 

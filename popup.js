@@ -92,9 +92,24 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       else if (op === 'oc_code') {
         // 类型判断 typeof strs === 'string'
         // 以字符串开始 startsWith
-        if (typeof strs === 'string' && strs.startsWith('\nUIImageView')) {
+        if (img.checked) {
           // 返回来的就是UIImageView
-          message.innerText = strs
+          message.innerText = `\nUIImageView *imgV = ({
+
+            NSString *name = @"图片名";
+            UIImage *img = [UIImage imageNamed:name];
+            UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+            [imgV sizeToFit];
+
+            UIView *view = contentView;
+            [view addSubview: imgV];
+            [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.leading.equalTo(view).offset(${strs[0]});
+                make.top.equalTo(view).offset(${strs[1]});
+            }];
+            
+            imgV;
+        });`
           return
         }
         if (typeof strs === 'string' && strs.startsWith('\nUILabel')) {
