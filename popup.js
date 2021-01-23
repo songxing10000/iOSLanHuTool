@@ -157,13 +157,23 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           }
           else {
             // 纯文字按钮
+            //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
+
             message.innerText =
               `\nUIButton *btn = ({
-                 UIButton *btn = [UIButton btn];
-                 btn.normalTitle = @"${strs[0]}";
-                 btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
-                 btn.normalTitleColor = @"${strs[3]}".hexColor;
-            
+                 UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+                 [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
+                 btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
+                 [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
+                 [btn sizeToFit];
+
+                 UIView *view = self.view;
+                 [view addSubview: btn];
+                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+                   make.leading.equalTo(view).offset(${strs[0]});
+                   make.top.equalTo(view).offset(${strs[1]});
+                 }];
+
                  btn;
             });`
           }
