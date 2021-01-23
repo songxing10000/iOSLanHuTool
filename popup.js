@@ -113,7 +113,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             
                  btn;
             });`
-        } else if (showLine.checked) {
+        } 
+        else if (showLine.checked) {
           // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
 
           message.innerText =
@@ -128,6 +129,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 make.bottom.equalTo(contentView).offset(-12);
             }];
         });`
+        }
+        else if (img.checked) {
+          message.innerText = strs
         }
       }
 

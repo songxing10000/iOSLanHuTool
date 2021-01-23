@@ -78,14 +78,27 @@ function DOMtoString(document_root) {
 
             if (typeof (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1]) != "undefined") {
                 if (document.getElementsByClassName('mu-dropDown-menu-text-overflow')[1].innerText === 'PNG') {
-                    return '\
-                    UIImage *img = [UIImage imageNamed: [NSString homeFastBuyIcon]];\n\
-                    UIImageView *imgV = [[UIImageView alloc] initWithImage:img];\n\
-                    [self.view addSubview: imgV];\n\
-                    [imgV sizeToFit];\n\
-                    imgV.right = 16;\n\
-                    imgV.top = 16;\n\
-                    ';
+                    
+                    let str = document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[0].innerText;
+                    let strs = str.split('\n')
+                    let imgX = strs[3].replace('pt','')
+                    let imgY = strs[4].replace('pt','')
+                    return `\nUIImageView *imgV = ({
+
+                                NSString *name = @"支付课程图";
+                                UIImage *img = [UIImage imageNamed:name];
+                                UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+                                [imgV sizeToFit];
+
+                                UIView *view = contentView;
+                                [view addSubview: imgV];
+                                [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                                    make.leading.equalTo(view).offset(${imgX});
+                                    make.top.equalTo(view).offset(${imgY});
+                                }];
+                                
+                                imgV;
+                            });`
 
                 } else {
                     // 这里是啥
