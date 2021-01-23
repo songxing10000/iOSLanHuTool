@@ -4,35 +4,43 @@ function DOMtoString(document_root) {
     var loadUrl = document.URL;
     if (loadUrl.includes('lanhuapp.com/web')) {
         // 图片 文字 bgview
-        let typeStr = document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[1].innerText.split('\n')[0];
-        if (typeStr === '字体') {
-            // UILabel
-        }
-        else if (typeStr === 'PNG' || typeStr.includes('外阴影')) {
+        let codeStr = document.getElementsByClassName('annotation_item')[2].innerText
+        // x y
+        let frameDiv = document.getElementsByClassName('annotation_item')[0]
+        let viewX = frameDiv.innerText.split('\n')[3].replace('pt','')
+        let viewY = frameDiv.innerText.split('\n')[4].replace('pt','')
+        if (!codeStr.startsWith('代码')) {
             // UIImageView
-            let str = document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[0].innerText;
-                    let strs = str.split('\n')
-                    let imgX = strs[3].replace('pt','')
-                    let imgY = strs[4].replace('pt','')
-                    return `\nUIImageView *imgV = ({
+            return `\nUIImageView *imgV = ({
 
-                                NSString *name = @"图片名";
-                                UIImage *img = [UIImage imageNamed:name];
-                                UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-                                [imgV sizeToFit];
+                        NSString *name = @"图片名";
+                        UIImage *img = [UIImage imageNamed:name];
+                        UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+                        [imgV sizeToFit];
 
-                                UIView *view = contentView;
-                                [view addSubview: imgV];
-                                [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                                    make.leading.equalTo(view).offset(${imgX});
-                                    make.top.equalTo(view).offset(${imgY});
-                                }];
-                                
-                                imgV;
-                            });`
+                        UIView *view = contentView;
+                        [view addSubview: imgV];
+                        [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+                            make.leading.equalTo(view).offset(${viewX});
+                            make.top.equalTo(view).offset(${viewY});
+                        }];
+                        
+                        imgV;
+                    });`
         }
-        else if (document.getElementsByClassName('annotation_container lanhu_scrollbar flag-pl')[0].getElementsByClassName('annotation_item')[0].innerText.split('\n')[1] === '矩形') {
-            // UIView
+        else {
+            
+            if (codeStr.includes('UILabel')) {
+                // UILabel
+
+            }
+            else if (codeStr.includes('UIView')) {
+                // UIView
+
+            }
+            else {
+                alert('未知类型' + codeStr)
+            }
         }
 
         // 蓝湖
