@@ -54,7 +54,29 @@ function DOMtoString(document_root) {
             }
             else if (codeStr.includes('UIView')) {
                 // UIView
+                /*
+                UIView *view = [[UIView alloc] init];
+                view.frame = CGRectMake(38,543,300,44);
 
+                view.layer.backgroundColor = [UIColor colorWithRed:154/255.0 green:32/255.0 blue:55/255.0 alpha:1.0].CGColor;
+                view.layer.cornerRadius = 23;
+
+                */
+                if (propertyStrs[0] === '颜色') {
+                    // #9A2037
+                    let hexColor = propertyStrs[1]
+                    //  100
+                    let alphaStr = propertyStrs[2].replace('%', '')
+                    let hasCorner = frameDiv.innerText.includes('圆角')
+                    if (hasCorner) {
+                        let corner = frameStrs[frameStrs.indexOf('圆角') + 1].replace('pt', '')
+                        return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr, corner]
+                    }
+                    return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr]
+                } else {
+                    alert('未知类型' + propertyStrs[0])
+                }
+                
             }
             else {
                 alert('未知类型' + codeStr)

@@ -158,7 +158,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           else {
             // 纯文字按钮
             //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
-
             message.innerText =
               `\nUIButton *btn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -180,19 +179,44 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
         }
         else if (showLine.checked) {
-          // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
+          // 38,543,300,44,#9A2037,100,23
+          let isVLine = strs[2] < 2
+          let isHLine = strs[3] < 2
+          let WHConst = ''
+          if (isVLine || isHLine) {
+            WHConst = isVLine ? `make.width.equalTo(@${strs[2]});` : `make.height.equalTo(@${strs[3]});`
+          }
+          // 圆角
+          let cornerStgr = ''
+          if (strs.length >= 7) {
+            cornerStgr = `line.layer.cornerRadius = ${strs[6]};`
+          }
+
+          // 透明度
+          let configBgColor = `line.layer.backgroundColor = @"${strs[4]}".hexColor.CGColor;`
+          if (strs[5] / 100 != 1) {
+            // 透明度         
+            configBgColor = `line.layer.backgroundColor = [@"${strs[4]}".hexColor colorWithAlphaComponent: ${strs[5] / 100.0}].CGColor;`
+          }
+
           message.innerText =
             `\nUIView *vLine = ({
-            UIView *vLine = [UIView new];
-            vLine.backgroundColor = @"${strs[3]}".hexColor;
-            [contentView addSubview: vLine];
-            [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(@0.5);
-                make.top.equalTo(titleLab.mas_bottom).offset(11);
-                make.leading.equalTo(contentView).offset(18);
-                make.bottom.equalTo(contentView).offset(-12);
-            }];
-        });`
+        
+              CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
+              UIView *line = [[UIView alloc] initWithFrame: frame];
+              ${configBgColor}
+              ${cornerStgr}
+
+              UIView *view = self.view;
+              [view addSubview: line];
+              [line mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.leading.equalTo(view).offset(${strs[0]});
+                  make.top.equalTo(view.mas_bottom).offset(${strs[1]});
+                  ${WHConst}
+              }];
+              
+              line;
+          });`
         }
       }
 
