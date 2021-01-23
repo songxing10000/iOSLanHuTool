@@ -91,6 +91,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       }
       else if (op === 'oc_code') {
         if (lab.checked) {
+          // 类型判断 typeof strs === 'string'
+          // 以字符串开始 startsWith
           if(typeof strs === 'string' && strs.startsWith('\nUIImageView')) {
             // 返回来的就是UIImageView
             message.innerText = strs
