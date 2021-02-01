@@ -8,6 +8,9 @@ function DOMtoString(document_root) {
     else if (loadUrl.includes('cnblogs.com')) {
         moveReleaseDataToTop()
     }
+    else if (loadUrl.includes('localhost')) {
+        removeLoading()
+    }
     else if (loadUrl.includes('lanhuapp.com/web')) {
         // 图片 文字 bgview
 
@@ -110,6 +113,9 @@ function getOCFontMethodName(labFontWeightStr) {
         ocFontMethodName = 'systemFontOfSize';
     }
     return ocFontMethodName
+}
+function removeLoading(){
+    document.getElementsByClassName("visible")[0].remove()
 }
 /**
  * 移除csdn登录二维码
