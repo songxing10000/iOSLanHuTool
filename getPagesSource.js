@@ -11,6 +11,9 @@ function DOMtoString(document_root) {
     else if (loadUrl.includes('localhost')) {
         removeLoading()
     }
+    else if (loadUrl.includes('91hiwork')) {
+        return 'fix ' + document.getElementsByClassName('editable-field inactive')[0].innerText + ' ' + loadUrl
+    }
     else if (loadUrl.includes('lanhuapp.com/web')) {
         // 图片 文字 bgview
 
