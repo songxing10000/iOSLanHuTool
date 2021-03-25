@@ -14,6 +14,15 @@ function DOMtoString(document_root) {
     else if (loadUrl.includes('91hiwork')) {
         return 'fix ' + document.getElementsByClassName('editable-field inactive')[0].innerText + ' ' + loadUrl
     }
+    else if (loadUrl.includes('pgyer.com')) {
+
+        let div = document.getElementsByClassName('span12 gray-text')[1]
+        let versionDiv = document.getElementsByTagName('li')[0]
+        versionDiv.innerText = versionDiv.innerText.split('(')[0]
+        div.append(versionDiv)
+        let desDiv = document.getElementsByClassName('tag-box margin-bottom-40')[0]
+        div.append(desDiv)
+    }
     else if (loadUrl.includes('lanhuapp.com/web')) {
         // 图片 文字 bgview
 
