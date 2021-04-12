@@ -106,7 +106,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             NSString *name = @"图片名";
             UIImage *img = [UIImage imageNamed:name];
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-            [imgV sizeToFit];
 
             UIView *view = self.view;
             [view addSubview: imgV];
@@ -127,7 +126,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             lab.text = @"${strs[4]}";
             lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
             lab.textColor = @\"${strs[7]}".hexColor;
-            [lab sizeToFit];
 
             UIView *view = self.view;
             [view addSubview: lab];
@@ -150,7 +148,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  NSString *name = @"图片名";
                   UIImage *img = [UIImage imageNamed:name];
                  [btn setImage:img forState:UIControlStateNormal];
-                  [btn sizeToFit];
 
                 UIView *view = self.view;
                 [view addSubview: btn];
@@ -192,7 +189,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
                  btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
                  [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
-                 [btn sizeToFit];
 
                  UIView *view = self.view;
                  [view addSubview: btn];
