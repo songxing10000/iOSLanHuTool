@@ -107,11 +107,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIImage *img = [UIImage imageNamed:name];
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
 
-            UIView *view = self.view;
-            [view addSubview: imgV];
+            UIView *superView = self.view;
+            [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.leading.equalTo(view).offset(${strs[0]});
-                make.top.equalTo(view).offset(${strs[1]});
+                make.leading.equalTo(superView).offset(${strs[0]});
+                make.top.equalTo(superView).offset(${strs[1]});
             }];
             
             imgV;
@@ -127,11 +127,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
             lab.textColor = @\"${strs[7]}".hexColor;
 
-            UIView *view = self.view;
-            [view addSubview: lab];
+            UIView *superView = self.view;
+            [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.leading.equalTo(view).offset(${strs[0]});
-                make.top.equalTo(view).offset(${strs[1]});
+                make.leading.equalTo(superView).offset(${strs[0]});
+                make.top.equalTo(superView).offset(${strs[1]});
             }];
 
             lab;
@@ -149,11 +149,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                   UIImage *img = [UIImage imageNamed:name];
                  [btn setImage:img forState:UIControlStateNormal];
 
-                UIView *view = self.view;
-                [view addSubview: btn];
+                UIView *superView = self.view;
+                [superView addSubview: btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.leading.equalTo(view).offset(${strs[0]});
-                  make.top.equalTo(view).offset(${strs[1]});
+                  make.leading.equalTo(superView).offset(${strs[0]});
+                  make.top.equalTo(superView).offset(${strs[1]});
                 }];
 
                  btn;
@@ -170,11 +170,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  ${configBgColorStr}
                  ${corner}
 
-                 UIView *view = self.view;
-                 [view addSubview: btn];
+                 UIView *superView = self.view;
+                 [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                   make.leading.equalTo(view).offset(${strs[0]});
-                   make.top.equalTo(view).offset(${strs[1]});
+                   make.leading.equalTo(superView).offset(${strs[0]});
+                   make.top.equalTo(superView).offset(${strs[1]});
                  }];
 
                  btn;
@@ -190,11 +190,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
                  [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
 
-                 UIView *view = self.view;
-                 [view addSubview: btn];
+                 UIView *superView = self.view;
+                 [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                   make.leading.equalTo(view).offset(${strs[0]});
-                   make.top.equalTo(view).offset(${strs[1]});
+                   make.leading.equalTo(superView).offset(${strs[0]});
+                   make.top.equalTo(superView).offset(${strs[1]});
                  }];
 
                  btn;
@@ -224,11 +224,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               ${configBgColorStr}
               ${cornerStgr}
 
-              UIView *view = self.view;
-              [view addSubview: line];
+              UIView *superView = self.view;
+              [superView addSubview: line];
               [line mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.leading.equalTo(view).offset(${strs[0]});
-                  make.top.equalTo(view.mas_bottom).offset(${strs[1]});
+                make.leading.equalTo(superView).offset(${strs[0]});
+                  make.top.equalTo(superView.mas_bottom).offset(${strs[1]});
                   ${WHConst}
               }];
               
