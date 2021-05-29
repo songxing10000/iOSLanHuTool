@@ -34,6 +34,9 @@ function DOMtoString(document_root) {
         let codeDiv = document.getElementsByClassName('annotation_item')[2]
         let codeStr = codeDiv.innerText
         let codeStrs = codeStr.split('\n')
+        if(codeStr.includes('外阴影')) {
+            codeStr = document.getElementsByClassName('annotation_item')[3].innerText
+        }
         let frameStrs = frameDiv.innerText.split('\n')
         let propertyStrs = propertyDiv.innerText.split('\n')
 
@@ -43,13 +46,11 @@ function DOMtoString(document_root) {
         // 宽高
         let viewWidth = frameStrs[6].replace('pt', '')
         let viewHeight = frameStrs[7].replace('pt', '')
-
         if (!codeStr.startsWith('代码')) {
             // UIImageView
             return [viewX, viewY]
         }
         else {
-
             if (codeStr.includes('UILabel')) {
                 // UILabel
                 // Medium
@@ -60,6 +61,7 @@ function DOMtoString(document_root) {
                 }
                 let labFontSizeStr =propertyStrs[23].replace('pt', '')
                 let labStr = propertyStrs[32]
+                // document.getElementsByClassName('item_one item_content')[0].textContent
                 let LabTextColorHexStr = propertyStrs[8]
                 let alphaStr = propertyStrs[9]
                 if (alphaStr !== "100%") {
