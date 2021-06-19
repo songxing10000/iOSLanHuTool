@@ -29,28 +29,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       let strs = request.source;
       // 多行 拼接 变量 ${变量名} innerText
       let op = document.getElementById('op').value;
-      if (op === 'xml_code') {
-        if (lab.checked) {
-          let fontStr = strs[1]
-          let typeStr = ''
-          if (fontStr === 'pFSize') {
-            typeStr = "type=\"system\""
-          } else if (fontStr === 'pFMediumSize') {
-            typeStr = "type=\"system\" weight=\"medium\""
-          } else if (fontStr === 'pFBlodSize') {
-            typeStr = "type=\"boldSystem\""
-          }
-          // TODO： frame id color
-          message.innerText =
-            `<label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="${strs[0]}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vit-KM-Fpd">
-              <rect key="frame" x="82.5" y="18.5" width="155" height="23"/>
-              <fontDescription key="fontDescription" ${typeStr} pointSize="${strs[2]}"/>
-              <color key="textColor" red="0.96862745098039216" green="0.52549019607843139" blue="0.023529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-              <nil key="highlightedColor"/>
-          </label>`
-        }
-      }
-      else if (op === 'swift_code') {
+      if (op === 'swift_code') {
         if (lab.checked) {
           let colorStr = strs[3].replace('#', '')
           message.innerText =

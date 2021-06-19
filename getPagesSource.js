@@ -112,15 +112,15 @@ function getOCFontMethodName(labFontWeightStr) {
     let ocFontMethodName = 'pFSize';
     if (labFontWeightStr === 'Regular') {
         // 粗体
-        ocFontMethodName = 'pFSize';
+        ocFontMethodName = 'fontWithName:@"PingFangSC-Regular" size';
     }
     else if (labFontWeightStr === 'Medium') {
         // 中体
-        ocFontMethodName = 'pFMediumSize';
+        ocFontMethodName = 'fontWithName:@"PingFangSC-Medium" size';
     }
     else if (labFontWeightStr === 'Bold') {
         // 粗体
-        ocFontMethodName = 'pFBlodSize';
+        ocFontMethodName = 'fontWithName:@"PingFangSC-Semibold" size';
     }
     else {
         // 使用系统默认的字体
