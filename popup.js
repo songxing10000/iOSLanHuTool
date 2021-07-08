@@ -67,10 +67,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             vLine.backgroundColor = @"${strs[3]}".hexColor;
             [contentView addSubview: vLine];
             [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.width.equalTo(@0.5);
-                make.top.equalTo(titleLab.mas_bottom).offset(11);
-                make.leading.equalTo(contentView).offset(18);
-                make.bottom.equalTo(contentView).offset(-12);
+              make.top.equalTo(superView).offset(0);
+              make.leading.equalTo(superView).offset(0);
+              // make.bottom.equalTo(superView.mas_bottom).offset(0);
+              // make.trailing.equalTo(superView.mas_trailing).offset(0);
+              make.width.equalTo(@1);
+              // make.height.equalTo(@12);
+              // make.size.mas_equalTo(CGSizeMake(30, 30));
+              // make.centerX.equalTo(superView);
+              // make.centerY.equalTo(superView);
             }];
         });`
         }
@@ -85,12 +90,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             NSString *name = @"图片名";
             UIImage *img = [UIImage imageNamed:name];
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-
+            imgV.backgroundColor = [UIColor redColor];
             UIView *superView = self.view;
             [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.leading.equalTo(superView).offset(${strs[0]});
                 make.top.equalTo(superView).offset(${strs[1]});
+                make.leading.equalTo(superView).offset(${strs[0]});
+                // make.bottom.equalTo(superView.mas_bottom).offset(0);
+                // make.trailing.equalTo(superView.mas_trailing).offset(0);
+                // make.width.equalTo(@1);
+                // make.height.equalTo(@12);
+                // make.size.mas_equalTo(CGSizeMake(30, 30));
+                // make.centerX.equalTo(superView);
+                // make.centerY.equalTo(superView);
             }];
             
             imgV;
@@ -109,8 +121,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view;
             [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
+              make.top.equalTo(superView).offset(${strs[1]});
                 make.leading.equalTo(superView).offset(${strs[0]});
-                make.top.equalTo(superView).offset(${strs[1]});
+                // make.bottom.equalTo(superView.mas_bottom).offset(0);
+                // make.trailing.equalTo(superView.mas_trailing).offset(0);
+                // make.width.equalTo(@1);
+                // make.height.equalTo(@12);
+                // make.size.mas_equalTo(CGSizeMake(30, 30));
+                // make.centerX.equalTo(superView);
+                // make.centerY.equalTo(superView);
             }];
 
             lab;
@@ -131,8 +150,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 UIView *superView = self.view;
                 [superView addSubview: btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.leading.equalTo(superView).offset(${strs[0]});
                   make.top.equalTo(superView).offset(${strs[1]});
+                  make.leading.equalTo(superView).offset(${strs[0]});
+                // make.bottom.equalTo(superView.mas_bottom).offset(0);
+                // make.trailing.equalTo(superView.mas_trailing).offset(0);
+                // make.width.equalTo(@1);
+                // make.height.equalTo(@12);
+                // make.size.mas_equalTo(CGSizeMake(30, 30));
+                // make.centerX.equalTo(superView);
+                // make.centerY.equalTo(superView);
                 }];
 
                  btn;
@@ -152,8 +178,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  UIView *superView = self.view;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                   make.leading.equalTo(superView).offset(${strs[0]});
                    make.top.equalTo(superView).offset(${strs[1]});
+                   make.leading.equalTo(superView).offset(${strs[0]});
+                   // make.bottom.equalTo(superView.mas_bottom).offset(0);
+                   // make.trailing.equalTo(superView.mas_trailing).offset(0);
+                   // make.width.equalTo(@1);
+                   // make.height.equalTo(@12);
+                   // make.size.mas_equalTo(CGSizeMake(30, 30));
+                   // make.centerX.equalTo(superView);
+                   // make.centerY.equalTo(superView);
                  }];
 
                  btn;
@@ -172,8 +205,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  UIView *superView = self.view;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                   make.leading.equalTo(superView).offset(${strs[0]});
                    make.top.equalTo(superView).offset(${strs[1]});
+                   make.leading.equalTo(superView).offset(${strs[0]});
+                // make.bottom.equalTo(superView.mas_bottom).offset(0);
+                // make.trailing.equalTo(superView.mas_trailing).offset(0);
+                // make.width.equalTo(@1);
+                // make.height.equalTo(@12);
+                // make.size.mas_equalTo(CGSizeMake(30, 30));
+                // make.centerX.equalTo(superView);
+                // make.centerY.equalTo(superView);
                  }];
 
                  btn;
@@ -206,9 +246,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               UIView *superView = self.view;
               [superView addSubview: line];
               [line mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(superView.mas_bottom).offset(${strs[1]});
                 make.leading.equalTo(superView).offset(${strs[0]});
-                  make.top.equalTo(superView.mas_bottom).offset(${strs[1]});
-                  ${WHConst}
+                // make.bottom.equalTo(superView.mas_bottom).offset(0);
+                // make.trailing.equalTo(superView.mas_trailing).offset(0);
+                ${WHConst}
+                // make.height.equalTo(@12);
+                // make.size.mas_equalTo(CGSizeMake(30, 30));
+                // make.centerX.equalTo(superView);
+                // make.centerY.equalTo(superView);
               }];
               
               line;
@@ -230,10 +276,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
  */
 function configBgColor(varName, hexColorStr, alphaStr) {
   // 透明度
-  let returnCodeStr = `${varName}.layer.backgroundColor = @"${hexColorStr}".hexColor.CGColor;`
+  let returnCodeStr = `${varName}.backgroundColor = @"${hexColorStr}".hexColor;`
   if (alphaStr / 100 != 1) {
     // 透明度         
-    returnCodeStr = `${varName}.layer.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}].CGColor;`
+    returnCodeStr = `${varName}.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}];`
   }
   return returnCodeStr
 }
