@@ -60,13 +60,37 @@ function DOMtoString(document_root) {
                     // 有对齐方式
                 }
                 let labFontSizeStr =propertyStrs[23].replace('pt', '')
-                let labStr = propertyStrs[32]
+                if (labFontSizeStr === '0') {
+                    // 新版蓝湖
+                    labFontSizeStr =propertyStrs[21].replace('pt', '')
+                }
+
+                var labStr = ''
+                if (propertyStrs.length < 33) {
+                    labStr = propertyStrs[30]
+                } else {
+
+                    labStr = propertyStrs[32]
+                }
+                
                 // document.getElementsByClassName('item_one item_content')[0].textContent
                 let LabTextColorHexStr = propertyStrs[8]
-                let alphaStr = propertyStrs[9]
-                if (alphaStr !== "100%") {
-                    alert('透明度修复')
+                if(LabTextColorHexStr === 'HEX'){
+                    // "AHEX#FF333333"转换为
+                    // flutter用的 Color(0xff273A62)
+                    // 0xff273A62
+                    LabTextColorHexStr = propertyStrs[12].replace('AHEX#', '0x')
+
                 }
+                // let alphaStr = propertyStrs[9]
+                // if (alphaStr.length > 0) {
+                //     if (alphaStr !== "100%") {
+                //         alert('透明度修复' + alphaStr)
+                //     }
+                // } else {
+                //     alert('未找到透明度修复')
+                // }
+                
                 return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
             }
             else if (codeStr.includes('UIView')) {

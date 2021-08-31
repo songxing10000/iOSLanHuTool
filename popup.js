@@ -81,6 +81,44 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         });`
         }
       }
+      else if (op === 'flutter') {
+        // fontWithName:@\"PingFangSC-Medium\" size
+        var fluterFontName = strs[5].split(' ')[0].split('@"')[1].replace('"', '');
+        if (lab.checked) {
+          message.innerText = `\n
+                              Text(
+                                '${strs[4]}',
+                                style: TextStyle(
+                                    fontFamily: '${fluterFontName}',
+                                    fontSize: 22,
+                                    color: Color(${strs[7]})),
+                              ),\n`;
+          return
+        }
+
+        if (img.checked) {
+          message.innerText = `\n
+          Image.asset('images/ren.png'),
+          \n`;
+          return
+        }
+
+        if (btn.checked) {
+          message.innerText = `\n
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              '${strs[4]}',
+              style: TextStyle(
+                fontFamily: '${fluterFontName}',
+                fontSize: 22,
+                color: Color(${strs[7]})),
+            )),
+          \n`;
+          
+          return
+        }
+      }
       else if (op === 'oc_code') {
         // 类型判断 typeof strs === 'string'
         // 以字符串开始 startsWith
@@ -164,8 +202,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
                  btn;
             });`
+            return
           }
-          else if (strs.length == 6 || strs.length == 7) {
+
+          if (strs.length == 6 || strs.length == 7) {
             // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
             let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
             let configBgColorStr = configBgColor('btn', strs[4], strs[5])
@@ -234,7 +274,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
 
           let configBgColorStr = configBgColor('line', strs[4], strs[5])
-          
+
 
           message.innerText =
             `\nUIView *vLine = ({
@@ -277,33 +317,33 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
  * @param {Number} alphaStr 透明度 100 70
  */
 function configBgColor(varName, hexColorStr, alphaStr) {
-  // 透明度
-  let returnCodeStr = `${varName}.backgroundColor = @"${hexColorStr}".hexColor;`
-  if (alphaStr / 100 != 1) {
-    // 透明度         
-    returnCodeStr = `${varName}.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}];`
+    // 透明度
+    let returnCodeStr = `${varName}.backgroundColor = @"${hexColorStr}".hexColor;`
+    if (alphaStr / 100 != 1) {
+      // 透明度         
+      returnCodeStr = `${varName}.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}];`
+    }
+    return returnCodeStr
   }
-  return returnCodeStr
-}
 function onWindowLoad() {
 
-  // 获取 popup.html里的元素进行字符串设定
-  var message = document.querySelector('#message');
-  // 获取 当前选择的tab的title 和 url
-  chrome.tabs.getSelected(null, function (tab) {//获取当前tab
-    title = tab.title;
-    url = tab.url;
-  });
-  // 注入脚本，接收错误回显
-  chrome.tabs.executeScript(null, {
-    file: "getPagesSource.js"
-  }, function () {
-    if (chrome.runtime.lastError) {
-      message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
-    }
-  });
+    // 获取 popup.html里的元素进行字符串设定
+    var message = document.querySelector('#message');
+    // 获取 当前选择的tab的title 和 url
+    chrome.tabs.getSelected(null, function (tab) {//获取当前tab
+      title = tab.title;
+      url = tab.url;
+    });
+    // 注入脚本，接收错误回显
+    chrome.tabs.executeScript(null, {
+      file: "getPagesSource.js"
+    }, function () {
+      if (chrome.runtime.lastError) {
+        message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
+      }
+    });
 
-}
+  }
 // 窗口载入时使用自己的载入函数
 window.onload = onWindowLoad;
 
