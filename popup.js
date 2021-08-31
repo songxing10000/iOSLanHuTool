@@ -64,11 +64,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           message.innerText =
             `\nUIView *vLine = ({
             UIView *vLine = [UIView new];
+            line.userInteractionEnabled = NO;
             vLine.backgroundColor = @"${strs[3]}".hexColor;
             [contentView addSubview: vLine];
             [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView).offset(0);
-              make.leading.equalTo(superView).offset(0);
+              make.top.equalTo(superView.mas_bottom).offset(0);
+              make.leading.equalTo(superView.mas_leading).offset(0);
               // make.bottom.equalTo(superView.mas_bottom).offset(0);
               // make.trailing.equalTo(superView.mas_trailing).offset(0);
               make.width.equalTo(@1);
@@ -94,8 +95,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view;
             [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(superView).offset(${strs[1]});
-                make.leading.equalTo(superView).offset(${strs[0]});
+              make.top.equalTo(superView.mas_bottom).offset(0);
+              make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -121,8 +122,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view;
             [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView).offset(${strs[1]});
-                make.leading.equalTo(superView).offset(${strs[0]});
+              make.top.equalTo(superView.mas_bottom).offset(0);
+              make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -150,8 +151,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 UIView *superView = self.view;
                 [superView addSubview: btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView).offset(${strs[1]});
-                  make.leading.equalTo(superView).offset(${strs[0]});
+                  make.top.equalTo(superView.mas_bottom).offset(0);
+              make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -178,8 +179,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  UIView *superView = self.view;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                   make.top.equalTo(superView).offset(${strs[1]});
-                   make.leading.equalTo(superView).offset(${strs[0]});
+                  make.top.equalTo(superView.mas_bottom).offset(0);
+                  make.leading.equalTo(superView.mas_leading).offset(0);
                    // make.bottom.equalTo(superView.mas_bottom).offset(0);
                    // make.trailing.equalTo(superView.mas_trailing).offset(0);
                    // make.width.equalTo(@1);
@@ -205,8 +206,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  UIView *superView = self.view;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                   make.top.equalTo(superView).offset(${strs[1]});
-                   make.leading.equalTo(superView).offset(${strs[0]});
+                  make.top.equalTo(superView.mas_bottom).offset(0);
+                  make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -240,14 +241,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         
               CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
               UIView *line = [[UIView alloc] initWithFrame: frame];
+              line.userInteractionEnabled = NO;
               ${configBgColorStr}
               ${cornerStgr}
 
               UIView *superView = self.view;
               [superView addSubview: line];
               [line mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(superView.mas_bottom).offset(${strs[1]});
-                make.leading.equalTo(superView).offset(${strs[0]});
+                make.top.equalTo(superView.mas_bottom).offset(0);
+              make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 ${WHConst}
