@@ -79,7 +79,8 @@ function DOMtoString(document_root) {
                     // "AHEX#FF333333"转换为
                     // flutter用的 Color(0xff273A62)
                     // 0xff273A62
-                    LabTextColorHexStr = propertyStrs[12].replace('AHEX#', '0x')
+                    // 这里先不返回FF，给原生用
+                    LabTextColorHexStr = propertyStrs[12].replace('AHEX#FF', '0x')
 
                 }
                 // let alphaStr = propertyStrs[9]

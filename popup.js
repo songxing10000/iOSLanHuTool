@@ -124,13 +124,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // 以字符串开始 startsWith
         if (img.checked) {
           // 返回来的就是UIImageView
-          message.innerText = `\nUIImageView *imgV = ({
+          message.innerText = `\nUIImageView *aImgV = ({
 
             NSString *name = @"图片名";
             UIImage *img = [UIImage imageNamed:name];
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
             imgV.backgroundColor = [UIColor redColor];
-            UIView *superView = self.view;
+            UIView *superView = self.view; //self.contentView;
             [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
               make.top.equalTo(superView.mas_bottom).offset(0);
@@ -150,14 +150,14 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
         if (lab.checked) {
           // 返回来的就是UILabel
-          message.innerText = `\nUILabel *lab = ({
+          message.innerText = `\nUILabel *aLab = ({
 
             UILabel *lab = [UILabel new];
             lab.text = @"${strs[4]}";
             lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
             lab.textColor = @\"${strs[7]}".hexColor;
 
-            UIView *superView = self.view;
+            UIView *superView = self.view; //self.contentView;
             [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
               make.top.equalTo(superView.mas_bottom).offset(0);
@@ -180,16 +180,16 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           if (strs.length == 2) {
             // 纯图片按钮
             message.innerText =
-              `\nUIButton *btn = ({
+              `\nUIButton *aBtn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
                  NSString *name = @"图片名";
                   UIImage *img = [UIImage imageNamed:name];
                  [btn setImage:img forState:UIControlStateNormal];
 
-                UIView *superView = self.view;
+                UIView *superView = self.view; //self.contentView;
                 [superView addSubview: btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView.mas_bottom).offset(0);
+                  make.top.equalTo(superView.mas_top).offset(0);
               make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -211,15 +211,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             let configBgColorStr = configBgColor('btn', strs[4], strs[5])
 
             message.innerText =
-              `\nUIButton *btn = ({
+              `\nUIButton *aBtn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
                  ${configBgColorStr}
                  ${corner}
 
-                 UIView *superView = self.view;
+                 UIView *superView = self.view; //self.contentView;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView.mas_bottom).offset(0);
+                  make.top.equalTo(superView.mas_top).offset(0);
                   make.leading.equalTo(superView.mas_leading).offset(0);
                    // make.bottom.equalTo(superView.mas_bottom).offset(0);
                    // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -237,16 +237,18 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             // 纯文字按钮
             //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
             message.innerText =
-              `\nUIButton *btn = ({
+              `\nUIButton *aBtn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
                  [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
                  btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
                  [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
-
-                 UIView *superView = self.view;
+                //  NSString *name = @"图片名";
+                //  UIImage *img = [UIImage imageNamed:name];
+                // [btn setImage:img forState:UIControlStateNormal];
+                 UIView *superView = self.view; //self.contentView;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView.mas_bottom).offset(0);
+                  make.top.equalTo(superView.mas_top).offset(0);
                   make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -285,10 +287,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               ${configBgColorStr}
               ${cornerStgr}
 
-              UIView *superView = self.view;
+              UIView *superView = self.view; //self.contentView;
               [superView addSubview: line];
               [line mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(superView.mas_bottom).offset(0);
+                make.top.equalTo(superView.mas_top).offset(0);
               make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
