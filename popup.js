@@ -115,7 +115,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 color: Color(${strs[7]})),
             )),
           \n`;
-          
+
           return
         }
       }
@@ -243,7 +243,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         if (btn.checked) {
           if (strs.length == 2) {
             // 纯图片按钮
-            message.innerText =`/* ---------- 不引用 ---------- */
+            message.innerText = `/* ---------- 不引用 ---------- */
             UIButton *aBtn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
                  NSString *name = @"图片名";
@@ -477,33 +477,33 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
  * @param {Number} alphaStr 透明度 100 70
  */
 function configBgColor(varName, hexColorStr, alphaStr) {
-    // 透明度
-    let returnCodeStr = `${varName}.backgroundColor = @"${hexColorStr}".hexColor;`
-    if (alphaStr / 100 != 1) {
-      // 透明度         
-      returnCodeStr = `${varName}.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}];`
-    }
-    return returnCodeStr
+  // 透明度
+  let returnCodeStr = `${varName}.backgroundColor = @"${hexColorStr}".hexColor;`
+  if (alphaStr / 100 != 1) {
+    // 透明度         
+    returnCodeStr = `${varName}.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}];`
   }
+  return returnCodeStr
+}
 function onWindowLoad() {
 
-    // 获取 popup.html里的元素进行字符串设定
-    var message = document.querySelector('#message');
-    // 获取 当前选择的tab的title 和 url
-    chrome.tabs.getSelected(null, function (tab) {//获取当前tab
-      title = tab.title;
-      url = tab.url;
-    });
-    // 注入脚本，接收错误回显
-    chrome.tabs.executeScript(null, {
-      file: "getPagesSource.js"
-    }, function () {
-      if (chrome.runtime.lastError) {
-        message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
-      }
-    });
+  // 获取 popup.html里的元素进行字符串设定
+  var message = document.querySelector('#message');
+  // 获取 当前选择的tab的title 和 url
+  chrome.tabs.getSelected(null, function (tab) {//获取当前tab
+    title = tab.title;
+    url = tab.url;
+  });
+  // 注入脚本，接收错误回显
+  chrome.tabs.executeScript(null, {
+    file: "getPagesSource.js"
+  }, function () {
+    if (chrome.runtime.lastError) {
+      message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
+    }
+  });
 
-  }
+}
 // 窗口载入时使用自己的载入函数
 window.onload = onWindowLoad;
 
