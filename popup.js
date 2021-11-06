@@ -68,7 +68,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             vLine.backgroundColor = @"${strs[3]}".hexColor;
             [contentView addSubview: vLine];
             [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView.mas_bottom).offset(0);
+              make.top.equalTo(superView.mas_top).offset(0);
               make.leading.equalTo(superView.mas_leading).offset(0);
               // make.bottom.equalTo(superView.mas_bottom).offset(0);
               // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -124,7 +124,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // 以字符串开始 startsWith
         if (img.checked) {
           // 返回来的就是UIImageView
-          message.innerText = `\nUIImageView *aImgV = ({
+          message.innerText = `/* ---------- 不引用 ---------- */
+          UIImageView *aImgV = ({
 
             NSString *name = @"图片名";
             UIImage *img = [UIImage imageNamed:name];
@@ -133,7 +134,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
             [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView.mas_bottom).offset(0);
+              make.top.equalTo(superView.mas_top).offset(0);
               make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -145,12 +146,44 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             }];
             
             imgV;
-        });`
+        });
+        /* ---------- 引用 ---------- */
+        @property(nonatomic) UIImageView *bgImgV;
+        
+        -(UIImageView *)bgImgV {
+          if (!_bgImgV) {
+            NSString *name = @"图片名";
+            UIImage *img = [UIImage imageNamed:name];
+            UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+            imgV.backgroundColor = [UIColor redColor];
+               
+
+              _bgImgV = imgV;
+          }
+          return _bgImgV;
+      }
+
+      UIView *superView = self.view; //self.contentView;
+      [superView addSubview: self.bgImgV];
+      [self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top).offset(0);
+        make.leading.equalTo(superView.mas_leading).offset(0);
+          // make.bottom.equalTo(superView.mas_bottom).offset(0);
+          // make.trailing.equalTo(superView.mas_trailing).offset(0);
+          // make.width.equalTo(@1);
+          // make.height.equalTo(@12);
+          // make.size.mas_equalTo(CGSizeMake(30, 30));
+          // make.centerX.equalTo(superView);
+          // make.centerY.equalTo(superView);
+      }];
+
+        `
           return
         }
         if (lab.checked) {
           // 返回来的就是UILabel
-          message.innerText = `\nUILabel *aLab = ({
+          message.innerText = `/* ---------- 不引用 ---------- */
+          UILabel *aLab = ({
 
             UILabel *lab = [UILabel new];
             lab.text = @"${strs[4]}";
@@ -160,7 +193,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
             [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView.mas_bottom).offset(0);
+              make.top.equalTo(superView.mas_top).offset(0);
               make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -172,15 +205,46 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             }];
 
             lab;
-        });`;
+        });
+        /* ---------- 引用 ---------- */
+        @property(nonatomic) UILabel *statusLab;
+
+        -(UILabel *)statusLab {
+          if (!_statusLab) {
+
+              UILabel *lab = [UILabel new];
+              lab.text = @"${strs[4]}";
+            lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
+            lab.textColor = @\"${strs[7]}".hexColor;
+
+              _statusLab = lab;
+          }
+          return _statusLab;
+      }
+
+      
+      UIView *superView = self.view; //self.contentView;
+      [superView addSubview: self.statusLab];
+    [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
+      make.top.equalTo(superView.mas_top).offset(0);
+      make.leading.equalTo(superView.mas_leading).offset(0);
+        // make.bottom.equalTo(superView.mas_bottom).offset(0);
+        // make.trailing.equalTo(superView.mas_trailing).offset(0);
+        // make.width.equalTo(@1);
+        // make.height.equalTo(@12);
+        // make.size.mas_equalTo(CGSizeMake(30, 30));
+        // make.centerX.equalTo(superView);
+        // make.centerY.equalTo(superView);
+    }];
+        `;
           return
         }
 
         if (btn.checked) {
           if (strs.length == 2) {
             // 纯图片按钮
-            message.innerText =
-              `\nUIButton *aBtn = ({
+            message.innerText =`/* ---------- 不引用 ---------- */
+            UIButton *aBtn = ({
                  UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
                  NSString *name = @"图片名";
                   UIImage *img = [UIImage imageNamed:name];
@@ -201,7 +265,37 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 }];
 
                  btn;
-            });`
+            });
+            /* ---------- 引用 ---------- */
+            @property(nonatomic) UIButton *useBtn;
+            
+            -(UIButton *)useBtn {
+              if (!_useBtn) {
+                UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+                 NSString *name = @"图片名";
+                  UIImage *img = [UIImage imageNamed:name];
+                 [btn setImage:img forState:UIControlStateNormal];
+                   
+                _useBtn = btn;
+              }
+              return _useBtn;
+          }
+
+
+            UIView *superView = self.view; //self.contentView;
+      [superView addSubview: self.useBtn];
+      [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top).offset(0);
+        make.leading.equalTo(superView.mas_leading).offset(0);
+          // make.bottom.equalTo(superView.mas_bottom).offset(0);
+          // make.trailing.equalTo(superView.mas_trailing).offset(0);
+          // make.width.equalTo(@1);
+          // make.height.equalTo(@12);
+          // make.size.mas_equalTo(CGSizeMake(30, 30));
+          // make.centerX.equalTo(superView);
+          // make.centerY.equalTo(superView);
+      }];
+            `
             return
           }
 
@@ -231,7 +325,37 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  }];
 
                  btn;
-            });`
+            });
+            
+            /* ---------- 引用 ---------- */
+            @property(nonatomic) UIButton *useBtn;
+            
+            -(UIButton *)useBtn {
+              if (!_useBtn) {
+                UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+                 ${configBgColorStr}
+                 ${corner}
+                   
+                _useBtn = btn;
+              }
+              return _useBtn;
+          }
+
+
+            UIView *superView = self.view; //self.contentView;
+      [superView addSubview: self.useBtn];
+      [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top).offset(0);
+        make.leading.equalTo(superView.mas_leading).offset(0);
+          // make.bottom.equalTo(superView.mas_bottom).offset(0);
+          // make.trailing.equalTo(superView.mas_trailing).offset(0);
+          // make.width.equalTo(@1);
+          // make.height.equalTo(@12);
+          // make.size.mas_equalTo(CGSizeMake(30, 30));
+          // make.centerX.equalTo(superView);
+          // make.centerY.equalTo(superView);
+      }];
+            `
           }
           else {
             // 纯文字按钮
@@ -260,7 +384,41 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  }];
 
                  btn;
-            });`
+            });
+            
+            /* ---------- 引用 ---------- */
+            @property(nonatomic) UIButton *useBtn;
+            
+            -(UIButton *)useBtn {
+              if (!_useBtn) {
+                UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+                 [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
+                 btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
+                 [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
+                //  NSString *name = @"图片名";
+                //  UIImage *img = [UIImage imageNamed:name];
+                // [btn setImage:img forState:UIControlStateNormal];
+                   
+                _useBtn = btn;
+              }
+              return _useBtn;
+          }
+
+
+            UIView *superView = self.view; //self.contentView;
+      [superView addSubview: self.useBtn];
+      [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(superView.mas_top).offset(0);
+        make.leading.equalTo(superView.mas_leading).offset(0);
+          // make.bottom.equalTo(superView.mas_bottom).offset(0);
+          // make.trailing.equalTo(superView.mas_trailing).offset(0);
+          // make.width.equalTo(@1);
+          // make.height.equalTo(@12);
+          // make.size.mas_equalTo(CGSizeMake(30, 30));
+          // make.centerX.equalTo(superView);
+          // make.centerY.equalTo(superView);
+      }];
+            `
           }
 
         }
