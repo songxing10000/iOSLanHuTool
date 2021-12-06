@@ -68,15 +68,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             vLine.backgroundColor = @"${strs[3]}".hexColor;
             [contentView addSubview: vLine];
             [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView.mas_top).offset(0);
-              make.leading.equalTo(superView.mas_leading).offset(0);
+              make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+              // make.top.equalTo(superView.mas_top).offset(0);
+              // make.leading.equalTo(superView.mas_leading).offset(0);
               // make.bottom.equalTo(superView.mas_bottom).offset(0);
               // make.trailing.equalTo(superView.mas_trailing).offset(0);
               make.width.equalTo(@1);
               // make.height.equalTo(@12);
               // make.size.mas_equalTo(CGSizeMake(30, 30));
-              // make.centerX.equalTo(superView);
-              // make.centerY.equalTo(superView);
+              // make.centerX.equalTo(@0);
+              // make.centerY.equalTo(@0);
             }];
         });`
         }
@@ -134,8 +138,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
             [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView.mas_top).offset(0);
-              make.leading.equalTo(superView.mas_leading).offset(0);
+              make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+              // make.top.equalTo(superView.mas_top).offset(0);
+              // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -166,8 +174,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.bgImgV];
       [self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(superView.mas_top).offset(0);
-        make.leading.equalTo(superView.mas_leading).offset(0);
+        make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
           // make.width.equalTo(@1);
@@ -193,8 +205,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
             [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(superView.mas_top).offset(0);
-              make.leading.equalTo(superView.mas_leading).offset(0);
+              make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+              // make.top.equalTo(superView.mas_top).offset(0);
+              // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -226,8 +242,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.statusLab];
     [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.top.equalTo(superView.mas_top).offset(0);
-      make.leading.equalTo(superView.mas_leading).offset(0);
+      make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+      // make.top.equalTo(superView.mas_top).offset(0);
+      // make.leading.equalTo(superView.mas_leading).offset(0);
         // make.bottom.equalTo(superView.mas_bottom).offset(0);
         // make.trailing.equalTo(superView.mas_trailing).offset(0);
         // make.width.equalTo(@1);
@@ -253,8 +273,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                 UIView *superView = self.view; //self.contentView;
                 [superView addSubview: btn];
                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView.mas_top).offset(0);
-              make.leading.equalTo(superView.mas_leading).offset(0);
+                  make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+              //     make.top.equalTo(superView.mas_top).offset(0);
+              // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -285,8 +309,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(superView.mas_top).offset(0);
-        make.leading.equalTo(superView.mas_leading).offset(0);
+        make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
           // make.width.equalTo(@1);
@@ -313,8 +341,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  UIView *superView = self.view; //self.contentView;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView.mas_top).offset(0);
-                  make.leading.equalTo(superView.mas_leading).offset(0);
+                  make.top.equalTo(@0);
+                  make.leading.equalTo(@0);
+                  make.bottom.equalTo(@0);
+                  make.trailing.equalTo(@0);
+                  // make.top.equalTo(superView.mas_top).offset(0);
+                  // make.leading.equalTo(superView.mas_leading).offset(0);
                    // make.bottom.equalTo(superView.mas_bottom).offset(0);
                    // make.trailing.equalTo(superView.mas_trailing).offset(0);
                    // make.width.equalTo(@1);
@@ -345,8 +377,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(superView.mas_top).offset(0);
-        make.leading.equalTo(superView.mas_leading).offset(0);
+        make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
           // make.width.equalTo(@1);
@@ -372,8 +408,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                  UIView *superView = self.view; //self.contentView;
                  [superView addSubview: btn];
                  [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(superView.mas_top).offset(0);
-                  make.leading.equalTo(superView.mas_leading).offset(0);
+                  make.top.equalTo(@0);
+                  make.leading.equalTo(@0);
+                  make.bottom.equalTo(@0);
+                  make.trailing.equalTo(@0);
+                  // make.top.equalTo(superView.mas_top).offset(0);
+                  // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 // make.width.equalTo(@1);
@@ -408,8 +448,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(superView.mas_top).offset(0);
-        make.leading.equalTo(superView.mas_leading).offset(0);
+        make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
           // make.width.equalTo(@1);
@@ -448,8 +492,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               UIView *superView = self.view; //self.contentView;
               [superView addSubview: line];
               [line mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(superView.mas_top).offset(0);
-              make.leading.equalTo(superView.mas_leading).offset(0);
+                make.top.equalTo(@0);
+              make.leading.equalTo(@0);
+              make.bottom.equalTo(@0);
+              make.trailing.equalTo(@0);
+              //   make.top.equalTo(superView.mas_top).offset(0);
+              // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
                 ${WHConst}

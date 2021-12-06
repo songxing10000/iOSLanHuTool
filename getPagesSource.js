@@ -46,16 +46,29 @@ function DOMtoString(document_root) {
         // 宽高
         let viewWidth = frameStrs[6].replace('pt', '')
         let viewHeight = frameStrs[7].replace('pt', '')
+        if (viewX === "位置" && viewWidth === "大小") {
+            // alert(frameStrs)// 样式信息,图层,矩形,位置,12pt,176pt,大小,351pt,1pt,不透明度,100%
+            viewX = frameStrs[4].replace('pt', '')
+            viewY = frameStrs[5].replace('pt', '')
+            viewWidth = frameStrs[7].replace('pt', '')
+            viewHeight = frameStrs[8].replace('pt', '')
+        }
+        
+        
         if (!codeStr.startsWith('代码')) {
+           
             // UIImageView
             return [viewX, viewY]
         }
         else {
             if (codeStr.includes('UILabel')) {
+                
                 // UILabel
                 // Medium
                 let ocFontMethodName = getOCFontMethodName(propertyStrs[3])
-
+                if(propertyStrs[1] === "DIN Alternate Bold") {
+                    ocFontMethodName = 'fontWithName:@"DINAlternate-Bold" size';
+                }
                 if(propertyStrs[4] === '对齐') {
                     // 有对齐方式
                 }
@@ -81,7 +94,6 @@ function DOMtoString(document_root) {
                     // 0xff273A62
                     // 这里先不返回FF，给原生用
                     LabTextColorHexStr = propertyStrs[12].replace('AHEX#FF', '0x')
-
                 }
                 // let alphaStr = propertyStrs[9]
                 // if (alphaStr.length > 0) {
@@ -107,8 +119,15 @@ function DOMtoString(document_root) {
                 if (propertyStrs[0] === '颜色') {
                     // #9A2037
                     let hexColor = propertyStrs[1]
+                    
+                    if (hexColor.includes(" 100%")) {
+                        hexColor = hexColor.replace(' 100%', '')
+                    }
                     //  100
                     let alphaStr = propertyStrs[2].replace('%', '')
+                    if (alphaStr === "HEX") {
+                        alphaStr = 100
+                    }
                     let hasCorner = frameDiv.innerText.includes('圆角')
                     if (hasCorner) {
                         let corner = frameStrs[frameStrs.indexOf('圆角') + 1].replace('pt', '')
@@ -144,6 +163,7 @@ function getOCFontMethodName(labFontWeightStr) {
         ocFontMethodName = 'fontWithName:@"PingFangSC-Medium" size';
     }
     else if (labFontWeightStr === 'Bold') {
+        alert()
         // 粗体
         ocFontMethodName = 'fontWithName:@"PingFangSC-Semibold" size';
     }
