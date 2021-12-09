@@ -20,7 +20,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       if (op === 'swift_code') {
         if (lab.checked) {
           /*
-          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
 
           UIFont(name: "PingFangSC-Regular", size: 15)
           lab.textColor = "#4C87F1".color
@@ -47,7 +47,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
         else if (btn.checked) {
           /*
-          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
           */
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
@@ -89,7 +89,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
         else if (img.checked) {
           /*
-          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
           */
           message.innerText =
             `\nlet aImgV: UIImageView = {
@@ -151,7 +151,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         if (img.checked) {
 
           /*
-          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
           */
           // 返回来的就是UIImageView
           message.innerText = `/* ---------- 不引用 ---------- */
