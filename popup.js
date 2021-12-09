@@ -79,30 +79,25 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           }()`
         } 
         else if (showLine.checked) {
-          // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
+/*
+12,176,351,1,#F7F7F7,100
+*/
 
           message.innerText =
-            `\nUIView *vLine = ({
-            UIView *vLine = [UIView new];
-            line.userInteractionEnabled = NO;
-            vLine.backgroundColor = @"${strs[3]}".hexColor;
-            [contentView addSubview: vLine];
-            [vLine mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(@0);
-              make.leading.equalTo(@0);
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-              // make.top.equalTo(superView.mas_top).offset(0);
-              // make.leading.equalTo(superView.mas_leading).offset(0);
-              // make.bottom.equalTo(superView.mas_bottom).offset(0);
-              // make.trailing.equalTo(superView.mas_trailing).offset(0);
-              make.width.equalTo(@1);
-              // make.height.equalTo(@12);
-              // make.size.mas_equalTo(CGSizeMake(30, 30));
-              // make.centerX.equalTo(@0);
-              // make.centerY.equalTo(@0);
-            }];
-        });`
+            `\nlet aLine: UIView = {
+              let line = UIView()
+              line.isUserInteractionEnabled = false
+              
+              line.backgroundColor = "${strs[4]}".color(alpha: 1)
+              
+              view.addSubview(line)
+              line.snp.makeConstraints { (make) in
+                make.top.equalToSuperview().offset(${strs[1]})
+                make.left.equalToSuperview().offset(${strs[0]})
+                make.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
+              }
+              return line
+          }()`
         }
         else if (img.checked) {
             /*
