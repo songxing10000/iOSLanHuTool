@@ -59,15 +59,25 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }()`
         }
         else if (btn.checked) {
+/*
+24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+*/
+          let colorStr = strs[7].replace('#', '')
+          var swFont = strs[5].replace('" size', '')
+          swFont = swFont.replace('fontWithName:@"', '')
           message.innerText =
-            `\nUIButton *btn = ({
-                 UIButton *btn = [UIButton btn];
-                 btn.normalTitle = @"${strs[0]}";
-                 btn.titleLabel.font = [UIFont ${strs[1]}:  ${strs[2]}];
-                 btn.normalTitleColor = @"${strs[3]}".hexColor;
-            
-                 btn;
-            });`
+            `\nlet btn: UIButton = {
+              let btn = UIButton(type: .custom)
+              btn.setTitle("${strs[4]}", for: .normal)
+              btn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
+              btn.setTitleColor("${colorStr}".color, for: .normal)
+              view.addSubview(btn)
+              btn.snp.makeConstraints { (make) in
+                  make.centerX.equalToSuperview()
+                  make.top.equalToSuperview().offset(130)
+              }
+              return btn
+          }()`
         } else if (showLine.checked) {
           // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
 
