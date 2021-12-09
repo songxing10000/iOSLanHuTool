@@ -31,18 +31,28 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       let op = document.getElementById('op').value;
       if (op === 'swift_code') {
         if (lab.checked) {
-          let colorStr = strs[3].replace('#', '')
+          /*
+          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+
+          UIFont(name: "PingFangSC-Regular", size: 15)
+          lab.textColor = "#4C87F1".color
+          lab.textColor = "0x4C87F1".color
+          */
+        alert(strs)
+          let colorStr = strs[7].replace('#', '')
+          var swFont = strs[5].replace('" size', '')
+          swFont = swFont.replace('fontWithName:@"', '')
           message.innerText =
             `\nlet lab: UILabel = {
             let lab = UILabel()
-            lab.text = "${strs[0]}"
-            lab.textColor = UIColor(rgb: 0x${colorStr})
-            lab.font = UIFont.systemFont(ofSize: calculate(ipadfs: ${strs[2]}))
+            lab.text = "${strs[4]}"
+            lab.textColor = "${colorStr}".color
+            lab.font = UIFont(name: "${swFont}", size: ${strs[6]})
             
-            addSubview(lab)
+            view.addSubview(lab)
             lab.snp.makeConstraints { (make) in
                 make.centerX.equalToSuperview()
-                make.top.equalToSuperview().offset(calculate(h: 28.0))
+                make.top.equalToSuperview().offset(10)
             }
             
             return lab

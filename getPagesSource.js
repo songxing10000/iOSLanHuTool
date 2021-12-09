@@ -2,14 +2,8 @@
 /// 通过 domcument 拼接相应 字符串
 function DOMtoString(document_root) {
     var loadUrl = document.URL;
-    if (loadUrl.includes('csdn')) {
-        removeCodeImg()
-    }
-    else if (loadUrl.includes('cnblogs.com')) {
+    if (loadUrl.includes('cnblogs.com')) {
         moveReleaseDataToTop()
-    }
-    else if (loadUrl.includes('localhost')) {
-        removeLoading()
     }
     else if (loadUrl.includes('91hiwork')) {
         return 'fix ' + document.getElementsByClassName('editable-field inactive')[0].innerText + ' ' + loadUrl
@@ -172,16 +166,6 @@ function getOCFontMethodName(labFontWeightStr) {
         ocFontMethodName = 'systemFontOfSize';
     }
     return ocFontMethodName
-}
-function removeLoading(){
-    document.getElementsByClassName("visible")[0].remove()
-}
-/**
- * 移除csdn登录二维码
- */
-function removeCodeImg() {
-    document.getElementsByClassName('login-mark')[0].remove()
-    document.getElementsByClassName('login-box')[0].remove()
 }
 /**
  * 把博客园的博客的发布日期放标题上来
