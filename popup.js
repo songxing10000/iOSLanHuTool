@@ -9,23 +9,11 @@ let showLine = document.getElementById('show_line');
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == "getSource") {
-    if (url.includes('cnblogs.com')) {
+    if (url.includes('cnblogs.com') || url.includes('localhost') || url.includes('pgyer.com')) {
       // 在博客完时，只是追加日期而，面板不用显示出来
       document.body.hidden = true
     }
-    else if (url.includes('localhost')) {
-      // 在博客完时，只是追加日期而，面板不用显示出来
-      document.body.hidden = true
-    }
-    else if (url.includes('pgyer.com')) {
-      document.body.hidden = true
-    }
-    else if (url.includes('csdn')) {
-      // 在csdn里，只是移除登录框，不显示面板
-      document.body.hidden = true
-    }
-    else if (url.includes('lanhuapp.com/web') ||
-      url.includes('app.mockplus.cn')) {
+    else if (url.includes('lanhuapp.com/web') || url.includes('app.mockplus.cn')) {
       let strs = request.source;
       // 多行 拼接 变量 ${变量名} innerText
       let op = document.getElementById('op').value;
