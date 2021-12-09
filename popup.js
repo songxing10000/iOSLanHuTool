@@ -38,7 +38,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           lab.textColor = "#4C87F1".color
           lab.textColor = "0x4C87F1".color
           */
-        alert(strs)
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
@@ -78,7 +77,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               }
               return btn
           }()`
-        } else if (showLine.checked) {
+        } 
+        else if (showLine.checked) {
           // ["圆角矩形 750","systemFontOfSize","12","RGBA233, 236, 245, 1"]
 
           message.innerText =
@@ -103,6 +103,25 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               // make.centerY.equalTo(@0);
             }];
         });`
+        }
+        else if (img.checked) {
+            /*
+            24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+            */
+            message.innerText =
+              `\nlet aImgV: UIImageView = {
+                let img = UIImage(named: "imgName")
+                let imgV = UIImageView(image: img)
+                imgV.backgroundColor = .red
+                
+                view.addSubview(imgV)
+                imgV.snp.makeConstraints { (make) in
+                    make.top.equalToSuperview().offset(${strs[1]})
+                    make.left.equalToSuperview().offset(${strs[0]})
+                    make.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
+                }
+                return imgV
+            }()`
         }
       }
       else if (op === 'flutter') {

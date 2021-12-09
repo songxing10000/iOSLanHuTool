@@ -48,10 +48,16 @@ function DOMtoString(document_root) {
             viewHeight = frameStrs[8].replace('pt', '')
         }
         
-        
+        if (codeStr.includes('开启切图压缩')) {
+            codeStr = document.getElementsByClassName('annotation_item')[1].innerText
+        }
+       
         if (!codeStr.startsWith('代码')) {
-           
             // UIImageView
+            let arr = document.getElementsByClassName('annotation_item')[0].innerText.split('\n')
+            if (arr.length >= 9) {
+                return [arr[4].replace('pt', ''), arr[5].replace('pt', ''), arr[7].replace('pt', ''), arr[8].replace('pt', '')]
+            }
             return [viewX, viewY]
         }
         else {
