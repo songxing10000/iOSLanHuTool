@@ -58,9 +58,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }()`
         }
         else if (btn.checked) {
-/*
-24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-*/
+          /*
+          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          */
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
@@ -77,11 +77,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               }
               return btn
           }()`
-        } 
+        }
         else if (showLine.checked) {
-/*
-12,176,351,1,#F7F7F7,100
-*/
+          /*
+          12,176,351,1,#F7F7F7,100
+          */
 
           message.innerText =
             `\nlet aLine: UIView = {
@@ -100,11 +100,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           }()`
         }
         else if (img.checked) {
-            /*
-            24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-            */
-            message.innerText =
-              `\nlet aImgV: UIImageView = {
+          /*
+          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          */
+          message.innerText =
+            `\nlet aImgV: UIImageView = {
                 let img = UIImage(named: "imgName")
                 let imgV = UIImageView(image: img)
                 imgV.backgroundColor = .red
@@ -161,6 +161,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // 类型判断 typeof strs === 'string'
         // 以字符串开始 startsWith
         if (img.checked) {
+
+          /*
+          24,141,320,20,2020年一级建造师-零基础双师畅学班,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+          */
           // 返回来的就是UIImageView
           message.innerText = `/* ---------- 不引用 ---------- */
           UIImageView *aImgV = ({
@@ -168,23 +172,25 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             NSString *name = @"图片名";
             UIImage *img = [UIImage imageNamed:name];
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+            #ifdef DEBUG
             imgV.backgroundColor = [UIColor redColor];
+            #endif
             UIView *superView = self.view; //self.contentView;
             [superView addSubview: imgV];
             [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(@0);
-              make.leading.equalTo(@0);
+              make.top.equalTo(@${strs[1]});
+              make.leading.equalTo(@${strs[0]});
               make.bottom.equalTo(@0);
               make.trailing.equalTo(@0);
-              // make.top.equalTo(superView.mas_top).offset(0);
-              // make.leading.equalTo(superView.mas_leading).offset(0);
+              // make.top.equalTo(superView.mas_top).offset(${strs[1]});
+              // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.width.equalTo(@1);
-                // make.height.equalTo(@12);
-                // make.size.mas_equalTo(CGSizeMake(30, 30));
-                // make.centerX.equalTo(superView);
-                // make.centerY.equalTo(superView);
+                // make.width.equalTo(@${strs[2]});
+                // make.height.equalTo(@${strs[3]});
+                // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+                // make.centerX.equalTo(@0);
+                // make.centerY.equalTo(@0);
             }];
             
             imgV;
@@ -197,8 +203,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             NSString *name = @"图片名";
             UIImage *img = [UIImage imageNamed:name];
             UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+            #ifdef DEBUG
             imgV.backgroundColor = [UIColor redColor];
-               
+            #endif
 
               _bgImgV = imgV;
           }
@@ -208,19 +215,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.bgImgV];
       [self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(@0);
-              make.leading.equalTo(@0);
+        make.top.equalTo(@${strs[1]});
+              make.leading.equalTo(@${strs[0]});
               make.bottom.equalTo(@0);
               make.trailing.equalTo(@0);
-        // make.top.equalTo(superView.mas_top).offset(0);
-        // make.leading.equalTo(superView.mas_leading).offset(0);
+        // make.top.equalTo(superView.mas_top).offset(${strs[1]});
+        // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
-          // make.width.equalTo(@1);
-          // make.height.equalTo(@12);
-          // make.size.mas_equalTo(CGSizeMake(30, 30));
-          // make.centerX.equalTo(superView);
-          // make.centerY.equalTo(superView);
+          // make.width.equalTo(@${strs[2]});
+          // make.height.equalTo(@${strs[3]});
+          // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+          // make.centerX.equalTo(@0);
+          // make.centerY.equalTo(@0);
       }];
 
         `
@@ -239,19 +246,16 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
             UIView *superView = self.view; //self.contentView;
             [superView addSubview: lab];
             [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(@0);
-              make.leading.equalTo(@0);
+              make.top.equalTo(@${strs[1]});
+              make.leading.equalTo(@${strs[0]});
               make.bottom.equalTo(@0);
               make.trailing.equalTo(@0);
-              // make.top.equalTo(superView.mas_top).offset(0);
-              // make.leading.equalTo(superView.mas_leading).offset(0);
+              // make.top.equalTo(superView.mas_top).offset(${strs[1]});
+              // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.width.equalTo(@1);
-                // make.height.equalTo(@12);
-                // make.size.mas_equalTo(CGSizeMake(30, 30));
-                // make.centerX.equalTo(superView);
-                // make.centerY.equalTo(superView);
+                // make.centerX.equalTo(@0);
+                // make.centerY.equalTo(@0);
             }];
 
             lab;
@@ -276,19 +280,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.statusLab];
     [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.top.equalTo(@0);
-              make.leading.equalTo(@0);
+      make.top.equalTo(@${strs[1]});
+              make.leading.equalTo(@${strs[0]});
               make.bottom.equalTo(@0);
               make.trailing.equalTo(@0);
-      // make.top.equalTo(superView.mas_top).offset(0);
-      // make.leading.equalTo(superView.mas_leading).offset(0);
+      // make.top.equalTo(superView.mas_top).offset(${strs[1]});
+      // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
         // make.bottom.equalTo(superView.mas_bottom).offset(0);
         // make.trailing.equalTo(superView.mas_trailing).offset(0);
-        // make.width.equalTo(@1);
-        // make.height.equalTo(@12);
-        // make.size.mas_equalTo(CGSizeMake(30, 30));
-        // make.centerX.equalTo(superView);
-        // make.centerY.equalTo(superView);
+        // make.width.equalTo(@${strs[2]});
+        // make.height.equalTo(@${strs[3]});
+        // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+        // make.centerX.equalTo(@0);
+        // make.centerY.equalTo(@0);
     }];
         `;
           return
@@ -315,11 +319,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.width.equalTo(@1);
-                // make.height.equalTo(@12);
-                // make.size.mas_equalTo(CGSizeMake(30, 30));
-                // make.centerX.equalTo(superView);
-                // make.centerY.equalTo(superView);
+                // make.centerX.equalTo(@0);
+                // make.centerY.equalTo(@0);
                 }];
 
                  btn;
@@ -351,11 +352,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
-          // make.width.equalTo(@1);
-          // make.height.equalTo(@12);
-          // make.size.mas_equalTo(CGSizeMake(30, 30));
-          // make.centerX.equalTo(superView);
-          // make.centerY.equalTo(superView);
+          // make.centerX.equalTo(@0);
+          // make.centerY.equalTo(@0);
       }];
             `
             return
@@ -383,11 +381,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                   // make.leading.equalTo(superView.mas_leading).offset(0);
                    // make.bottom.equalTo(superView.mas_bottom).offset(0);
                    // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                   // make.width.equalTo(@1);
-                   // make.height.equalTo(@12);
-                   // make.size.mas_equalTo(CGSizeMake(30, 30));
-                   // make.centerX.equalTo(superView);
-                   // make.centerY.equalTo(superView);
+                   // make.centerX.equalTo(@0);
+                   // make.centerY.equalTo(@0);
                  }];
 
                  btn;
@@ -419,11 +414,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
-          // make.width.equalTo(@1);
-          // make.height.equalTo(@12);
-          // make.size.mas_equalTo(CGSizeMake(30, 30));
-          // make.centerX.equalTo(superView);
-          // make.centerY.equalTo(superView);
+          // make.centerX.equalTo(@0);
+          // make.centerY.equalTo(@0);
       }];
             `
           }
@@ -450,11 +442,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
                   // make.leading.equalTo(superView.mas_leading).offset(0);
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.width.equalTo(@1);
-                // make.height.equalTo(@12);
-                // make.size.mas_equalTo(CGSizeMake(30, 30));
-                // make.centerX.equalTo(superView);
-                // make.centerY.equalTo(superView);
+                // make.centerX.equalTo(@0);
+                // make.centerY.equalTo(@0);
                  }];
 
                  btn;
@@ -490,24 +479,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
-          // make.width.equalTo(@1);
-          // make.height.equalTo(@12);
-          // make.size.mas_equalTo(CGSizeMake(30, 30));
-          // make.centerX.equalTo(superView);
-          // make.centerY.equalTo(superView);
+          // make.centerX.equalTo(@0);
+          // make.centerY.equalTo(@0);
       }];
             `
           }
 
         }
         else if (showLine.checked) {
-          // 38,543,300,44,#9A2037,100,23
-          let isVLine = strs[2] < 2
-          let isHLine = strs[3] < 2
-          let WHConst = ''
-          if (isVLine || isHLine) {
-            WHConst = isVLine ? `make.width.equalTo(@${strs[2]});` : `make.height.equalTo(@${strs[3]});`
-          }
+
           // 圆角
           let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
 
@@ -526,19 +506,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
               UIView *superView = self.view; //self.contentView;
               [superView addSubview: line];
               [line mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(@0);
-              make.leading.equalTo(@0);
+                make.top.equalTo(@${strs[1]});
+              make.leading.equalTo(@${strs[0]});
               make.bottom.equalTo(@0);
               make.trailing.equalTo(@0);
-              //   make.top.equalTo(superView.mas_top).offset(0);
-              // make.leading.equalTo(superView.mas_leading).offset(0);
+              //   make.top.equalTo(superView.mas_top).offset(${strs[1]});
+              // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
                 // make.bottom.equalTo(superView.mas_bottom).offset(0);
                 // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                ${WHConst}
-                // make.height.equalTo(@12);
-                // make.size.mas_equalTo(CGSizeMake(30, 30));
-                // make.centerX.equalTo(superView);
-                // make.centerY.equalTo(superView);
+                // make.width.equalTo(@${strs[2]});
+                // make.height.equalTo(@${strs[3]});
+                // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+                // make.centerX.equalTo(@0);
+                // make.centerY.equalTo(@0);
               }];
               
               line;
