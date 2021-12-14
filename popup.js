@@ -1,11 +1,45 @@
 var title;
 var url;
+/// 把控件认为是UIImageView
 let img = document.getElementById('show_image');
+/// 把控件认为是UIButton
 let btn = document.getElementById('show_btn');
+/// 把控件认为是UILabel
 let lab = document.getElementById('show_lab');
+/// 自定义属性名的输入框
+let proNameInput = document.getElementById('proName');
 
-/// document.getElementById('show_line');
+
+/// 把控件认为是UIView里的线
 let showLine = document.getElementById('show_line');
+/// 失去焦点时，替换属性名
+const inputHandler = function(e) {
+  let proName = e.target.value
+  if (proName.length > 1) {
+    if (lab.checked){
+      let oldStr = document.getElementById('message').innerText
+      // replaceAll https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll
+      let new1 = oldStr.replaceAll('aLab', proName+'Lab')
+      document.getElementById('message').innerText =  new1.replaceAll('statusLab', proName+'Lab')
+    }
+    else if (btn.checked){
+      let oldStr = document.getElementById('message').innerText
+      let new1 = oldStr.replaceAll('aBtn', proName+'Btn')
+      document.getElementById('message').innerText =  new1.replaceAll('useBtn', proName+'Btn')
+    }
+    else if (img.checked){
+      let oldStr = document.getElementById('message').innerText
+      let new1 = oldStr.replaceAll('aImgV', proName+'ImgV')
+      document.getElementById('message').innerText =  new1.replaceAll('bgImgV', proName+'ImgV')
+    }
+    else if (showLine.checked){
+      let oldStr = document.getElementById('message').innerText
+      let new1 = oldStr.replaceAll('vLine', proName+'View')
+      document.getElementById('message').innerText =  new1.replaceAll('bgImgV', proName+'ImgV')
+    }
+  }
+}
+
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
   if (request.action == "getSource") {
@@ -30,7 +64,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
           message.innerText =
-            `\nlet lab: UILabel = {
+            `\nlet aLab: UILabel = {
             let lab = UILabel()
             lab.text = "${strs[4]}"
             lab.textColor = "${colorStr}".color
@@ -53,7 +87,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
           message.innerText =
-            `\nlet btn: UIButton = {
+            `\nlet aBtn: UIButton = {
               let btn = UIButton(type: .custom)
               btn.setTitle("${strs[4]}", for: .normal)
               btn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
@@ -552,7 +586,7 @@ function onWindowLoad() {
       message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
     }
   });
-
+  proNameInput.addEventListener('blur', inputHandler);
 }
 // 窗口载入时使用自己的载入函数
 window.onload = onWindowLoad;
