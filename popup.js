@@ -63,21 +63,20 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
-          message.innerText =
-            `\nlet aLab: UILabel = {
-            let lab = UILabel()
-            lab.text = "${strs[4]}"
-            lab.textColor = "${colorStr}".color
-            lab.font = UIFont(name: "${swFont}", size: ${strs[6]})
-            
-            view.addSubview(lab)
-            lab.snp.makeConstraints { (make) in
-                make.centerX.equalToSuperview()
-                make.top.equalToSuperview().offset(10)
-            }
-            
-            return lab
-        }()`
+          message.innerText =`\nlet aLab: UILabel = {
+\tlet lab = UILabel()
+\tlab.text = "${strs[4]}"
+\tlab.textColor = "${colorStr}".color
+\tlab.font = UIFont(name: "${swFont}", size: ${strs[6]})
+
+\tview.addSubview(lab)
+\tlab.snp.makeConstraints { (make) in
+\t\tmake.centerX.equalToSuperview()
+\t\tmake.top.equalToSuperview().offset(10)
+\t}
+
+\treturn lab
+\t}()`
         }
         else if (btn.checked) {
           /*
@@ -86,59 +85,56 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
-          message.innerText =
-            `\nlet aBtn: UIButton = {
-              let btn = UIButton(type: .custom)
-              btn.setTitle("${strs[4]}", for: .normal)
-              btn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
-              btn.setTitleColor("${colorStr}".color, for: .normal)
-              view.addSubview(btn)
-              btn.snp.makeConstraints { (make) in
-                  make.centerX.equalToSuperview()
-                  make.top.equalToSuperview().offset(130)
-              }
-              return btn
-          }()`
+          message.innerText =`\nlet aBtn: UIButton = {
+\tlet btn = UIButton(type: .custom)
+\tbtn.setTitle("${strs[4]}", for: .normal)
+\tbtn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
+\tbtn.setTitleColor("${colorStr}".color, for: .normal)
+\tview.addSubview(btn)
+\tbtn.snp.makeConstraints { (make) in
+\t\tmake.centerX.equalToSuperview()
+\t\tmake.top.equalToSuperview().offset(130)
+\t}
+\treturn btn
+\t}()`
         }
         else if (showLine.checked) {
           /*
           12,176,351,1,#F7F7F7,100
           */
 
-          message.innerText =
-            `\nlet aLine: UIView = {
-              let line = UIView()
-              line.isUserInteractionEnabled = false
-              
-              line.backgroundColor = "${strs[4]}".color(alpha: 1)
-              
-              view.addSubview(line)
-              line.snp.makeConstraints { (make) in
-                make.top.equalToSuperview().offset(${strs[1]})
-                make.left.equalToSuperview().offset(${strs[0]})
-                make.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
-              }
-              return line
-          }()`
+          message.innerText =`\nlet aLine: UIView = {
+\tlet line = UIView()
+\tline.isUserInteractionEnabled = false
+
+\tline.backgroundColor = "${strs[4]}".color(alpha: 1)
+  
+\tview.addSubview(line)
+\tline.snp.makeConstraints { (make) in
+\t\tmake.top.equalToSuperview().offset(${strs[1]})
+\t\tmake.left.equalToSuperview().offset(${strs[0]})
+\t\tmake.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
+\t}
+\treturn line
+\t}()`
         }
         else if (img.checked) {
           /*
           24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
           */
-          message.innerText =
-            `\nlet aImgV: UIImageView = {
-                let img = UIImage(named: "imgName")
-                let imgV = UIImageView(image: img)
-                imgV.backgroundColor = .red
-                
-                view.addSubview(imgV)
-                imgV.snp.makeConstraints { (make) in
-                    make.top.equalToSuperview().offset(${strs[1]})
-                    make.left.equalToSuperview().offset(${strs[0]})
-                    make.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
-                }
-                return imgV
-            }()`
+          message.innerText =`\nlet aImgV: UIImageView = {
+\tet img = UIImage(named: "imgName")
+\tlet imgV = UIImageView(image: img)
+\timgV.backgroundColor = .red
+    
+\tview.addSubview(imgV)
+\timgV.snp.makeConstraints { (make) in
+\t\tmake.top.equalToSuperview().offset(${strs[1]})
+\t\tmake.left.equalToSuperview().offset(${strs[0]})
+\t\tmake.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
+\t}
+\treturn imgV
+\t}()`
         }
       }
       else if (op === 'flutter') {
@@ -146,13 +142,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         var fluterFontName = strs[5].split(' ')[0].split('@"')[1].replace('"', '');
         if (lab.checked) {
           message.innerText = `\n
-                              Text(
-                                '${strs[4]}',
-                                style: TextStyle(
-                                    fontFamily: '${fluterFontName}',
-                                    fontSize: 22,
-                                    color: Color(${strs[7]})),
-                              ),\n`;
+\tText(
+\t\t'${strs[4]}',
+\t\tstyle: TextStyle(
+\t\tfontFamily: '${fluterFontName}',
+\t\tfontSize: 22,
+\t\tcolor: Color(${strs[7]})),
+\t),\n`;
           return
         }
 
@@ -166,14 +162,14 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         if (btn.checked) {
           message.innerText = `\n
           TextButton(
-            onPressed: () {},
-            child: Text(
-              '${strs[4]}',
-              style: TextStyle(
-                fontFamily: '${fluterFontName}',
-                fontSize: 22,
-                color: Color(${strs[7]})),
-            )),
+\tonPressed: () {},
+\tchild: Text(
+\t\t'${strs[4]}',
+\t\tstyle: TextStyle(
+\t\tfontFamily: '${fluterFontName}',
+\t\tfontSize: 22,
+\t\tcolor: Color(${strs[7]})),
+\t)),
           \n`;
 
           return
@@ -188,68 +184,67 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
           */
           // 返回来的就是UIImageView
-          message.innerText = `/* ---------- 不引用 ---------- */
-          UIImageView *aImgV = ({
+          message.innerText = `UIImageView *aImgV = ({
 
-            NSString *name = @"图片名";
-            UIImage *img = [UIImage imageNamed:name];
-            UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-            #ifdef DEBUG
-            imgV.backgroundColor = [UIColor redColor];
-            #endif
-            UIView *superView = self.view; //self.contentView;
-            [superView addSubview: imgV];
-            [imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(@${strs[1]});
-              make.leading.equalTo(@${strs[0]});
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-              // make.top.equalTo(superView.mas_top).offset(${strs[1]});
-              // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
-                // make.bottom.equalTo(superView.mas_bottom).offset(0);
-                // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.width.equalTo(@${strs[2]});
-                // make.height.equalTo(@${strs[3]});
-                // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
-                // make.centerX.equalTo(@0);
-                // make.centerY.equalTo(@0);
-            }];
-            
-            imgV;
+\tNSString *name = @"图片名";
+\tUIImage *img = [UIImage imageNamed:name];
+\tUIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+\t#ifdef DEBUG
+\timgV.backgroundColor = [UIColor redColor];
+\t#endif
+\tUIView *superView = self.view; //self.contentView;
+\t[superView addSubview: imgV];
+\t[imgV mas_makeConstraints:^(MASConstraintMaker *make) {
+\t\tmake.top.equalTo(@${strs[1]});
+\t\tmake.leading.equalTo(@${strs[0]});
+\t\tmake.bottom.equalTo(@0);
+\t\tmake.trailing.equalTo(@0);
+\t\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t\t// make.width.equalTo(@${strs[2]});
+\t\t// make.height.equalTo(@${strs[3]});
+\t\t// make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t\t// make.centerX.equalTo(@0);
+\t\t// make.centerY.equalTo(@0);
+\t}];
+
+\timgV;
         });
         /* ---------- 引用 ---------- */
         @property(nonatomic) UIImageView *bgImgV;
         
         -(UIImageView *)bgImgV {
           if (!_bgImgV) {
-            NSString *name = @"图片名";
-            UIImage *img = [UIImage imageNamed:name];
-            UIImageView *imgV = [[UIImageView alloc] initWithImage:img];
-            #ifdef DEBUG
-            imgV.backgroundColor = [UIColor redColor];
-            #endif
+\tNSString *name = @"图片名";
+\tUIImage *img = [UIImage imageNamed:name];
+\tUIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+\t#ifdef DEBUG
+\timgV.backgroundColor = [UIColor redColor];
+\t#endif
 
-              _bgImgV = imgV;
+\t  _bgImgV = imgV;
           }
           return _bgImgV;
       }
 
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.bgImgV];
-      [self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(@${strs[1]});
-              make.leading.equalTo(@${strs[0]});
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-        // make.top.equalTo(superView.mas_top).offset(${strs[1]});
-        // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
-          // make.bottom.equalTo(superView.mas_bottom).offset(0);
-          // make.trailing.equalTo(superView.mas_trailing).offset(0);
-          // make.width.equalTo(@${strs[2]});
-          // make.height.equalTo(@${strs[3]});
-          // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
-          // make.centerX.equalTo(@0);
-          // make.centerY.equalTo(@0);
+\t[self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
+\t\tmake.top.equalTo(@${strs[1]});
+\t\tmake.leading.equalTo(@${strs[0]});
+\t\tmake.bottom.equalTo(@0);
+\t\tmake.trailing.equalTo(@0);
+\t\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t\t// make.width.equalTo(@${strs[2]});
+\t\t// make.height.equalTo(@${strs[3]});
+\t\t// make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t\t// make.centerX.equalTo(@0);
+\t\t// make.centerY.equalTo(@0);
       }];
 
         `
@@ -257,119 +252,118 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         }
         if (lab.checked) {
           // 返回来的就是UILabel
-          message.innerText = `/* ---------- 不引用 ---------- */
-          UILabel *aLab = ({
+          message.innerText = `UILabel *aLab = ({
 
-            UILabel *lab = [UILabel new];
-            lab.text = @"${strs[4]}";
-            lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
-            lab.textColor = @\"${strs[7]}".hexColor;
+\tUILabel *lab = [UILabel new];
+\tlab.text = @"${strs[4]}";
+\tlab.font = [UIFont ${strs[5]}:  ${strs[6]}];
+\tlab.textColor = @\"${strs[7]}".hexColor;
 
-            UIView *superView = self.view; //self.contentView;
-            [superView addSubview: lab];
-            [lab mas_makeConstraints:^(MASConstraintMaker *make) {
-              make.top.equalTo(@${strs[1]});
-              make.leading.equalTo(@${strs[0]});
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-              // make.top.equalTo(superView.mas_top).offset(${strs[1]});
-              // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
-                // make.bottom.equalTo(superView.mas_bottom).offset(0);
-                // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.centerX.equalTo(@0);
-                // make.centerY.equalTo(@0);
-            }];
+\tUIView *superView = self.view; //self.contentView;
+\t[superView addSubview: lab];
+\t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
+\t\tmake.top.equalTo(@${strs[1]});
+\t\tmake.leading.equalTo(@${strs[0]});
+\t\tmake.bottom.equalTo(@0);
+\t\tmake.trailing.equalTo(@0);
+\t\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t\t// make.centerX.equalTo(@0);
+\t\t// make.centerY.equalTo(@0);
+\t}];
 
-            lab;
-        });
-        /* ---------- 引用 ---------- */
-        @property(nonatomic) UILabel *statusLab;
+\tlab;
+});
+/* ---------- 引用 ---------- */
+ @property(nonatomic) UILabel *statusLab;
 
-        -(UILabel *)statusLab {
-          if (!_statusLab) {
+-(UILabel *)statusLab {
+\tif (!_statusLab) {
 
-              UILabel *lab = [UILabel new];
-              lab.text = @"${strs[4]}";
-            lab.font = [UIFont ${strs[5]}:  ${strs[6]}];
-            lab.textColor = @\"${strs[7]}".hexColor;
+\t\tUILabel *lab = [UILabel new];
+\t\tlab.text = @"${strs[4]}";
+\t\tlab.font = [UIFont ${strs[5]}:  ${strs[6]}];
+\t\tlab.textColor = @\"${strs[7]}".hexColor;
 
-              _statusLab = lab;
-          }
-          return _statusLab;
-      }
+\t\t_statusLab = lab;
+\t}
+\treturn _statusLab;
+}
 
       
-      UIView *superView = self.view; //self.contentView;
-      [superView addSubview: self.statusLab];
-    [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
-      make.top.equalTo(@${strs[1]});
-              make.leading.equalTo(@${strs[0]});
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-      // make.top.equalTo(superView.mas_top).offset(${strs[1]});
-      // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
-        // make.bottom.equalTo(superView.mas_bottom).offset(0);
-        // make.trailing.equalTo(superView.mas_trailing).offset(0);
-        // make.width.equalTo(@${strs[2]});
-        // make.height.equalTo(@${strs[3]});
-        // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
-        // make.centerX.equalTo(@0);
-        // make.centerY.equalTo(@0);
-    }];
+UIView *superView = self.view; //self.contentView;
+[superView addSubview: self.statusLab];
+[self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
+\tmake.top.equalTo(@${strs[1]});
+\tmake.leading.equalTo(@${strs[0]});
+\tmake.bottom.equalTo(@0);
+\tmake.trailing.equalTo(@0);
+\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
+\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t// make.width.equalTo(@${strs[2]});
+\t// make.height.equalTo(@${strs[3]});
+\t// make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t// make.centerX.equalTo(@0);
+\t// make.centerY.equalTo(@0);
+}];
         `;
           return
         }
 
         if (btn.checked) {
           if (strs.length == 2) {
-            // 纯图片按钮
-            message.innerText = `/* ---------- 不引用 ---------- */
-            UIButton *aBtn = ({
-                 UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-                 NSString *name = @"图片名";
-                  UIImage *img = [UIImage imageNamed:name];
-                 [btn setImage:img forState:UIControlStateNormal];
+// 纯图片按钮
+message.innerText = `UIButton *aBtn = ({
 
-                UIView *superView = self.view; //self.contentView;
-                [superView addSubview: btn];
-                [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(@0);
-              make.leading.equalTo(@0);
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-              //     make.top.equalTo(superView.mas_top).offset(0);
-              // make.leading.equalTo(superView.mas_leading).offset(0);
-                // make.bottom.equalTo(superView.mas_bottom).offset(0);
-                // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.centerX.equalTo(@0);
-                // make.centerY.equalTo(@0);
-                }];
+\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\tNSString *name = @"图片名";
+\tUIImage *img = [UIImage imageNamed:name];
+\t[btn setImage:img forState:UIControlStateNormal];
 
-                 btn;
-            });
-            /* ---------- 引用 ---------- */
-            @property(nonatomic) UIButton *useBtn;
-            
-            -(UIButton *)useBtn {
-              if (!_useBtn) {
-                UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-                 NSString *name = @"图片名";
-                  UIImage *img = [UIImage imageNamed:name];
-                 [btn setImage:img forState:UIControlStateNormal];
-                   
-                _useBtn = btn;
-              }
-              return _useBtn;
+\tUIView *superView = self.view; //self.contentView;
+\t[superView addSubview: btn];
+\t[btn mas_makeConstraints:^(MASConstraintMaker *make) {
+\t\tmake.top.equalTo(@0);
+\t\tmake.leading.equalTo(@0);
+\t\tmake.bottom.equalTo(@0);
+\t\tmake.trailing.equalTo(@0);
+\t\t//make.top.equalTo(superView.mas_top).offset(0);
+\t\t//make.leading.equalTo(superView.mas_leading).offset(0);
+\t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t\t// make.centerX.equalTo(@0);
+\t\t// make.centerY.equalTo(@0);
+\t    }];
+
+\t\tbtn;
+\t});
+\t/* ---------- 引用 ---------- */
+\t@property(nonatomic) UIButton *useBtn;
+\t
+\t-(UIButton *)useBtn {
+\t  if (!_useBtn) {
+\t    UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t     NSString *name = @"图片名";
+\t      UIImage *img = [UIImage imageNamed:name];
+\t     [btn setImage:img forState:UIControlStateNormal];
+\t       
+\t    _useBtn = btn;
+\t  }
+\t  return _useBtn;
           }
 
 
-            UIView *superView = self.view; //self.contentView;
+\tUIView *superView = self.view; //self.contentView;
       [superView addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
-              make.leading.equalTo(@0);
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
+\t  make.leading.equalTo(@0);
+\t  make.bottom.equalTo(@0);
+\t  make.trailing.equalTo(@0);
         // make.top.equalTo(superView.mas_top).offset(0);
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
@@ -377,61 +371,61 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           // make.centerX.equalTo(@0);
           // make.centerY.equalTo(@0);
       }];
-            `
-            return
+\t`
+return
           }
 
           if (strs.length == 6 || strs.length == 7) {
-            // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
-            let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
-            let configBgColorStr = configBgColor('btn', strs[4], strs[5])
+// 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
+let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
+let configBgColorStr = configBgColor('btn', strs[4], strs[5])
 
-            message.innerText =
-              `\nUIButton *aBtn = ({
-                 UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-                 ${configBgColorStr}
-                 ${corner}
+message.innerText =`\nUIButton *aBtn = ({
 
-                 UIView *superView = self.view; //self.contentView;
-                 [superView addSubview: btn];
-                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(@0);
-                  make.leading.equalTo(@0);
-                  make.bottom.equalTo(@0);
-                  make.trailing.equalTo(@0);
-                  // make.top.equalTo(superView.mas_top).offset(0);
-                  // make.leading.equalTo(superView.mas_leading).offset(0);
-                   // make.bottom.equalTo(superView.mas_bottom).offset(0);
-                   // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                   // make.centerX.equalTo(@0);
-                   // make.centerY.equalTo(@0);
-                 }];
+\t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t     ${configBgColorStr}
+\t     ${corner}
 
-                 btn;
-            });
-            
-            /* ---------- 引用 ---------- */
-            @property(nonatomic) UIButton *useBtn;
-            
-            -(UIButton *)useBtn {
-              if (!_useBtn) {
-                UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-                 ${configBgColorStr}
-                 ${corner}
-                   
-                _useBtn = btn;
-              }
-              return _useBtn;
+\t     UIView *superView = self.view; //self.contentView;
+\t     [superView addSubview: btn];
+\t     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+\t      make.top.equalTo(@0);
+\t      make.leading.equalTo(@0);
+\t      make.bottom.equalTo(@0);
+\t      make.trailing.equalTo(@0);
+\t      // make.top.equalTo(superView.mas_top).offset(0);
+\t      // make.leading.equalTo(superView.mas_leading).offset(0);
+\t       // make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t       // make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t       // make.centerX.equalTo(@0);
+\t       // make.centerY.equalTo(@0);
+\t     }];
+
+\t     btn;
+\t});
+\t
+\t/* ---------- 引用 ---------- */
+\t@property(nonatomic) UIButton *useBtn;
+\t
+\t-(UIButton *)useBtn {
+\t  if (!_useBtn) {
+\t    UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t     ${configBgColorStr}
+\t     ${corner}
+\t       
+\t    _useBtn = btn;
+\t  }
+\t  return _useBtn;
           }
 
 
-            UIView *superView = self.view; //self.contentView;
+\tUIView *superView = self.view; //self.contentView;
       [superView addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
-              make.leading.equalTo(@0);
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
+\t  make.leading.equalTo(@0);
+\t  make.bottom.equalTo(@0);
+\t  make.trailing.equalTo(@0);
         // make.top.equalTo(superView.mas_top).offset(0);
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
@@ -439,64 +433,63 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           // make.centerX.equalTo(@0);
           // make.centerY.equalTo(@0);
       }];
-            `
+\t`
           }
           else {
-            // 纯文字按钮
-            //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
-            message.innerText =
-              `\nUIButton *aBtn = ({
-                 UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-                 [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
-                 btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
-                 [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
-                //  NSString *name = @"图片名";
-                //  UIImage *img = [UIImage imageNamed:name];
-                // [btn setImage:img forState:UIControlStateNormal];
-                 UIView *superView = self.view; //self.contentView;
-                 [superView addSubview: btn];
-                 [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                  make.top.equalTo(@0);
-                  make.leading.equalTo(@0);
-                  make.bottom.equalTo(@0);
-                  make.trailing.equalTo(@0);
-                  // make.top.equalTo(superView.mas_top).offset(0);
-                  // make.leading.equalTo(superView.mas_leading).offset(0);
-                // make.bottom.equalTo(superView.mas_bottom).offset(0);
-                // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.centerX.equalTo(@0);
-                // make.centerY.equalTo(@0);
-                 }];
+// 纯文字按钮
+//  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
+message.innerText =`\nUIButton *aBtn = ({
+\t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
+\t     btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
+\t     [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
+\t    //  NSString *name = @"图片名";
+\t    //  UIImage *img = [UIImage imageNamed:name];
+\t    // [btn setImage:img forState:UIControlStateNormal];
+\t     UIView *superView = self.view; //self.contentView;
+\t     [superView addSubview: btn];
+\t     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+\t      make.top.equalTo(@0);
+\t      make.leading.equalTo(@0);
+\t      make.bottom.equalTo(@0);
+\t      make.trailing.equalTo(@0);
+\t      // make.top.equalTo(superView.mas_top).offset(0);
+\t      // make.leading.equalTo(superView.mas_leading).offset(0);
+\t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t    // make.centerX.equalTo(@0);
+\t    // make.centerY.equalTo(@0);
+\t     }];
 
-                 btn;
-            });
-            
-            /* ---------- 引用 ---------- */
-            @property(nonatomic) UIButton *useBtn;
-            
-            -(UIButton *)useBtn {
-              if (!_useBtn) {
-                UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-                 [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
-                 btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
-                 [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
-                //  NSString *name = @"图片名";
-                //  UIImage *img = [UIImage imageNamed:name];
-                // [btn setImage:img forState:UIControlStateNormal];
-                   
-                _useBtn = btn;
-              }
-              return _useBtn;
+\t     btn;
+\t});
+\t
+\t/* ---------- 引用 ---------- */
+\t@property(nonatomic) UIButton *useBtn;
+\t
+\t-(UIButton *)useBtn {
+\t  if (!_useBtn) {
+\t    UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
+\t     btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
+\t     [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
+\t    //  NSString *name = @"图片名";
+\t    //  UIImage *img = [UIImage imageNamed:name];
+\t    // [btn setImage:img forState:UIControlStateNormal];
+\t       
+\t    _useBtn = btn;
+\t  }
+\t  return _useBtn;
           }
 
 
-            UIView *superView = self.view; //self.contentView;
+\tUIView *superView = self.view; //self.contentView;
       [superView addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
-              make.leading.equalTo(@0);
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
+\t  make.leading.equalTo(@0);
+\t  make.bottom.equalTo(@0);
+\t  make.trailing.equalTo(@0);
         // make.top.equalTo(superView.mas_top).offset(0);
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
@@ -504,7 +497,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           // make.centerX.equalTo(@0);
           // make.centerY.equalTo(@0);
       }];
-            `
+\t`
           }
 
         }
@@ -516,34 +509,33 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           let configBgColorStr = configBgColor('line', strs[4], strs[5])
 
 
-          message.innerText =
-            `\nUIView *vLine = ({
+          message.innerText =`\nUIView *vLine = ({
         
-              CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
-              UIView *line = [[UIView alloc] initWithFrame: frame];
-              line.userInteractionEnabled = NO;
-              ${configBgColorStr}
-              ${cornerStgr}
+\t  CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
+\t  UIView *line = [[UIView alloc] initWithFrame: frame];
+\t  line.userInteractionEnabled = NO;
+\t  ${configBgColorStr}
+\t  ${cornerStgr}
 
-              UIView *superView = self.view; //self.contentView;
-              [superView addSubview: line];
-              [line mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(@${strs[1]});
-              make.leading.equalTo(@${strs[0]});
-              make.bottom.equalTo(@0);
-              make.trailing.equalTo(@0);
-              //   make.top.equalTo(superView.mas_top).offset(${strs[1]});
-              // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
-                // make.bottom.equalTo(superView.mas_bottom).offset(0);
-                // make.trailing.equalTo(superView.mas_trailing).offset(0);
-                // make.width.equalTo(@${strs[2]});
-                // make.height.equalTo(@${strs[3]});
-                // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
-                // make.centerX.equalTo(@0);
-                // make.centerY.equalTo(@0);
-              }];
-              
-              line;
+\t  UIView *superView = self.view; //self.contentView;
+\t  [superView addSubview: line];
+\t  [line mas_makeConstraints:^(MASConstraintMaker *make) {
+\t    make.top.equalTo(@${strs[1]});
+\t  make.leading.equalTo(@${strs[0]});
+\t  make.bottom.equalTo(@0);
+\t  make.trailing.equalTo(@0);
+\t  //   make.top.equalTo(superView.mas_top).offset(${strs[1]});
+\t  // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t    // make.width.equalTo(@${strs[2]});
+\t    // make.height.equalTo(@${strs[3]});
+\t    // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t    // make.centerX.equalTo(@0);
+\t    // make.centerY.equalTo(@0);
+\t  }];
+\t  
+\t  line;
           });`
         }
       }
