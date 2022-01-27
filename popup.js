@@ -14,29 +14,29 @@ let showPro = document.getElementById('show_pro');
 /// 把控件认为是UIView里的线
 let showLine = document.getElementById('show_line');
 /// 失去焦点时，替换属性名
-const inputHandler = function(e) {
+const inputHandler = function (e) {
   let proName = e.target.value
   if (proName.length > 1) {
-    if (lab.checked){
+    if (lab.checked) {
       let oldStr = document.getElementById('message').innerText
       // replaceAll https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll
-      let new1 = oldStr.replaceAll('aLab', proName+'Lab')
-      document.getElementById('message').innerText =  new1.replaceAll('statusLab', proName+'Lab')
+      let new1 = oldStr.replaceAll('aLab', proName + 'Lab')
+      document.getElementById('message').innerText = new1.replaceAll('statusLab', proName + 'Lab')
     }
-    else if (btn.checked){
+    else if (btn.checked) {
       let oldStr = document.getElementById('message').innerText
-      let new1 = oldStr.replaceAll('aBtn', proName+'Btn')
-      document.getElementById('message').innerText =  new1.replaceAll('useBtn', proName+'Btn')
+      let new1 = oldStr.replaceAll('aBtn', proName + 'Btn')
+      document.getElementById('message').innerText = new1.replaceAll('useBtn', proName + 'Btn')
     }
-    else if (img.checked){
+    else if (img.checked) {
       let oldStr = document.getElementById('message').innerText
-      let new1 = oldStr.replaceAll('aImgV', proName+'ImgV')
-      document.getElementById('message').innerText =  new1.replaceAll('bgImgV', proName+'ImgV')
+      let new1 = oldStr.replaceAll('aImgV', proName + 'ImgV')
+      document.getElementById('message').innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
     }
-    else if (showLine.checked){
+    else if (showLine.checked) {
       let oldStr = document.getElementById('message').innerText
-      let new1 = oldStr.replaceAll('vLine', proName+'View')
-      document.getElementById('message').innerText =  new1.replaceAll('bgImgV', proName+'ImgV')
+      let new1 = oldStr.replaceAll('vLine', proName + 'View')
+      document.getElementById('message').innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
     }
   }
 }
@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
-          message.innerText =`\nlet aLab: UILabel = {
+          message.innerText = `\nlet aLab: UILabel = {
 \tlet lab = UILabel()
 \tlab.text = "${strs[4]}"
 \tlab.textColor = "${colorStr}".color
@@ -86,7 +86,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           let colorStr = strs[7].replace('#', '')
           var swFont = strs[5].replace('" size', '')
           swFont = swFont.replace('fontWithName:@"', '')
-          message.innerText =`\nlet aBtn: UIButton = {
+          message.innerText = `\nlet aBtn: UIButton = {
 \tlet btn = UIButton(type: .custom)
 \tbtn.setTitle("${strs[4]}", for: .normal)
 \tbtn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
@@ -104,7 +104,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           12,176,351,1,#F7F7F7,100
           */
 
-          message.innerText =`\nlet aLine: UIView = {
+          message.innerText = `\nlet aLine: UIView = {
 \tlet line = UIView()
 \tline.isUserInteractionEnabled = false
 
@@ -123,7 +123,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           /*
           24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
           */
-          message.innerText =`\nlet aImgV: UIImageView = {
+          message.innerText = `\nlet aImgV: UIImageView = {
 \tet img = UIImage(named: "imgName")
 \tlet imgV = UIImageView(image: img)
 \timgV.backgroundColor = .red
@@ -317,9 +317,9 @@ UIView *superView = self.view; //self.contentView;
 
         if (btn.checked) {
           if (strs.length == 2) {
-// 纯图片按钮
-if(!showPro.checked){
-message.innerText = `UIButton *aBtn = ({
+            // 纯图片按钮
+            if (!showPro.checked) {
+              message.innerText = `UIButton *aBtn = ({
 
 \tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \tNSString *name = @"图片名";
@@ -346,10 +346,9 @@ message.innerText = `UIButton *aBtn = ({
 `
 
 
-} else {
-message.innerText =
-`
-\t/* ---------- 引用 ---------- */
+            } else {
+              message.innerText =
+                `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -380,15 +379,16 @@ message.innerText =
           // make.centerY.equalTo(@0);
       }];
 \t`
-return
-          }}
+              return
+            }
+          }
 
           if (strs.length == 6 || strs.length == 7) {
-// 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
-let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
-let configBgColorStr = configBgColor('btn', strs[4], strs[5])
-if(!showPro.checked){
-message.innerText =`\nUIButton *aBtn = ({
+            // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
+            let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
+            let configBgColorStr = configBgColor('btn', strs[4], strs[5])
+            if (!showPro.checked) {
+              message.innerText = `\nUIButton *aBtn = ({
 
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t     ${configBgColorStr}
@@ -415,11 +415,10 @@ message.innerText =`\nUIButton *aBtn = ({
 `
 
 
-} else {
-message.innerText =
+            } else {
+              message.innerText =
 
-`
-\t/* ---------- 引用 ---------- */
+                `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -449,13 +448,14 @@ message.innerText =
           // make.centerY.equalTo(@0);
       }];
 \t`
-          }}
+            }
+          }
           else {
-// 纯文字按钮
-//  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
-if(!showPro.checked) {
+            // 纯文字按钮
+            //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
+            if (!showPro.checked) {
 
-message.innerText =`\nUIButton *aBtn = ({
+              message.innerText = `\nUIButton *aBtn = ({
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
 \t     btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
@@ -483,10 +483,9 @@ message.innerText =`\nUIButton *aBtn = ({
 \t
 `
 
-} else {
-message.innerText =
-`
-\t/* ---------- 引用 ---------- */
+            } else {
+              message.innerText =
+                `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -520,8 +519,8 @@ message.innerText =
           // make.centerY.equalTo(@0);
       }];
 \t`
+            }
           }
-        }
 
         }
         else if (showLine.checked) {
@@ -532,7 +531,7 @@ message.innerText =
           let configBgColorStr = configBgColor('line', strs[4], strs[5])
 
 
-          message.innerText =`\nUIView *vLine = ({
+          message.innerText = `\nUIView *vLine = ({
         
 \t  CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
