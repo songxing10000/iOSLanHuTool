@@ -1,19 +1,34 @@
 var title;
 var url;
-/// 把控件认为是UIImageView
+/**
+ * 把控件认为是UIImageView
+*/
 let img = document.getElementById('show_image');
-/// 把控件认为是UIButton
+/**
+ * 把控件认为是UIButton
+ */
 let btn = document.getElementById('show_btn');
-/// 把控件认为是UILabel
+/**
+ * 把控件认为是UILabel
+ */
 let lab = document.getElementById('show_lab');
-/// 自定义属性名的输入框
+/**
+ * 自定义属性名的输入框
+ */
 let proNameInput = document.getElementById('proName');
-/// 生成的代码包不包含属性引用getter方法
-let showPro = document.getElementById('show_pro');
 
-/// 把控件认为是UIView里的线
+/**
+ * 生成的代码包不包含属性引用getter方法
+ */
+let showPro = document.getElementById('show_pro');
+/**
+ * 把控件认为是UIView里的线
+ */
 let showLine = document.getElementById('show_line');
-/// 失去焦点时，替换属性名
+
+/**
+ * 失去焦点时，替换属性名
+ */
 const inputHandler = function (e) {
   let proName = e.target.value
   if (proName.length > 1) {
@@ -57,8 +72,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     let op = document.getElementById('op').value;
     if (op === 'swift_code') {
       if (lab.checked) {
-        /*
-        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+        /**
+          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
 
         UIFont(name: "PingFangSC-Regular", size: 15)
         lab.textColor = "#4C87F1".color
@@ -81,8 +96,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 \treturn lab
 \t}()`
+        return
       }
-      else if (btn.checked) {
+
+      if (btn.checked) {
         /*
         24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
         */
@@ -101,8 +118,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t}
 \treturn btn
 \t}()`
+        return
       }
-      else if (showLine.checked) {
+
+      if (showLine.checked) {
         /*
         12,176,351,1,#F7F7F7,100
         */
@@ -121,8 +140,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t}
 \treturn line
 \t}()`
+        return
       }
-      else if (img.checked) {
+
+      if (img.checked) {
         /*
         24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
         */
@@ -139,9 +160,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t}
 \treturn imgV
 \t}()`
+        return
       }
+      return
     }
-    else if (op === 'flutter') {
+    if (op === 'flutter') {
       // fontWithName:@\"PingFangSC-Medium\" size
       var fluterFontName = strs[5].split(' ')[0].split('@"')[1].replace('"', '');
       if (lab.checked) {
@@ -637,7 +660,9 @@ document.getElementById('copyCode').addEventListener('click', function () {
   copyStr(codeStr)
 
 });
-/// 复制字符串到粘贴板
+/**
+ * 复制字符串到粘贴板
+ */
 function copyStr(str) {
   // 复制字符串到粘贴板 http://www.voidcn.com/article/p-effxpdwn-buc.html
   var input = document.createElement('textarea');
