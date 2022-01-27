@@ -201,8 +201,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
         return
       }
+      return
     }
-    else if (op === 'oc_code') {
+
+    if (op === 'oc_code') {
       // 类型判断 typeof strs === 'string'
       // 以字符串开始 startsWith
       if (img.checked) {
@@ -211,7 +213,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
         */
         // 返回来的就是UIImageView
-        message.innerText = `UIImageView *aImgV = ({
+        if (!showPro.checked) {
+          message.innerText = `UIImageView *aImgV = ({
 
 \tNSString *name = @"图片名";
 \tUIImage *img = [UIImage imageNamed:name];
@@ -239,7 +242,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 \timgV;
         });
-        /* ---------- 引用 ---------- */
+        `} else {
+
+          message.innerText = `
         @property(nonatomic) UIImageView *bgImgV;
         
         -(UIImageView *)bgImgV {
@@ -274,12 +279,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\t// make.centerY.equalTo(@0);
       }];
 
-        `
+        `}
         return
       }
+
       if (lab.checked) {
         // 返回来的就是UILabel
-        message.innerText = `UILabel *aLab = ({
+        if (!showPro.checked) {
+
+          message.innerText = `UILabel *aLab = ({
 
 \tUILabel *lab = [UILabel new];
 \tlab.text = @"${strs[4]}";
@@ -303,7 +311,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 \tlab;
 });
-/* ---------- 引用 ---------- */
+`
+        } else {
+          message.innerText = `
  @property(nonatomic) UILabel *statusLab;
 
 -(UILabel *)statusLab {
@@ -338,8 +348,10 @@ UIView *superView = self.view; //self.contentView;
 \t// make.centerY.equalTo(@0);
 }];
         `;
+        }
         return
       }
+
 
       if (btn.checked) {
         if (strs.length == 2) {
@@ -371,10 +383,10 @@ UIView *superView = self.view; //self.contentView;
 \t});
 `
 
-
-          } else {
-            message.innerText =
-              `
+            return
+          }
+          message.innerText =
+            `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -405,8 +417,7 @@ UIView *superView = self.view; //self.contentView;
           // make.centerY.equalTo(@0);
       }];
 \t`
-            return
-          }
+          return
         }
 
         if (strs.length == 6 || strs.length == 7) {
@@ -547,9 +558,10 @@ UIView *superView = self.view; //self.contentView;
 \t`
           }
         }
-
+        return
       }
-      else if (showLine.checked) {
+
+      if (showLine.checked) {
 
         // 圆角
         let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
@@ -585,6 +597,7 @@ UIView *superView = self.view; //self.contentView;
 \t  
 \t  line;
           });`
+        return
       }
     }
     return
