@@ -8,7 +8,8 @@ let btn = document.getElementById('show_btn');
 let lab = document.getElementById('show_lab');
 /// 自定义属性名的输入框
 let proNameInput = document.getElementById('proName');
-
+/// 生成的代码包不包含属性引用getter方法
+let showPro = document.getElementById('show_pro');
 
 /// 把控件认为是UIView里的线
 let showLine = document.getElementById('show_line');
@@ -317,6 +318,7 @@ UIView *superView = self.view; //self.contentView;
         if (btn.checked) {
           if (strs.length == 2) {
 // 纯图片按钮
+if(!showPro.checked){
 message.innerText = `UIButton *aBtn = ({
 
 \tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -341,6 +343,12 @@ message.innerText = `UIButton *aBtn = ({
 
 \t\tbtn;
 \t});
+`
+
+
+} else {
+message.innerText =
+`
 \t/* ---------- 引用 ---------- */
 \t@property(nonatomic) UIButton *useBtn;
 \t
@@ -373,13 +381,13 @@ message.innerText = `UIButton *aBtn = ({
       }];
 \t`
 return
-          }
+          }}
 
           if (strs.length == 6 || strs.length == 7) {
 // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
 let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
 let configBgColorStr = configBgColor('btn', strs[4], strs[5])
-
+if(!showPro.checked){
 message.innerText =`\nUIButton *aBtn = ({
 
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
@@ -404,6 +412,13 @@ message.innerText =`\nUIButton *aBtn = ({
 \t     btn;
 \t});
 \t
+`
+
+
+} else {
+message.innerText =
+
+`
 \t/* ---------- 引用 ---------- */
 \t@property(nonatomic) UIButton *useBtn;
 \t
@@ -434,10 +449,12 @@ message.innerText =`\nUIButton *aBtn = ({
           // make.centerY.equalTo(@0);
       }];
 \t`
-          }
+          }}
           else {
 // 纯文字按钮
 //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
+if(!showPro.checked) {
+
 message.innerText =`\nUIButton *aBtn = ({
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
@@ -464,6 +481,11 @@ message.innerText =`\nUIButton *aBtn = ({
 \t     btn;
 \t});
 \t
+`
+
+} else {
+message.innerText =
+`
 \t/* ---------- 引用 ---------- */
 \t@property(nonatomic) UIButton *useBtn;
 \t
@@ -499,6 +521,7 @@ message.innerText =`\nUIButton *aBtn = ({
       }];
 \t`
           }
+        }
 
         }
         else if (showLine.checked) {
@@ -586,7 +609,7 @@ window.onload = onWindowLoad;
 /// 新加面板
 document.addEventListener('DOMContentLoaded', function () {
   // 默认配置
-  var defaultConfig = { 'op': 'oc_code', 'ocCode': 'btn' };
+  var defaultConfig = { 'op': 'oc_code', 'ocCode': 'btn', 'isShowPro': false };
   // 读取数据，第一个参数是指定要读取的key以及设置默认值
   chrome.storage.sync.get(defaultConfig, function (items) {
     document.getElementById('op').value = items.op;
@@ -600,6 +623,9 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (ocCodeStr === 'line') {
       showLine.checked = true;
     }
+    showPro.checked = (items.isShowPro === 'true');
+    // 同步自定义属性名输入框的显示与隐藏
+    proNameInput.hidden = !showPro.checked
   });
 });
 // 复制代码事件
@@ -636,10 +662,11 @@ document.getElementById('save').addEventListener('click', function () {
   else if (showLine.checked) {
     ocCodeStr = 'line';
   }
-  let showImage = img.checked;
+  let showProStr = showPro.checked ? "true" : "false"
   let saveDict = {
     op: op,
-    ocCode: ocCodeStr
+    ocCode: ocCodeStr,
+    isShowPro: showProStr
   };
   chrome.storage.sync.set(saveDict, function () {
     document.getElementById('status').textContent = '保存成功！';
@@ -668,4 +695,8 @@ document.getElementById('show_line').addEventListener('change', function () {
   img.checked = false;
   btn.checked = false;
   lab.checked = false;
+});
+// 属性引用打钩事件
+document.getElementById('show_pro').addEventListener('change', function (e) {
+  proNameInput.hidden = !showPro.checked;
 });
