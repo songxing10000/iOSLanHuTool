@@ -43,28 +43,31 @@ const inputHandler = function (e) {
 
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
-  if (request.action == "getSource") {
-    if (url.includes('cnblogs.com') || url.includes('localhost') || url.includes('pgyer.com')) {
-      // 在博客完时，只是追加日期而，面板不用显示出来
-      document.body.hidden = true
-    }
-    else if (url.includes('lanhuapp.com/web') || url.includes('app.mockplus.cn')) {
-      let strs = request.source;
-      // 多行 拼接 变量 ${变量名} innerText
-      let op = document.getElementById('op').value;
-      if (op === 'swift_code') {
-        if (lab.checked) {
-          /*
-          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+  if (request.action != "getSource") {
+    return
+  }
+  if (url.includes('cnblogs.com') || url.includes('localhost') || url.includes('pgyer.com')) {
+    // 在博客完时，只是追加日期而，面板不用显示出来
+    document.body.hidden = true
+    return
+  }
+  if (url.includes('lanhuapp.com/web') || url.includes('app.mockplus.cn')) {
+    let strs = request.source;
+    // 多行 拼接 变量 ${变量名} innerText
+    let op = document.getElementById('op').value;
+    if (op === 'swift_code') {
+      if (lab.checked) {
+        /*
+        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
 
-          UIFont(name: "PingFangSC-Regular", size: 15)
-          lab.textColor = "#4C87F1".color
-          lab.textColor = "0x4C87F1".color
-          */
-          let colorStr = strs[7].replace('#', '')
-          var swFont = strs[5].replace('" size', '')
-          swFont = swFont.replace('fontWithName:@"', '')
-          message.innerText = `\nlet aLab: UILabel = {
+        UIFont(name: "PingFangSC-Regular", size: 15)
+        lab.textColor = "#4C87F1".color
+        lab.textColor = "0x4C87F1".color
+        */
+        let colorStr = strs[7].replace('#', '')
+        var swFont = strs[5].replace('" size', '')
+        swFont = swFont.replace('fontWithName:@"', '')
+        message.innerText = `\nlet aLab: UILabel = {
 \tlet lab = UILabel()
 \tlab.text = "${strs[4]}"
 \tlab.textColor = "${colorStr}".color
@@ -78,15 +81,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 \treturn lab
 \t}()`
-        }
-        else if (btn.checked) {
-          /*
-          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-          */
-          let colorStr = strs[7].replace('#', '')
-          var swFont = strs[5].replace('" size', '')
-          swFont = swFont.replace('fontWithName:@"', '')
-          message.innerText = `\nlet aBtn: UIButton = {
+      }
+      else if (btn.checked) {
+        /*
+        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+        */
+        let colorStr = strs[7].replace('#', '')
+        var swFont = strs[5].replace('" size', '')
+        swFont = swFont.replace('fontWithName:@"', '')
+        message.innerText = `\nlet aBtn: UIButton = {
 \tlet btn = UIButton(type: .custom)
 \tbtn.setTitle("${strs[4]}", for: .normal)
 \tbtn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
@@ -98,13 +101,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t}
 \treturn btn
 \t}()`
-        }
-        else if (showLine.checked) {
-          /*
-          12,176,351,1,#F7F7F7,100
-          */
+      }
+      else if (showLine.checked) {
+        /*
+        12,176,351,1,#F7F7F7,100
+        */
 
-          message.innerText = `\nlet aLine: UIView = {
+        message.innerText = `\nlet aLine: UIView = {
 \tlet line = UIView()
 \tline.isUserInteractionEnabled = false
 
@@ -118,12 +121,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t}
 \treturn line
 \t}()`
-        }
-        else if (img.checked) {
-          /*
-          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-          */
-          message.innerText = `\nlet aImgV: UIImageView = {
+      }
+      else if (img.checked) {
+        /*
+        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+        */
+        message.innerText = `\nlet aImgV: UIImageView = {
 \tet img = UIImage(named: "imgName")
 \tlet imgV = UIImageView(image: img)
 \timgV.backgroundColor = .red
@@ -136,13 +139,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t}
 \treturn imgV
 \t}()`
-        }
       }
-      else if (op === 'flutter') {
-        // fontWithName:@\"PingFangSC-Medium\" size
-        var fluterFontName = strs[5].split(' ')[0].split('@"')[1].replace('"', '');
-        if (lab.checked) {
-          message.innerText = `\n
+    }
+    else if (op === 'flutter') {
+      // fontWithName:@\"PingFangSC-Medium\" size
+      var fluterFontName = strs[5].split(' ')[0].split('@"')[1].replace('"', '');
+      if (lab.checked) {
+        message.innerText = `\n
 \tText(
 \t\t'${strs[4]}',
 \t\tstyle: TextStyle(
@@ -150,18 +153,18 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\tfontSize: 22,
 \t\tcolor: Color(${strs[7]})),
 \t),\n`;
-          return
-        }
+        return
+      }
 
-        if (img.checked) {
-          message.innerText = `\n
+      if (img.checked) {
+        message.innerText = `\n
           Image.asset('images/ren.png'),
           \n`;
-          return
-        }
+        return
+      }
 
-        if (btn.checked) {
-          message.innerText = `\n
+      if (btn.checked) {
+        message.innerText = `\n
           TextButton(
 \tonPressed: () {},
 \tchild: Text(
@@ -173,19 +176,19 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t)),
           \n`;
 
-          return
-        }
+        return
       }
-      else if (op === 'oc_code') {
-        // 类型判断 typeof strs === 'string'
-        // 以字符串开始 startsWith
-        if (img.checked) {
+    }
+    else if (op === 'oc_code') {
+      // 类型判断 typeof strs === 'string'
+      // 以字符串开始 startsWith
+      if (img.checked) {
 
-          /*
-          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-          */
-          // 返回来的就是UIImageView
-          message.innerText = `UIImageView *aImgV = ({
+        /*
+        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
+        */
+        // 返回来的就是UIImageView
+        message.innerText = `UIImageView *aImgV = ({
 
 \tNSString *name = @"图片名";
 \tUIImage *img = [UIImage imageNamed:name];
@@ -249,11 +252,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       }];
 
         `
-          return
-        }
-        if (lab.checked) {
-          // 返回来的就是UILabel
-          message.innerText = `UILabel *aLab = ({
+        return
+      }
+      if (lab.checked) {
+        // 返回来的就是UILabel
+        message.innerText = `UILabel *aLab = ({
 
 \tUILabel *lab = [UILabel new];
 \tlab.text = @"${strs[4]}";
@@ -312,14 +315,14 @@ UIView *superView = self.view; //self.contentView;
 \t// make.centerY.equalTo(@0);
 }];
         `;
-          return
-        }
+        return
+      }
 
-        if (btn.checked) {
-          if (strs.length == 2) {
-            // 纯图片按钮
-            if (!showPro.checked) {
-              message.innerText = `UIButton *aBtn = ({
+      if (btn.checked) {
+        if (strs.length == 2) {
+          // 纯图片按钮
+          if (!showPro.checked) {
+            message.innerText = `UIButton *aBtn = ({
 
 \tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \tNSString *name = @"图片名";
@@ -346,9 +349,9 @@ UIView *superView = self.view; //self.contentView;
 `
 
 
-            } else {
-              message.innerText =
-                `
+          } else {
+            message.innerText =
+              `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -379,16 +382,16 @@ UIView *superView = self.view; //self.contentView;
           // make.centerY.equalTo(@0);
       }];
 \t`
-              return
-            }
+            return
           }
+        }
 
-          if (strs.length == 6 || strs.length == 7) {
-            // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
-            let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
-            let configBgColorStr = configBgColor('btn', strs[4], strs[5])
-            if (!showPro.checked) {
-              message.innerText = `\nUIButton *aBtn = ({
+        if (strs.length == 6 || strs.length == 7) {
+          // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
+          let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
+          let configBgColorStr = configBgColor('btn', strs[4], strs[5])
+          if (!showPro.checked) {
+            message.innerText = `\nUIButton *aBtn = ({
 
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t     ${configBgColorStr}
@@ -415,10 +418,10 @@ UIView *superView = self.view; //self.contentView;
 `
 
 
-            } else {
-              message.innerText =
+          } else {
+            message.innerText =
 
-                `
+              `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -448,14 +451,14 @@ UIView *superView = self.view; //self.contentView;
           // make.centerY.equalTo(@0);
       }];
 \t`
-            }
           }
-          else {
-            // 纯文字按钮
-            //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
-            if (!showPro.checked) {
+        }
+        else {
+          // 纯文字按钮
+          //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
+          if (!showPro.checked) {
 
-              message.innerText = `\nUIButton *aBtn = ({
+            message.innerText = `\nUIButton *aBtn = ({
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
 \t     btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
@@ -483,9 +486,9 @@ UIView *superView = self.view; //self.contentView;
 \t
 `
 
-            } else {
-              message.innerText =
-                `
+          } else {
+            message.innerText =
+              `
 \t@property(nonatomic) UIButton *useBtn;
 \t
 \t-(UIButton *)useBtn {
@@ -519,19 +522,19 @@ UIView *superView = self.view; //self.contentView;
           // make.centerY.equalTo(@0);
       }];
 \t`
-            }
           }
-
         }
-        else if (showLine.checked) {
 
-          // 圆角
-          let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
+      }
+      else if (showLine.checked) {
 
-          let configBgColorStr = configBgColor('line', strs[4], strs[5])
+        // 圆角
+        let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
+
+        let configBgColorStr = configBgColor('line', strs[4], strs[5])
 
 
-          message.innerText = `\nUIView *vLine = ({
+        message.innerText = `\nUIView *vLine = ({
         
 \t  CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
@@ -559,15 +562,15 @@ UIView *superView = self.view; //self.contentView;
 \t  
 \t  line;
           });`
-        }
       }
-
     }
-    else {
-      message.innerText = request.source;
-    }
+    return
   }
-});
+  // 其他情况直接显示返回的
+  message.innerText = request.source;
+
+}
+);
 /**
  * 设置背景色
  * @param {String} varName 变量名如, line btn lab
