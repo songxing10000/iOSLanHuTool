@@ -566,19 +566,16 @@ UIView *superView = self.view; //self.contentView;
       }
 
       if (showLine.checked) {
-
         // 圆角
-        let cornerStgr = (strs.length >= 7) ? `line.layer.cornerRadius = ${strs[6]};` : ''
-
+        let cornerStgr = (strs.length >= 8) ? `line.layer.cornerRadius = ${strs[6]};` : ''
         let configBgColorStr = configBgColor('line', strs[4], strs[5])
-
-
         message.innerText = `\nUIView *vLine = ({
         
 \t  CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
 \t  line.userInteractionEnabled = NO;
-\t  ${configBgColorStr}
+\t// ${strs[4]}
+\tline.backgroundColor = ${strs[strs.length-1]};
 \t  ${cornerStgr}
 
 \t  UIView *superView = self.view; //self.contentView;

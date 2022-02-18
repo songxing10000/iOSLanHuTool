@@ -118,6 +118,7 @@ function DOMtoString(document_root) {
                 return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr, originHEXStr]
             }
             else if (codeStr.includes('UIView')) {
+                
                 // UIView
                 /*
                 UIView *view = [[UIView alloc] init];
@@ -139,12 +140,22 @@ function DOMtoString(document_root) {
                     if (alphaStr === "HEX") {
                         alphaStr = 100
                     }
+                    if(hexColor.includes(' ')) {
+                        // alpha != 1
+                        // #333333 50% 100
+                        alphaStr = hexColor.split(' ')[1].replace('%', '')
+                    } 
+                    
+
+                    // #F7F7F7 100
+                    let UIColorStr = hexToUIColor(hexColor, alphaStr)
                     let hasCorner = frameDiv.innerText.includes('圆角')
                     if (hasCorner) {
                         let corner = frameStrs[frameStrs.indexOf('圆角') + 1].replace('pt', '')
-                        return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr, corner]
+                        return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr, corner, UIColorStr]
                     }
-                    return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr]
+                   
+                    return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr, UIColorStr]
                 } else {
                     alert('未知类型' + propertyStrs[0])
                 }
@@ -174,7 +185,6 @@ function getOCFontMethodName(labFontWeightStr) {
         ocFontMethodName = 'fontWithName:@"PingFangSC-Medium" size';
     }
     else if (labFontWeightStr === 'Bold') {
-        alert()
         // 粗体
         ocFontMethodName = 'fontWithName:@"PingFangSC-Semibold" size';
     }
@@ -183,6 +193,18 @@ function getOCFontMethodName(labFontWeightStr) {
         ocFontMethodName = 'systemFontOfSize';
     }
     return ocFontMethodName
+}
+/*
+ #999999 => [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]
+*/
+function hexToUIColor(hexStr, alphaStr) {
+    var hex = hexStr.replace('AHEX#FF', '#');
+    var red = parseInt(hex[1] + hex[2], 16);
+    var green = parseInt(hex[3] + hex[4], 16);
+    var blue = parseInt(hex[5] + hex[6], 16);
+    // js str to int
+    let alpha = parseInt(alphaStr)/100.0
+    return `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:${alpha}]`
 }
 /**
  * 把博客园的博客的发布日期放标题上来
