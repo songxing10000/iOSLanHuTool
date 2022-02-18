@@ -588,31 +588,31 @@ UIView *superView = self.view; //self.contentView;
 
       if (showLine.checked) {
         // 圆角
-        let cornerStgr = (strs.length >= 8) ? `line.layer.cornerRadius = ${strs[6]};` : ''
-        let configBgColorStr = configBgColor('line', strs[4], strs[5])
+        let cornerStgr = (strs.corner > 0) ? `line.layer.cornerRadius = ${strs.corner};` : ''
+        let configBgColorStr = configBgColor('line', strs.hexColor, strs.alpha)
         message.innerText = `\nUIView *vLine = ({
         
-\t  CGRect frame = CGRectMake(${strs[0]}, ${strs[1]}, ${strs[2]}, ${strs[3]});
+\t  CGRect frame = CGRectMake(${strs.x}, ${strs.y}, ${strs.width}, ${strs.height});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
 \t  line.userInteractionEnabled = NO;
-\t// ${strs[4]}
-\tline.backgroundColor = ${strs[strs.length-1]};
+\t// ${strs.hexColor}
+\tline.backgroundColor = ${strs.UIColorStr};
 \t  ${cornerStgr}
 
 \t  UIView *superView = self.view; //self.contentView;
 \t  [superView addSubview: line];
 \t  [line mas_makeConstraints:^(MASConstraintMaker *make) {
-\t    make.top.equalTo(@${strs[1]});
-\t  make.leading.equalTo(@${strs[0]});
+\t    make.top.equalTo(@${strs.y});
+\t  make.leading.equalTo(@${strs.x});
 \t  make.bottom.equalTo(@0);
 \t  make.trailing.equalTo(@0);
-\t  //   make.top.equalTo(superView.mas_top).offset(${strs[1]});
-\t  // make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t  //   make.top.equalTo(superView.mas_top).offset(${strs.y});
+\t  // make.leading.equalTo(superView.mas_leading).offset(${strs.x});
 \t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t    // make.width.equalTo(@${strs[2]});
-\t    // make.height.equalTo(@${strs[3]});
-\t    // make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t    // make.width.equalTo(@${strs.width});
+\t    // make.height.equalTo(@${strs.height});
+\t    // make.size.mas_equalTo(CGSizeMake(${strs.width}, ${strs.height}));
 \t    // make.centerX.equalTo(@0);
 \t    // make.centerY.equalTo(@0);
 \t  }];

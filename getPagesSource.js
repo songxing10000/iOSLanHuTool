@@ -38,7 +38,7 @@ function DOMtoString(document_root) {
             width = frameStrs[2]
             height = frameStrs[3]
         }
-        else if (frameStrs.length >= 5) {
+        if (frameStrs.length >= 5) {
             corner = frameStrs[4]
             if (corner.includes('  ')) {
                 // 288,52,87,24,12  0  0  12  
@@ -164,33 +164,21 @@ function DOMtoString(document_root) {
 
             */
             if (propertyStrs[0] === '颜色') {
-                // #9A2037
-                let hexColor = propertyStrs[1]
-
-                if (hexColor.includes(" 100%")) {
-                    hexColor = hexColor.replace(' 100%', '')
+                // #333333 50%
+                // #FFFFFF 100%
+                
+                
+                let hexColors = propertyStrs[1].split(' ')
+                let hexColor = ''
+                let alpha = '1'
+                if(hexColors.length > 1){
+                    hexColor = hexColors[0]
+                    alpha = parseInt(hexColors[1]) / 100.0
+                } else {
+                    alert("获取颜色错误")
                 }
-                //  100
-                let alphaStr = propertyStrs[2].replace('%', '')
-                if (alphaStr === "HEX") {
-                    alphaStr = 100
-                }
-                if (hexColor.includes(' ')) {
-                    // alpha != 1
-                    // #333333 50% 100
-                    alphaStr = hexColor.split(' ')[1].replace('%', '')
-                }
-
-
-                // #F7F7F7 100
-                let UIColorStr = hexToUIColor(hexColor, alphaStr)
-                let hasCorner = frameDiv.innerText.includes('圆角')
-                if (hasCorner) {
-                    let corner = frameStrs[frameStrs.indexOf('圆角') + 1].replace('pt', '')
-                    return [x, y, width, height, hexColor, alphaStr, corner, UIColorStr]
-                }
-
-                return [x, y, width, height, hexColor, alphaStr, UIColorStr]
+                let UIColorStr = hexToUIColor(hexColor, alpha)
+                return {x, y, width, height, hexColor:propertyStrs[1], alpha, corner, UIColorStr}
             } else {
                 alert('未知类型' + propertyStrs[0])
             }
@@ -198,12 +186,7 @@ function DOMtoString(document_root) {
         }
         else {
             alert('这是啥类型')
-            let arr = document.getElementsByClassName('annotation_item')[0].innerText.split('\n')
-            if (arr.length >= 9) {
-                alert(arr)
-                return [arr[4].replace('pt', ''), arr[5].replace('pt', ''), arr[7].replace('pt', ''), arr[8].replace('pt', '')]
-            }
-            return [x, y]
+            return {x,y,width,height,corner}
         }
 
     }
@@ -244,9 +227,7 @@ function hexToUIColor(hexStr, alphaStr) {
     var red = parseInt(hex[1] + hex[2], 16);
     var green = parseInt(hex[3] + hex[4], 16);
     var blue = parseInt(hex[5] + hex[6], 16);
-    // js str to int
-    let alpha = parseInt(alphaStr) / 100.0
-    return `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:${alpha}]`
+    return `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:${alphaStr}]`
 }
 /**
  * 把博客园的博客的发布日期放标题上来
