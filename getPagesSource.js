@@ -50,7 +50,7 @@ function DOMtoString(document_root) {
             * 获取字符串中特定串的个数
             * https://stackoverflow.com/questions/881085/count-the-number-of-occurrences-of-a-character-in-a-string-in-javascript?rq=1
             */
-            let isAttStr = (codeStr.match(/NSMutableAttributedString/g) || []).length > 2
+            let isAttStr = (codeStr.match(/NSMutableAttributedString/g) || []).length > 2 || codeStr.includes('addAttributes')
             if(isAttStr){
                 // 1.PingFangSC 2.苹方-简 常规体
                 /*
