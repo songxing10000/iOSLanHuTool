@@ -24,9 +24,8 @@ function DOMtoString(document_root) {
         let frameDiv = document.getElementsByClassName('annotation_item')[0]
         // 属性面板
         let propertyDiv = document.getElementsByClassName('annotation_item')[1]
-        // 代码面板
-        let codeStr =  document.getElementsByClassName(' language-c')[0].innerText
         
+
         let frameStrs = frameDiv.innerText.split('\n')
         let propertyStrs = propertyDiv.innerText.split('\n')
 
@@ -43,7 +42,14 @@ function DOMtoString(document_root) {
             viewWidth = frameStrs[7].replace('pt', '')
             viewHeight = frameStrs[8].replace('pt', '')
         }
+
+        // 代码面板
+        let codeDivs = document.getElementsByClassName(' language-c')
         
+        if(typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
+            return getUIImageViewFrame()
+        }
+        let codeStr = codeDivs[0].innerText
         if (codeStr.includes('UILabel')) {
             /** 
             * 大于两个NSMutableAttributedString才算是富文本
@@ -51,7 +57,7 @@ function DOMtoString(document_root) {
             * https://stackoverflow.com/questions/881085/count-the-number-of-occurrences-of-a-character-in-a-string-in-javascript?rq=1
             */
             let isAttStr = (codeStr.match(/NSMutableAttributedString/g) || []).length > 2 || codeStr.includes('addAttributes')
-            if(isAttStr){
+            if (isAttStr) {
                 // 1.PingFangSC 2.苹方-简 常规体
                 /*
                 3.
@@ -68,15 +74,15 @@ function DOMtoString(document_root) {
                 苹方-简 中粗体
                 PingFangSC-Semibold 
                 */
-/*
-js 全部替换
-var str = '2016-09-19';
-var result = str.replace(/-/g,'');
-*/
-               let returnCodeStr = codeStr.replace(/苹方-简 常规体/g, 'PingFangSC-Regular')
-               returnCodeStr = returnCodeStr.replace(/苹方-简 中黑体/g, 'PingFangSC-Medium')
-               returnCodeStr = returnCodeStr.replace(/苹方-简 中粗体/g, 'PingFangSC-Semibold')
-               returnCodeStr = returnCodeStr.replace(/PingFangSC/g, 'PingFangSC-Regular')
+                /*
+                js 全部替换
+                var str = '2016-09-19';
+                var result = str.replace(/-/g,'');
+                */
+                let returnCodeStr = codeStr.replace(/苹方-简 常规体/g, 'PingFangSC-Regular')
+                returnCodeStr = returnCodeStr.replace(/苹方-简 中黑体/g, 'PingFangSC-Medium')
+                returnCodeStr = returnCodeStr.replace(/苹方-简 中粗体/g, 'PingFangSC-Semibold')
+                returnCodeStr = returnCodeStr.replace(/PingFangSC/g, 'PingFangSC-Regular')
 
                 return [viewX, viewY, viewWidth, viewHeight, returnCodeStr]
             }
@@ -178,18 +184,35 @@ var result = str.replace(/-/g,'');
             }
 
         }
+        else if (codeStr.includes('UIImageView')) {
+            return getUIImageViewFrame()
+        }
         else {
-            // UIImageView
+            alert('这是啥类型')
             let arr = document.getElementsByClassName('annotation_item')[0].innerText.split('\n')
             if (arr.length >= 9) {
+                alert(arr)
                 return [arr[4].replace('pt', ''), arr[5].replace('pt', ''), arr[7].replace('pt', ''), arr[8].replace('pt', '')]
             }
             return [viewX, viewY]
         }
-        
+
     }
-    
+
     return "未处理的url";
+}
+/**
+ * UIImageView 取 frame
+ */
+function getUIImageViewFrame() {
+    let strs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n')
+    const frame = strs.filter(str => str.includes('pt')).map(str => str.replace('pt', ''))
+    if (frame.length == 4) {
+        return { x: frame[0], y: frame[1], width: frame[2], height: frame[3] }
+    } else {
+        alert(frame)
+        return '未获取到数据'
+    }
 }
 /**
  * 得到oc字号方法名，
@@ -225,7 +248,7 @@ function hexToUIColor(hexStr, alphaStr) {
     var green = parseInt(hex[3] + hex[4], 16);
     var blue = parseInt(hex[5] + hex[6], 16);
     // js str to int
-    let alpha = parseInt(alphaStr)/100.0
+    let alpha = parseInt(alphaStr) / 100.0
     return `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:${alpha}]`
 }
 /**

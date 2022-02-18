@@ -208,12 +208,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       // 类型判断 typeof strs === 'string'
       // 以字符串开始 startsWith
       if (img.checked) {
-
+        let obj = request.source;
         /*
         24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
         */
         // 返回来的就是UIImageView
         if (!showPro.checked) {
+          
           message.innerText = `UIImageView *aImgV = ({
 
 \tNSString *name = @"图片名";
@@ -225,17 +226,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: imgV];
 \t[imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-\t\tmake.top.equalTo(@${strs[1]});
-\t\tmake.leading.equalTo(@${strs[0]});
+\t\tmake.top.equalTo(@${obj.y});
+\t\tmake.leading.equalTo(@${obj.x});
 \t\tmake.bottom.equalTo(@0);
 \t\tmake.trailing.equalTo(@0);
-\t\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
-\t\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t\t// make.top.equalTo(superView.mas_top).offset(${obj.y});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${obj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t\t// make.width.equalTo(@${strs[2]});
-\t\t// make.height.equalTo(@${strs[3]});
-\t\t// make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t\t// make.width.equalTo(@${obj.width});
+\t\t// make.height.equalTo(@${obj.height});
+\t\t// make.size.mas_equalTo(CGSizeMake(${obj.width}, ${obj.height}));
 \t\t// make.centerX.equalTo(@0);
 \t\t// make.centerY.equalTo(@0);
 \t}];
@@ -264,17 +265,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.bgImgV];
 \t[self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-\t\tmake.top.equalTo(@${strs[1]});
-\t\tmake.leading.equalTo(@${strs[0]});
+\t\tmake.top.equalTo(@${obj.y});
+\t\tmake.leading.equalTo(@${obj.x});
 \t\tmake.bottom.equalTo(@0);
 \t\tmake.trailing.equalTo(@0);
-\t\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
-\t\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t\t// make.top.equalTo(superView.mas_top).offset(${obj.y});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${obj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t\t// make.width.equalTo(@${strs[2]});
-\t\t// make.height.equalTo(@${strs[3]});
-\t\t// make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t\t// make.width.equalTo(@${obj.width});
+\t\t// make.height.equalTo(@${obj.height});
+\t\t// make.size.mas_equalTo(CGSizeMake(${obj.width}, ${obj.height}));
 \t\t// make.centerX.equalTo(@0);
 \t\t// make.centerY.equalTo(@0);
       }];
