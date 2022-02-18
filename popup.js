@@ -495,30 +495,31 @@ UIView *superView = self.view; //self.contentView;
           if (!showPro.checked) {
 
             message.innerText = `\nUIButton *aBtn = ({
-\t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
-\t     btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t     [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
-\t    //  NSString *name = @"图片名";
-\t    //  UIImage *img = [UIImage imageNamed:name];
-\t    // [btn setImage:img forState:UIControlStateNormal];
-\t     UIView *superView = self.view; //self.contentView;
-\t     [superView addSubview: btn];
-\t     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-\t      make.top.equalTo(@0);
-\t      make.leading.equalTo(@0);
-\t      make.bottom.equalTo(@0);
-\t      make.trailing.equalTo(@0);
-\t      // make.top.equalTo(superView.mas_top).offset(0);
-\t      // make.leading.equalTo(superView.mas_leading).offset(0);
-\t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
-\t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t    // make.centerX.equalTo(@0);
-\t    // make.centerY.equalTo(@0);
-\t     }];
+\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t[btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
+\tbtn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
+\t// ${strs[8]}
+\t[btn setTitleColor: ${strs[7]} forState: UIControlStateNormal];
+\t//  NSString *name = @"图片名";
+\t//  UIImage *img = [UIImage imageNamed:name];
+\t// [btn setImage:img forState:UIControlStateNormal];
+\tUIView *superView = self.view; //self.contentView;
+\t[superView addSubview: btn];
+\t[btn mas_makeConstraints:^(MASConstraintMaker *make) {
+\t\tmake.top.equalTo(@0);
+\t\tmake.leading.equalTo(@0);
+\t\tmake.bottom.equalTo(@0);
+\t\tmake.trailing.equalTo(@0);
+\t\t// make.top.equalTo(superView.mas_top).offset(0);
+\t\t// make.leading.equalTo(superView.mas_leading).offset(0);
+\t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
+\t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
+\t\t// make.centerX.equalTo(@0);
+\t\t// make.centerY.equalTo(@0);
+\t}];
 
-\t     btn;
-\t});
+\tbtn;
+});
 \t
 `
 
@@ -527,20 +528,21 @@ UIView *superView = self.view; //self.contentView;
               `
 \t@property(nonatomic) UIButton *useBtn;
 \t
-\t-(UIButton *)useBtn {
-\t  if (!_useBtn) {
-\t    UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t     [btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
-\t     btn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t     [btn setTitleColor: @\"${strs[7]}".hexColor forState: UIControlStateNormal];
-\t    //  NSString *name = @"图片名";
-\t    //  UIImage *img = [UIImage imageNamed:name];
-\t    // [btn setImage:img forState:UIControlStateNormal];
-\t       
-\t    _useBtn = btn;
-\t  }
-\t  return _useBtn;
-          }
+-(UIButton *)useBtn {
+\tif (!_useBtn) {
+\t\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
+\t\t[btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
+\t\tbtn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
+\t\t// ${strs[8]}
+\t\t[btn setTitleColor: ${strs[7]} forState: UIControlStateNormal];
+\t\t//  NSString *name = @"图片名";
+\t\t//  UIImage *img = [UIImage imageNamed:name];
+\t\t// [btn setImage:img forState:UIControlStateNormal];
+     
+\t\t_useBtn = btn;
+\t}
+\treturn _useBtn;
+}
 
 
 \tUIView *superView = self.view; //self.contentView;
