@@ -104,53 +104,11 @@ function DOMtoString(document_root) {
             if (propertyStrs[1] === "DIN Alternate Bold") {
                 ocFontMethodName = 'fontWithName:@"DINAlternate-Bold" size';
             }
-            if (propertyStrs[4] === '对齐') {
-                // 有对齐方式
-            }
-            let labFontSizeStr = propertyStrs[23].replace('pt', '')
-            if (labFontSizeStr === '0') {
-                // 新版蓝湖
-                labFontSizeStr = propertyStrs[21].replace('pt', '')
-            }
-
-            var labStr = ''
-            if (propertyStrs.length < 33) {
-                labStr = propertyStrs[30]
-            } else {
-
-                labStr = propertyStrs[32]
-            }
-
-            // document.getElementsByClassName('item_one item_content')[0].textContent
-            let LabTextColorHexStr = propertyStrs[8]
-            /// 蓝湖上原来的十六进制颜色如 #999999
-            let originHEXStr = ""
-            if (LabTextColorHexStr === 'HEX') {
-
-                // "AHEX#FF333333"转换为
-                // flutter用的 Color(0xff273A62)
-                // 0xff273A62
-                // 这里先不返回FF，给原生用
-                // 方案1:LabTextColorHexStr = propertyStrs[12].replace('AHEX#FF', '0x')
-
-                // 方案2:AHEX#FF999999 => [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]
-                var hex = propertyStrs[12].replace('AHEX#FF', '#');
-                var red = parseInt(hex[1] + hex[2], 16);
-                var green = parseInt(hex[3] + hex[4], 16);
-                var blue = parseInt(hex[5] + hex[6], 16);
-                LabTextColorHexStr = `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:1.0]`
-                originHEXStr = propertyStrs[12].replace('AHEX#FF', '#')
-            }
-            // let alphaStr = propertyStrs[9]
-            // if (alphaStr.length > 0) {
-            //     if (alphaStr !== "100%") {
-            //         alert('透明度修复' + alphaStr)
-            //     }
-            // } else {
-            //     alert('未找到透明度修复')
-            // }
-
-            return [x, y, width, height, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr, originHEXStr]
+            let labFontSizeStr = codeStr.match(/ size: (\S*)],/)[1]
+            let labText = codeStr.match(/initWithString:@"(\S*)"attributes/)[1]
+            let hexColor = propertyStrs.filter(str => str.includes('#')&&str.includes('%'))[0]
+            let UIColorStr = hexToUIColor(propertyStrs[12], 1)
+            return {x, y, width, height, alpha:1,labText, ocFontMethodName, labFontSizeStr, UIColorStr, hexColor}
         }
         else if (codeStr.includes('UIView')) {
 

@@ -67,7 +67,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     return
   }
   if (url.includes('lanhuapp.com/web') || url.includes('app.mockplus.cn')) {
-    let strs = request.source;
+    let returnObj = request.source;
     // 多行 拼接 变量 ${变量名} innerText
     let op = document.getElementById('op').value;
     if (op === 'swift_code') {
@@ -79,14 +79,14 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         lab.textColor = "#4C87F1".color
         lab.textColor = "0x4C87F1".color
         */
-        let colorStr = strs[7].replace('#', '')
-        var swFont = strs[5].replace('" size', '')
+        let colorStr = returnObj.hexColor.replace('#', '')
+        var swFont = returnObj.ocFontMethodName.replace('" size', '')
         swFont = swFont.replace('fontWithName:@"', '')
         message.innerText = `\nlet aLab: UILabel = {
 \tlet lab = UILabel()
-\tlab.text = "${strs[4]}"
+\tlab.text = "${returnObj.labText}"
 \tlab.textColor = "${colorStr}".color
-\tlab.font = UIFont(name: "${swFont}", size: ${strs[6]})
+\tlab.font = UIFont(name: "${swFont}", size: ${returnObj.labFontSizeStr})
 
 \tview.addSubview(lab)
 \tlab.snp.makeConstraints { (make) in
@@ -103,13 +103,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         /*
         24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
         */
-        let colorStr = strs[7].replace('#', '')
-        var swFont = strs[5].replace('" size', '')
+        let colorStr = returnObj.hexColor.replace('#', '')
+        var swFont = returnObj.ocFontMethodName.replace('" size', '')
         swFont = swFont.replace('fontWithName:@"', '')
         message.innerText = `\nlet aBtn: UIButton = {
 \tlet btn = UIButton(type: .custom)
-\tbtn.setTitle("${strs[4]}", for: .normal)
-\tbtn.titleLabel?.font = UIFont(name: "${swFont}", size: ${strs[6]})
+\tbtn.setTitle("${returnObj.labText}", for: .normal)
+\tbtn.titleLabel?.font = UIFont(name: "${swFont}", size: ${returnObj.labFontSizeStr})
 \tbtn.setTitleColor("${colorStr}".color, for: .normal)
 \tview.addSubview(btn)
 \tbtn.snp.makeConstraints { (make) in
@@ -130,13 +130,13 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tlet line = UIView()
 \tline.isUserInteractionEnabled = false
 
-\tline.backgroundColor = "${strs[4]}".color(alpha: 1)
+\tline.backgroundColor = "${returnObj.hexColor}".color(alpha: 1)
   
 \tview.addSubview(line)
 \tline.snp.makeConstraints { (make) in
-\t\tmake.top.equalToSuperview().offset(${strs[1]})
-\t\tmake.left.equalToSuperview().offset(${strs[0]})
-\t\tmake.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
+\t\tmake.top.equalToSuperview().offset(${returnObj.y})
+\t\tmake.left.equalToSuperview().offset(${returnObj.x})
+\t\tmake.size.equalTo(CGSize(width: ${returnObj.width}, height: ${returnObj.height}))
 \t}
 \treturn line
 \t}()`
@@ -154,9 +154,9 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     
 \tview.addSubview(imgV)
 \timgV.snp.makeConstraints { (make) in
-\t\tmake.top.equalToSuperview().offset(${strs[1]})
-\t\tmake.left.equalToSuperview().offset(${strs[0]})
-\t\tmake.size.equalTo(CGSize(width: ${strs[2]}, height: ${strs[3]}))
+\t\tmake.top.equalToSuperview().offset(${returnObj.y})
+\t\tmake.left.equalToSuperview().offset(${returnObj.x})
+\t\tmake.size.equalTo(CGSize(width: ${returnObj.width}, height: ${returnObj.height}))
 \t}
 \treturn imgV
 \t}()`
@@ -166,15 +166,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     }
     if (op === 'flutter') {
       // fontWithName:@\"PingFangSC-Medium\" size
-      var fluterFontName = strs[5].split(' ')[0].split('@"')[1].replace('"', '');
+      var fluterFontName = returnObj[5].split(' ')[0].split('@"')[1].replace('"', '');
       if (lab.checked) {
         message.innerText = `\n
 \tText(
-\t\t'${strs[4]}',
+\t\t'${returnObj[4]}',
 \t\tstyle: TextStyle(
 \t\tfontFamily: '${fluterFontName}',
 \t\tfontSize: 22,
-\t\tcolor: Color(${strs[7]})),
+\t\tcolor: Color(${returnObj[7]})),
 \t),\n`;
         return
       }
@@ -191,11 +191,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           TextButton(
 \tonPressed: () {},
 \tchild: Text(
-\t\t'${strs[4]}',
+\t\t'${returnObj[4]}',
 \t\tstyle: TextStyle(
 \t\tfontFamily: '${fluterFontName}',
 \t\tfontSize: 22,
-\t\tcolor: Color(${strs[7]})),
+\t\tcolor: Color(${returnObj[7]})),
 \t)),
           \n`;
 
@@ -208,10 +208,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       // 类型判断 typeof strs === 'string'
       // 以字符串开始 startsWith
       if (img.checked) {
-        let obj = request.source;
-        /*
-        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-        */
         // 返回来的就是UIImageView
         if (!showPro.checked) {
           
@@ -226,17 +222,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: imgV];
 \t[imgV mas_makeConstraints:^(MASConstraintMaker *make) {
-\t\tmake.top.equalTo(@${obj.y});
-\t\tmake.leading.equalTo(@${obj.x});
+\t\tmake.top.equalTo(@${returnObj.y});
+\t\tmake.leading.equalTo(@${returnObj.x});
 \t\tmake.bottom.equalTo(@0);
 \t\tmake.trailing.equalTo(@0);
-\t\t// make.top.equalTo(superView.mas_top).offset(${obj.y});
-\t\t// make.leading.equalTo(superView.mas_leading).offset(${obj.x});
+\t\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t\t// make.width.equalTo(@${obj.width});
-\t\t// make.height.equalTo(@${obj.height});
-\t\t// make.size.mas_equalTo(CGSizeMake(${obj.width}, ${obj.height}));
+\t\t// make.width.equalTo(@${returnObj.width});
+\t\t// make.height.equalTo(@${returnObj.height});
+\t\t// make.size.mas_equalTo(CGSizeMake(${returnObj.width}, ${returnObj.height}));
 \t\t// make.centerX.equalTo(@0);
 \t\t// make.centerY.equalTo(@0);
 \t}];
@@ -265,17 +261,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       UIView *superView = self.view; //self.contentView;
       [superView addSubview: self.bgImgV];
 \t[self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
-\t\tmake.top.equalTo(@${obj.y});
-\t\tmake.leading.equalTo(@${obj.x});
+\t\tmake.top.equalTo(@${returnObj.y});
+\t\tmake.leading.equalTo(@${returnObj.x});
 \t\tmake.bottom.equalTo(@0);
 \t\tmake.trailing.equalTo(@0);
-\t\t// make.top.equalTo(superView.mas_top).offset(${obj.y});
-\t\t// make.leading.equalTo(superView.mas_leading).offset(${obj.x});
+\t\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t\t// make.width.equalTo(@${obj.width});
-\t\t// make.height.equalTo(@${obj.height});
-\t\t// make.size.mas_equalTo(CGSizeMake(${obj.width}, ${obj.height}));
+\t\t// make.width.equalTo(@${returnObj.width});
+\t\t// make.height.equalTo(@${returnObj.height});
+\t\t// make.size.mas_equalTo(CGSizeMake(${returnObj.width}, ${returnObj.height}));
 \t\t// make.centerX.equalTo(@0);
 \t\t// make.centerY.equalTo(@0);
       }];
@@ -288,17 +284,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
         // 返回来的就是UILabel 
         if (!showPro.checked) {
           
-          if(typeof strs.returnCodeStr !== 'undefined') {
-            message.innerText = `${strs.returnCodeStr}  
+          if(typeof returnObj.returnCodeStr !== 'undefined') {
+            message.innerText = `${returnObj.returnCodeStr}  
 UIView *superView = self.view; //self.contentView;
 [superView addSubview: label];
 [label mas_makeConstraints:^(MASConstraintMaker *make) {
-\tmake.top.equalTo(@${strs.y});
-\tmake.leading.equalTo(@${strs.x});
+\tmake.top.equalTo(@${returnObj.y});
+\tmake.leading.equalTo(@${returnObj.x});
 \tmake.bottom.equalTo(@0);
 \tmake.trailing.equalTo(@0);
-\t// make.top.equalTo(superView.mas_top).offset(${strs.y});
-\t// make.leading.equalTo(superView.mas_leading).offset(${strs.x});
+\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t// make.trailing.equalTo(superView.mas_trailing).offset(0);
 \t// make.centerX.equalTo(@0);
@@ -311,20 +307,20 @@ UIView *superView = self.view; //self.contentView;
           message.innerText = `UILabel *aLab = ({
 
 \tUILabel *lab = [UILabel new];
-\tlab.text = @"${strs[4]}";
-\tlab.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t// ${strs[8]}
-\tlab.textColor = ${strs[7]};
+\tlab.text = @"${returnObj.labText}";
+\tlab.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t// ${returnObj.hexColor}
+\tlab.textColor = ${returnObj.UIColorStr};
 
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: lab];
 \t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
-\t\tmake.top.equalTo(@${strs[1]});
-\t\tmake.leading.equalTo(@${strs[0]});
+\t\tmake.top.equalTo(@${returnObj.y});
+\t\tmake.leading.equalTo(@${returnObj.x});
 \t\tmake.bottom.equalTo(@0);
 \t\tmake.trailing.equalTo(@0);
-\t\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
-\t\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
 \t\t// make.centerX.equalTo(@0);
@@ -342,10 +338,10 @@ UIView *superView = self.view; //self.contentView;
 \tif (!_statusLab) {
 
 \t\tUILabel *lab = [UILabel new];
-\t\tlab.text = @"${strs[4]}";
-\t\tlab.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t\t// ${strs[8]}
-\t\tlab.textColor = ${strs[7]};
+\t\tlab.text = @"${returnObj.labText}";
+\t\tlab.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t\t// ${returnObj.hexColor}
+\t\tlab.textColor = ${returnObj.UIColorStr};
 
 \t\t_statusLab = lab;
 \t}
@@ -356,17 +352,17 @@ UIView *superView = self.view; //self.contentView;
 UIView *superView = self.view; //self.contentView;
 [superView addSubview: self.statusLab];
 [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
-\tmake.top.equalTo(@${strs[1]});
-\tmake.leading.equalTo(@${strs[0]});
+\tmake.top.equalTo(@${returnObj.y});
+\tmake.leading.equalTo(@${returnObj.x});
 \tmake.bottom.equalTo(@0);
 \tmake.trailing.equalTo(@0);
-\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
-\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t// make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t// make.width.equalTo(@${strs[2]});
-\t// make.height.equalTo(@${strs[3]});
-\t// make.size.mas_equalTo(CGSizeMake(${strs[2]}, ${strs[3]}));
+\t// make.width.equalTo(@${returnObj.width});
+\t// make.height.equalTo(@${returnObj.height});
+\t// make.size.mas_equalTo(CGSizeMake(${returnObj.width}, ${returnObj.height}));
 \t// make.centerX.equalTo(@0);
 \t// make.centerY.equalTo(@0);
 }];
@@ -377,7 +373,7 @@ UIView *superView = self.view; //self.contentView;
 
 
       if (btn.checked) {
-        if (strs.length == 2) {
+        if (returnObj.length == 2) {
           // 纯图片按钮
           if (!showPro.checked) {
             message.innerText = `UIButton *aBtn = ({
@@ -443,10 +439,10 @@ UIView *superView = self.view; //self.contentView;
           return
         }
 
-        if (strs.length == 6 || strs.length == 7) {
+        if (returnObj.length == 6 || returnObj.length == 7) {
           // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
-          let corner = (strs.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
-          let configBgColorStr = configBgColor('btn', strs[4], strs[5])
+          let corner = (returnObj.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
+          let configBgColorStr = configBgColor('btn', returnObj.hexColor, alpha)
           if (!showPro.checked) {
             message.innerText = `\nUIButton *aBtn = ({
 
@@ -517,10 +513,10 @@ UIView *superView = self.view; //self.contentView;
 
             message.innerText = `\nUIButton *aBtn = ({
 \tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t[btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
-\tbtn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t// ${strs[8]}
-\t[btn setTitleColor: ${strs[7]} forState: UIControlStateNormal];
+\t[btn setTitle: @"${returnObj.labText}" forState: UIControlStateNormal];
+\tbtn.titleLabel.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t// ${returnObj.hexColor}
+\t[btn setTitleColor: ${returnObj.UIColorStr} forState: UIControlStateNormal];
 \t//  NSString *name = @"图片名";
 \t//  UIImage *img = [UIImage imageNamed:name];
 \t// [btn setImage:img forState:UIControlStateNormal];
@@ -552,10 +548,10 @@ UIView *superView = self.view; //self.contentView;
 -(UIButton *)useBtn {
 \tif (!_useBtn) {
 \t\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t\t[btn setTitle: @"${strs[4]}" forState: UIControlStateNormal];
-\t\tbtn.titleLabel.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t\t// ${strs[8]}
-\t\t[btn setTitleColor: ${strs[7]} forState: UIControlStateNormal];
+\t\t[btn setTitle: @"${returnObj.labText}" forState: UIControlStateNormal];
+\t\tbtn.titleLabel.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t\t// ${returnObj.hexColor}
+\t\t[btn setTitleColor: ${returnObj.UIColorStr} forState: UIControlStateNormal];
 \t\t//  NSString *name = @"图片名";
 \t\t//  UIImage *img = [UIImage imageNamed:name];
 \t\t// [btn setImage:img forState:UIControlStateNormal];
@@ -588,31 +584,31 @@ UIView *superView = self.view; //self.contentView;
 
       if (showLine.checked) {
         // 圆角
-        let cornerStgr = (strs.corner > 0) ? `line.layer.cornerRadius = ${strs.corner};` : ''
-        let configBgColorStr = configBgColor('line', strs.hexColor, strs.alpha)
+        let cornerStgr = (returnObj.corner > 0) ? `line.layer.cornerRadius = ${returnObj.corner};` : ''
+        let configBgColorStr = configBgColor('line', returnObj.hexColor, returnObj.alpha)
         message.innerText = `\nUIView *vLine = ({
         
-\t  CGRect frame = CGRectMake(${strs.x}, ${strs.y}, ${strs.width}, ${strs.height});
+\t  CGRect frame = CGRectMake(${returnObj.x}, ${returnObj.y}, ${returnObj.width}, ${returnObj.height});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
 \t  line.userInteractionEnabled = NO;
-\t// ${strs.hexColor}
-\tline.backgroundColor = ${strs.UIColorStr};
+\t// ${returnObj.hexColor}
+\tline.backgroundColor = ${returnObj.UIColorStr};
 \t  ${cornerStgr}
 
 \t  UIView *superView = self.view; //self.contentView;
 \t  [superView addSubview: line];
 \t  [line mas_makeConstraints:^(MASConstraintMaker *make) {
-\t    make.top.equalTo(@${strs.y});
-\t  make.leading.equalTo(@${strs.x});
+\t    make.top.equalTo(@${returnObj.y});
+\t  make.leading.equalTo(@${returnObj.x});
 \t  make.bottom.equalTo(@0);
 \t  make.trailing.equalTo(@0);
-\t  //   make.top.equalTo(superView.mas_top).offset(${strs.y});
-\t  // make.leading.equalTo(superView.mas_leading).offset(${strs.x});
+\t  //   make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t  // make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
-\t    // make.width.equalTo(@${strs.width});
-\t    // make.height.equalTo(@${strs.height});
-\t    // make.size.mas_equalTo(CGSizeMake(${strs.width}, ${strs.height}));
+\t    // make.width.equalTo(@${returnObj.width});
+\t    // make.height.equalTo(@${returnObj.height});
+\t    // make.size.mas_equalTo(CGSizeMake(${returnObj.width}, ${returnObj.height}));
 \t    // make.centerX.equalTo(@0);
 \t    // make.centerY.equalTo(@0);
 \t  }];
