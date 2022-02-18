@@ -323,7 +323,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\tUILabel *lab = [UILabel new];
 \t\tlab.text = @"${strs[4]}";
 \t\tlab.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\t\tlab.textColor = @\"${strs[7]}".hexColor;
+\t\t// ${strs[8]}
+\t\tlab.textColor = ${strs[7]};
 
 \t\t_statusLab = lab;
 \t}
