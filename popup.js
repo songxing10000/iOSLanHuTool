@@ -285,20 +285,20 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       }
 
       if (lab.checked) {
-        // 返回来的就是UILabel
-        let isAttStr = (strs.length == 5 && strs[strs.length-1].startsWith('UILabel'))
+        // 返回来的就是UILabel 
         if (!showPro.checked) {
-          if(isAttStr) {
-            message.innerText = `${strs[4]}  
+          
+          if(typeof strs.returnCodeStr !== 'undefined') {
+            message.innerText = `${strs.returnCodeStr}  
 UIView *superView = self.view; //self.contentView;
 [superView addSubview: label];
 [label mas_makeConstraints:^(MASConstraintMaker *make) {
-\tmake.top.equalTo(@${strs[1]});
-\tmake.leading.equalTo(@${strs[0]});
+\tmake.top.equalTo(@${strs.y});
+\tmake.leading.equalTo(@${strs.x});
 \tmake.bottom.equalTo(@0);
 \tmake.trailing.equalTo(@0);
-\t// make.top.equalTo(superView.mas_top).offset(${strs[1]});
-\t// make.leading.equalTo(superView.mas_leading).offset(${strs[0]});
+\t// make.top.equalTo(superView.mas_top).offset(${strs.y});
+\t// make.leading.equalTo(superView.mas_leading).offset(${strs.x});
 \t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t// make.trailing.equalTo(superView.mas_trailing).offset(0);
 \t// make.centerX.equalTo(@0);

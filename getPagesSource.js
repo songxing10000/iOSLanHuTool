@@ -18,39 +18,52 @@ function DOMtoString(document_root) {
         div.append(desDiv)
     }
     else if (loadUrl.includes('lanhuapp.com/web')) {
-        // 图片 文字 bgview
 
-        // frame面板
-        let frameDiv = document.getElementsByClassName('annotation_item')[0]
         // 属性面板
         let propertyDiv = document.getElementsByClassName('annotation_item')[1]
-        
-
-        let frameStrs = frameDiv.innerText.split('\n')
         let propertyStrs = propertyDiv.innerText.split('\n')
 
-        // x y 始终以右上角来
-        let viewX = frameStrs[3].replace('pt', '')
-        let viewY = frameStrs[4].replace('pt', '')
-        // 宽高
-        let viewWidth = frameStrs[6].replace('pt', '')
-        let viewHeight = frameStrs[7].replace('pt', '')
-        if (viewX === "位置" && viewWidth === "大小") {
-            // alert(frameStrs)// 样式信息,图层,矩形,位置,12pt,176pt,大小,351pt,1pt,不透明度,100%
-            viewX = frameStrs[4].replace('pt', '')
-            viewY = frameStrs[5].replace('pt', '')
-            viewWidth = frameStrs[7].replace('pt', '')
-            viewHeight = frameStrs[8].replace('pt', '')
+        
+        // frame面板
+        let frameDiv = document.getElementsByClassName('annotation_item')[0]
+        let frameStrs = frameDiv.innerText.split('\n').filter(str => str.includes('pt')).map(str => str.replaceAll('pt', ''))
+        let x = ''
+        let y = ''
+        let width = ''
+        let height = ''
+        let corner = '0'
+        if (frameStrs.length >= 4) {
+            x = frameStrs[0]
+            y = frameStrs[1]
+            width = frameStrs[2]
+            height = frameStrs[3]
         }
+        else if (frameStrs.length >= 5) {
+            corner = frameStrs[4]
+            if (corner.includes('  ')) {
+                // 288,52,87,24,12  0  0  12  
+                // 暂不考虑不是四个角圆角的 
+                corner = corner.split('  ').filter(str => parseInt(str) > 0)[0]
+            }
+        }
+    
+
+        
+        
 
         // 代码面板
         let codeDivs = document.getElementsByClassName(' language-c')
         
         if(typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
-            return getUIImageViewFrame()
+            // 切图可下载
+            // tip 键与值相同，可以简写
+            return {x,y,width,height,corner}
         }
         let codeStr = codeDivs[0].innerText
-        if (codeStr.includes('UILabel')) {
+        if (codeStr.includes('UIImageView')) {
+            return {x,y,width,height,corner}
+        }
+        else if (codeStr.includes('UILabel')) {
             /** 
             * 大于两个NSMutableAttributedString才算是富文本
             * 获取字符串中特定串的个数
@@ -83,8 +96,7 @@ function DOMtoString(document_root) {
                 returnCodeStr = returnCodeStr.replace(/苹方-简 中黑体/g, 'PingFangSC-Medium')
                 returnCodeStr = returnCodeStr.replace(/苹方-简 中粗体/g, 'PingFangSC-Semibold')
                 returnCodeStr = returnCodeStr.replace(/PingFangSC/g, 'PingFangSC-Regular')
-
-                return [viewX, viewY, viewWidth, viewHeight, returnCodeStr]
+                return {x,y,width,height,corner,returnCodeStr}
             }
             // UILabel
             // Medium
@@ -138,7 +150,7 @@ function DOMtoString(document_root) {
             //     alert('未找到透明度修复')
             // }
 
-            return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr, originHEXStr]
+            return [x, y, width, height, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr, originHEXStr]
         }
         else if (codeStr.includes('UIView')) {
 
@@ -175,17 +187,14 @@ function DOMtoString(document_root) {
                 let hasCorner = frameDiv.innerText.includes('圆角')
                 if (hasCorner) {
                     let corner = frameStrs[frameStrs.indexOf('圆角') + 1].replace('pt', '')
-                    return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr, corner, UIColorStr]
+                    return [x, y, width, height, hexColor, alphaStr, corner, UIColorStr]
                 }
 
-                return [viewX, viewY, viewWidth, viewHeight, hexColor, alphaStr, UIColorStr]
+                return [x, y, width, height, hexColor, alphaStr, UIColorStr]
             } else {
                 alert('未知类型' + propertyStrs[0])
             }
 
-        }
-        else if (codeStr.includes('UIImageView')) {
-            return getUIImageViewFrame()
         }
         else {
             alert('这是啥类型')
@@ -194,26 +203,14 @@ function DOMtoString(document_root) {
                 alert(arr)
                 return [arr[4].replace('pt', ''), arr[5].replace('pt', ''), arr[7].replace('pt', ''), arr[8].replace('pt', '')]
             }
-            return [viewX, viewY]
+            return [x, y]
         }
 
     }
 
     return "未处理的url";
 }
-/**
- * UIImageView 取 frame
- */
-function getUIImageViewFrame() {
-    let strs = document.getElementsByClassName('annotation_item')[0].innerText.split('\n')
-    const frame = strs.filter(str => str.includes('pt')).map(str => str.replace('pt', ''))
-    if (frame.length == 4) {
-        return { x: frame[0], y: frame[1], width: frame[2], height: frame[3] }
-    } else {
-        alert(frame)
-        return '未获取到数据'
-    }
-}
+
 /**
  * 得到oc字号方法名，
  * @param {String} labFontWeightStr 字重Regular、Medium、Bold
