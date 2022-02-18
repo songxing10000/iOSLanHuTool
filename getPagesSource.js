@@ -88,12 +88,23 @@ function DOMtoString(document_root) {
                 
                 // document.getElementsByClassName('item_one item_content')[0].textContent
                 let LabTextColorHexStr = propertyStrs[8]
+                /// 蓝湖上原来的十六进制颜色如 #999999
+                let originHEXStr = ""
                 if(LabTextColorHexStr === 'HEX'){
+                    
                     // "AHEX#FF333333"转换为
                     // flutter用的 Color(0xff273A62)
                     // 0xff273A62
                     // 这里先不返回FF，给原生用
-                    LabTextColorHexStr = propertyStrs[12].replace('AHEX#FF', '0x')
+                    // 方案1:LabTextColorHexStr = propertyStrs[12].replace('AHEX#FF', '0x')
+
+                    // 方案2:AHEX#FF999999 => [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]
+                    var hex = propertyStrs[12].replace('AHEX#FF', '#');
+                    var red = parseInt(hex[1] + hex[2], 16);
+                    var green = parseInt(hex[3] + hex[4], 16);
+                    var blue = parseInt(hex[5] + hex[6], 16);
+                    LabTextColorHexStr = `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:1.0]`
+                    originHEXStr = propertyStrs[12].replace('AHEX#FF', '#')
                 }
                 // let alphaStr = propertyStrs[9]
                 // if (alphaStr.length > 0) {
@@ -104,7 +115,7 @@ function DOMtoString(document_root) {
                 //     alert('未找到透明度修复')
                 // }
                 
-                return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
+                return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr, originHEXStr]
             }
             else if (codeStr.includes('UIView')) {
                 // UIView

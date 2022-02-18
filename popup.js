@@ -292,7 +292,8 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tUILabel *lab = [UILabel new];
 \tlab.text = @"${strs[4]}";
 \tlab.font = [UIFont ${strs[5]}:  ${strs[6]}];
-\tlab.textColor = @\"${strs[7]}".hexColor;
+\t// ${strs[8]}
+\tlab.textColor = ${strs[7]};
 
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: lab];
