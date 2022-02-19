@@ -72,21 +72,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     let op = document.getElementById('op').value;
     if (op === 'swift_code') {
       if (lab.checked) {
-        /**
-          24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-
-        UIFont(name: "PingFangSC-Regular", size: 15)
-        lab.textColor = "#4C87F1".color
-        lab.textColor = "0x4C87F1".color
-        */
-        let colorStr = returnObj.hexColor.replace('#', '')
-        var swFont = returnObj.ocFontMethodName.replace('" size', '')
-        swFont = swFont.replace('fontWithName:@"', '')
         message.innerText = `\nlet aLab: UILabel = {
 \tlet lab = UILabel()
-\tlab.text = "${returnObj.labText}"
-\tlab.textColor = "${colorStr}".color
-\tlab.font = UIFont(name: "${swFont}", size: ${returnObj.labFontSizeStr})
+\tlab.text = "${returnObj.text}"
+\tlab.textColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
+\tlab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
 
 \tview.addSubview(lab)
 \tlab.snp.makeConstraints { (make) in
@@ -100,17 +90,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       }
 
       if (btn.checked) {
-        /*
-        24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
-        */
-        let colorStr = returnObj.hexColor.replace('#', '')
-        var swFont = returnObj.ocFontMethodName.replace('" size', '')
-        swFont = swFont.replace('fontWithName:@"', '')
         message.innerText = `\nlet aBtn: UIButton = {
 \tlet btn = UIButton(type: .custom)
-\tbtn.setTitle("${returnObj.labText}", for: .normal)
-\tbtn.titleLabel?.font = UIFont(name: "${swFont}", size: ${returnObj.labFontSizeStr})
-\tbtn.setTitleColor("${colorStr}".color, for: .normal)
+\tbtn.setTitle("${returnObj.text}", for: .normal)
+\tbtn.titleLabel?.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
+\tbtn.setTitleColor(UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a}), for: .normal)
 \tview.addSubview(btn)
 \tbtn.snp.makeConstraints { (make) in
 \t\tmake.centerX.equalToSuperview()
@@ -130,8 +114,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tlet line = UIView()
 \tline.isUserInteractionEnabled = false
 
-\tline.backgroundColor = "${returnObj.hexColor}".color(alpha: 1)
-  
+\tline.backgroundColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
 \tview.addSubview(line)
 \tline.snp.makeConstraints { (make) in
 \t\tmake.top.equalToSuperview().offset(${returnObj.y})
@@ -165,16 +148,15 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       return
     }
     if (op === 'flutter') {
-      // fontWithName:@\"PingFangSC-Medium\" size
-      var fluterFontName = returnObj[5].split(' ')[0].split('@"')[1].replace('"', '');
+       
       if (lab.checked) {
         message.innerText = `\n
 \tText(
-\t\t'${returnObj[4]}',
+\t\t'${returnObj.text}',
 \t\tstyle: TextStyle(
-\t\tfontFamily: '${fluterFontName}',
+\t\tfontFamily: '${returnObj.fontName}',
 \t\tfontSize: 22,
-\t\tcolor: Color(${returnObj[7]})),
+\t\tcolor: Color(${returnObj.hexColor})),
 \t),\n`;
         return
       }
@@ -191,11 +173,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           TextButton(
 \tonPressed: () {},
 \tchild: Text(
-\t\t'${returnObj[4]}',
+\t\t'${returnObj.text}',
 \t\tstyle: TextStyle(
-\t\tfontFamily: '${fluterFontName}',
-\t\tfontSize: 22,
-\t\tcolor: Color(${returnObj[7]})),
+\t\tfontFamily: '${returnObj.fontName}',
+\t\tfontSize: ${returnObj.fontSize},
+\t\tcolor: Color(${returnObj.hexColor})),
 \t)),
           \n`;
 
@@ -307,10 +289,10 @@ UIView *superView = self.view; //self.contentView;
           message.innerText = `UILabel *aLab = ({
 
 \tUILabel *lab = [UILabel new];
-\tlab.text = @"${returnObj.labText}";
-\tlab.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\tlab.text = @"${returnObj.text}";
+\tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t// ${returnObj.hexColor}
-\tlab.textColor = ${returnObj.UIColorStr};
+\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: lab];
@@ -338,10 +320,10 @@ UIView *superView = self.view; //self.contentView;
 \tif (!_statusLab) {
 
 \t\tUILabel *lab = [UILabel new];
-\t\tlab.text = @"${returnObj.labText}";
-\t\tlab.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t\tlab.text = @"${returnObj.text}";
+\t\tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t\t// ${returnObj.hexColor}
-\t\tlab.textColor = ${returnObj.UIColorStr};
+\t\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 
 \t\t_statusLab = lab;
 \t}
@@ -441,13 +423,12 @@ UIView *superView = self.view; //self.contentView;
 
         if (returnObj.length == 6 || returnObj.length == 7) {
           // 纯背景色按钮 // 38,543,300,44,#9A2037,100,23
-          let corner = (returnObj.length == 7) ? `btn.layer.cornerRadius = 23;` : ''
-          let configBgColorStr = configBgColor('btn', returnObj.hexColor, alpha)
+          let corner = (returnObj.corner > 0) ? `btn.layer.cornerRadius = ${returnObj.corner};` : ''
           if (!showPro.checked) {
             message.innerText = `\nUIButton *aBtn = ({
 
 \t     UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t     ${configBgColorStr}
+\t     btn.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 \t     ${corner}
 
 \t     UIView *superView = self.view; //self.contentView;
@@ -480,7 +461,7 @@ UIView *superView = self.view; //self.contentView;
 \t-(UIButton *)useBtn {
 \t  if (!_useBtn) {
 \t    UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t     ${configBgColorStr}
+\t    btn.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 \t     ${corner}
 \t       
 \t    _useBtn = btn;
@@ -513,10 +494,10 @@ UIView *superView = self.view; //self.contentView;
 
             message.innerText = `\nUIButton *aBtn = ({
 \tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t[btn setTitle: @"${returnObj.labText}" forState: UIControlStateNormal];
-\tbtn.titleLabel.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
+\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t// ${returnObj.hexColor}
-\t[btn setTitleColor: ${returnObj.UIColorStr} forState: UIControlStateNormal];
+\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
 \t//  NSString *name = @"图片名";
 \t//  UIImage *img = [UIImage imageNamed:name];
 \t// [btn setImage:img forState:UIControlStateNormal];
@@ -548,10 +529,10 @@ UIView *superView = self.view; //self.contentView;
 -(UIButton *)useBtn {
 \tif (!_useBtn) {
 \t\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t\t[btn setTitle: @"${returnObj.labText}" forState: UIControlStateNormal];
-\t\tbtn.titleLabel.font = [UIFont ${returnObj.ocFontMethodName}:  ${returnObj.labFontSizeStr}];
+\t\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
+\t\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t\t// ${returnObj.hexColor}
-\t\t[btn setTitleColor: ${returnObj.UIColorStr} forState: UIControlStateNormal];
+\t\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
 \t\t//  NSString *name = @"图片名";
 \t\t//  UIImage *img = [UIImage imageNamed:name];
 \t\t// [btn setImage:img forState:UIControlStateNormal];
@@ -585,14 +566,13 @@ UIView *superView = self.view; //self.contentView;
       if (showLine.checked) {
         // 圆角
         let cornerStgr = (returnObj.corner > 0) ? `line.layer.cornerRadius = ${returnObj.corner};` : ''
-        let configBgColorStr = configBgColor('line', returnObj.hexColor, returnObj.alpha)
         message.innerText = `\nUIView *vLine = ({
         
 \t  CGRect frame = CGRectMake(${returnObj.x}, ${returnObj.y}, ${returnObj.width}, ${returnObj.height});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
 \t  line.userInteractionEnabled = NO;
 \t// ${returnObj.hexColor}
-\tline.backgroundColor = ${returnObj.UIColorStr};
+\tline.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 \t  ${cornerStgr}
 
 \t  UIView *superView = self.view; //self.contentView;
@@ -625,21 +605,6 @@ UIView *superView = self.view; //self.contentView;
 
 }
 );
-/**
- * 设置背景色
- * @param {String} varName 变量名如, line btn lab
- * @param {String} hexColorStr 十六进制色的字符串如，#9A2037
- * @param {Number} alphaStr 透明度 100 70
- */
-function configBgColor(varName, hexColorStr, alphaStr) {
-  // 透明度
-  let returnCodeStr = `${varName}.backgroundColor = @"${hexColorStr}".hexColor;`
-  if (alphaStr / 100 != 1) {
-    // 透明度         
-    returnCodeStr = `${varName}.backgroundColor = [@"${hexColorStr}".hexColor colorWithAlphaComponent: ${alphaStr / 100.0}];`
-  }
-  return returnCodeStr
-}
 function onWindowLoad() {
 
   // 获取 popup.html里的元素进行字符串设定

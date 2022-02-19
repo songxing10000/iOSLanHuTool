@@ -22,48 +22,30 @@ function DOMtoString(document_root) {
         // 属性面板
         let propertyDiv = document.getElementsByClassName('annotation_item')[1]
         let propertyStrs = propertyDiv.innerText.split('\n')
-
-        
-        // frame面板
-        let frameDiv = document.getElementsByClassName('annotation_item')[0]
-        let frameStrs = frameDiv.innerText.split('\n').filter(str => str.includes('pt')).map(str => str.replaceAll('pt', ''))
-        let x = ''
-        let y = ''
-        let width = ''
-        let height = ''
-        let corner = '0'
-        if (frameStrs.length >= 4) {
-            x = frameStrs[0]
-            y = frameStrs[1]
-            width = frameStrs[2]
-            height = frameStrs[3]
+        /** 
+        *初始返回对象
+        */
+        let returnObj = getReturnObj()
+        let rgbaStrs = propertyStrs.filter(str => str.includes('RGBA'))[0].replace('RGBA', '').split(', ')
+        if(rgbaStrs.length >= 4) {
+            returnObj.r = rgbaStrs[0]
+            returnObj.g = rgbaStrs[1]
+            returnObj.b = rgbaStrs[2]
+            returnObj.a = rgbaStrs[3]
+        } else {
+            alert('获取rgba异常')
         }
-        if (frameStrs.length >= 5) {
-            corner = frameStrs[4]
-            if (corner.includes('  ')) {
-                // 288,52,87,24,12  0  0  12  
-                // 暂不考虑不是四个角圆角的 
-                corner = corner.split('  ').filter(str => parseInt(str) > 0)[0]
-            }
-        }
-    
-
-        
-        
-
         // 代码面板
         let codeDivs = document.getElementsByClassName(' language-c')
-        
-        if(typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
+        if (typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
             // 切图可下载
-            // tip 键与值相同，可以简写
-            return {x,y,width,height,corner}
+            return returnObj
         }
         let codeStr = codeDivs[0].innerText
         if (codeStr.includes('UIImageView')) {
-            return {x,y,width,height,corner}
+            return returnObj
         }
-        else if (codeStr.includes('UILabel')) {
+        if (codeStr.includes('UILabel')) {
             /** 
             * 大于两个NSMutableAttributedString才算是富文本
             * 获取字符串中特定串的个数
@@ -71,80 +53,44 @@ function DOMtoString(document_root) {
             */
             let isAttStr = (codeStr.match(/NSMutableAttributedString/g) || []).length > 2 || codeStr.includes('addAttributes')
             if (isAttStr) {
-                // 1.PingFangSC 2.苹方-简 常规体
-                /*
-                3.
-                苹方-简 常规体
-                PingFangSC-Regular
-                苹方-简 极细体
-                PingFangSC-Ultralight
-                苹方-简 细体
-                PingFangSC-Light
-                苹方-简 纤细体
-                PingFangSC-Thin
-                苹方-简 中黑体
-                PingFangSC-Medium
-                苹方-简 中粗体
-                PingFangSC-Semibold 
-                */
-                /*
-                js 全部替换
-                var str = '2016-09-19';
-                var result = str.replace(/-/g,'');
-                */
-                let returnCodeStr = codeStr.replace(/苹方-简 常规体/g, 'PingFangSC-Regular')
-                returnCodeStr = returnCodeStr.replace(/苹方-简 中黑体/g, 'PingFangSC-Medium')
-                returnCodeStr = returnCodeStr.replace(/苹方-简 中粗体/g, 'PingFangSC-Semibold')
-                returnCodeStr = returnCodeStr.replace(/PingFangSC/g, 'PingFangSC-Regular')
-                return {x,y,width,height,corner,returnCodeStr}
+                let returnCodeStr = codeStr.replaceAll('苹方-简 常规体', 'PingFangSC-Regular')
+                returnCodeStr = returnCodeStr.replaceAll('苹方-简 中黑体', 'PingFangSC-Medium')
+                returnCodeStr = returnCodeStr.replaceAll('苹方-简 中粗体', 'PingFangSC-Semibold')
+                returnCodeStr = returnCodeStr.replaceAll('PingFangSC', 'PingFangSC-Regular')
+                returnCodeStr = returnCodeStr.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
+                returnCodeStr = returnCodeStr.replaceAll('DINAlternate', 'DINAlternate-Bold')
+                returnObj.returnCodeStr = returnCodeStr
+                return returnObj
             }
-            // UILabel
-            // Medium
-            let ocFontMethodName = getOCFontMethodName(propertyStrs[3])
-            if (propertyStrs[1] === "DIN Alternate Bold") {
-                ocFontMethodName = 'fontWithName:@"DINAlternate-Bold" size';
-            }
-            let labFontSizeStr = codeStr.match(/ size: (\S*)],/)[1]
-            let labText = codeStr.match(/initWithString:@"(\S*)"attributes/)[1]
-            let hexColor = propertyStrs.filter(str => str.includes('#')&&str.includes('%'))[0]
-            let UIColorStr = hexToUIColor(propertyStrs[12], 1)
-            return {x, y, width, height, alpha:1,labText, ocFontMethodName, labFontSizeStr, UIColorStr, hexColor}
+            let fontName =  propertyStrs[propertyStrs.indexOf('字体')+1]
+            fontName = fontName.replaceAll('苹方-简 常规体', 'PingFangSC-Regular')
+            fontName = fontName.replaceAll('苹方-简 中黑体', 'PingFangSC-Medium')
+            fontName = fontName.replaceAll('苹方-简 中粗体', 'PingFangSC-Semibold')
+            // DINAlternate 或者 DIN Alternate Bold 变换到OC里的 @"DINAlternate-Bold"
+            fontName = fontName.replaceAll('DINAlternate', 'DINAlternate-Bold')
+            fontName = fontName.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
+            // UILabel的alpha基本没见过不是1的这里直接写死1
+            returnObj.a = 1
+            returnObj.text = propertyStrs[propertyStrs.indexOf('内容')+1]
+            returnObj.fontName = fontName
+            returnObj.fontSize = propertyStrs[propertyStrs.indexOf('字号')+1].replace('pt', '')
+            returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
+            return returnObj
         }
-        else if (codeStr.includes('UIView')) {
+        if (codeStr.includes('UIView')) {
 
-            // UIView
-            /*
-            UIView *view = [[UIView alloc] init];
-            view.frame = CGRectMake(38,543,300,44);
-
-            view.layer.backgroundColor = [UIColor colorWithRed:154/255.0 green:32/255.0 blue:55/255.0 alpha:1.0].CGColor;
-            view.layer.cornerRadius = 23;
-
-            */
             if (propertyStrs[0] === '颜色') {
                 // #333333 50%
                 // #FFFFFF 100%
-                
-                
-                let hexColors = propertyStrs[1].split(' ')
-                let hexColor = ''
-                let alpha = '1'
-                if(hexColors.length > 1){
-                    hexColor = hexColors[0]
-                    alpha = parseInt(hexColors[1]) / 100.0
-                } else {
-                    alert("获取颜色错误")
-                }
-                let UIColorStr = hexToUIColor(hexColor, alpha)
-                return {x, y, width, height, hexColor:propertyStrs[1], alpha, corner, UIColorStr}
+                returnObj.hexColor = propertyStrs[1]
+                return returnObj
             } else {
                 alert('未知类型' + propertyStrs[0])
             }
-
         }
         else {
             alert('这是啥类型')
-            return {x,y,width,height,corner}
+            return returnObj
         }
 
     }
@@ -177,15 +123,31 @@ function getOCFontMethodName(labFontWeightStr) {
     }
     return ocFontMethodName
 }
-/*
- #999999 => [UIColor colorWithRed:153/255.0 green:153/255.0 blue:153/255.0 alpha:1.0]
-*/
-function hexToUIColor(hexStr, alphaStr) {
-    var hex = hexStr.replace('AHEX#FF', '#');
-    var red = parseInt(hex[1] + hex[2], 16);
-    var green = parseInt(hex[3] + hex[4], 16);
-    var blue = parseInt(hex[5] + hex[6], 16);
-    return `[UIColor colorWithRed:${red}/255.0 green:${green}/255.0 blue:${blue}/255.0 alpha:${alphaStr}]`
+function getReturnObj() {
+    // frame面板
+    let frameDiv = document.getElementsByClassName('annotation_item')[0]
+    let frameStrs = frameDiv.innerText.split('\n').filter(str => str.includes('pt')).map(str => str.replaceAll('pt', ''))
+    let x = ''
+    let y = ''
+    let width = ''
+    let height = ''
+    let corner = '0'
+    if (frameStrs.length >= 4) {
+        x = frameStrs[0]
+        y = frameStrs[1]
+        width = frameStrs[2]
+        height = frameStrs[3]
+    }
+    if (frameStrs.length >= 5) {
+        corner = frameStrs[4]
+        if (corner.includes('  ')) {
+            // 288,52,87,24,12  0  0  12  
+            // 暂不考虑不是四个角圆角的 
+            corner = corner.split('  ').filter(str => parseInt(str) > 0)[0]
+        }
+    }
+    // tip 键与值相同，可以简写
+    return { x, y, width, height, corner }
 }
 /**
  * 把博客园的博客的发布日期放标题上来
