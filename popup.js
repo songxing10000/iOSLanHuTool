@@ -25,7 +25,7 @@ let showPro = document.getElementById('show_pro');
  * 把控件认为是UIView里的线
  */
 let showLine = document.getElementById('show_line');
-
+let msgDiv = document.getElementById('message')
 /**
  * 失去焦点时，替换属性名
  */
@@ -33,25 +33,25 @@ const inputHandler = function (e) {
   let proName = e.target.value
   if (proName.length > 1) {
     if (lab.checked) {
-      let oldStr = document.getElementById('message').innerText
+      let oldStr = msgDiv.innerText
       // replaceAll https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll
       let new1 = oldStr.replaceAll('aLab', proName + 'Lab')
-      document.getElementById('message').innerText = new1.replaceAll('statusLab', proName + 'Lab')
+      msgDiv.innerText = new1.replaceAll('statusLab', proName + 'Lab')
     }
     else if (btn.checked) {
-      let oldStr = document.getElementById('message').innerText
+      let oldStr = msgDiv.innerText
       let new1 = oldStr.replaceAll('aBtn', proName + 'Btn')
-      document.getElementById('message').innerText = new1.replaceAll('useBtn', proName + 'Btn')
+      msgDiv.innerText = new1.replaceAll('useBtn', proName + 'Btn')
     }
     else if (img.checked) {
-      let oldStr = document.getElementById('message').innerText
+      let oldStr = msgDiv.innerText
       let new1 = oldStr.replaceAll('aImgV', proName + 'ImgV')
-      document.getElementById('message').innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
+      msgDiv.innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
     }
     else if (showLine.checked) {
-      let oldStr = document.getElementById('message').innerText
+      let oldStr = msgDiv.innerText
       let new1 = oldStr.replaceAll('vLine', proName + 'View')
-      document.getElementById('message').innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
+      msgDiv.innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
     }
   }
 }
@@ -651,9 +651,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 // 复制代码事件
 document.getElementById('copyCode').addEventListener('click', function () {
-
-  let codeStr = document.getElementById('message').innerText;
-  copyStr(codeStr)
+  copyStr(msgDiv.innerText)
 
 });
 /**

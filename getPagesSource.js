@@ -57,8 +57,8 @@ function DOMtoString(document_root) {
                 returnCodeStr = returnCodeStr.replaceAll('苹方-简 中黑体', 'PingFangSC-Medium')
                 returnCodeStr = returnCodeStr.replaceAll('苹方-简 中粗体', 'PingFangSC-Semibold')
                 returnCodeStr = returnCodeStr.replaceAll('PingFangSC', 'PingFangSC-Regular')
-                returnCodeStr = returnCodeStr.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
                 returnCodeStr = returnCodeStr.replaceAll('DINAlternate', 'DINAlternate-Bold')
+                returnCodeStr = returnCodeStr.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
                 returnObj.returnCodeStr = returnCodeStr
                 return returnObj
             }
@@ -80,9 +80,7 @@ function DOMtoString(document_root) {
         if (codeStr.includes('UIView')) {
 
             if (propertyStrs[0] === '颜色') {
-                // #333333 50%
-                // #FFFFFF 100%
-                returnObj.hexColor = propertyStrs[1]
+                returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
                 return returnObj
             } else {
                 alert('未知类型' + propertyStrs[0])
@@ -97,55 +95,31 @@ function DOMtoString(document_root) {
 
     return "未处理的url";
 }
-
-/**
- * 得到oc字号方法名，
- * @param {String} labFontWeightStr 字重Regular、Medium、Bold
- */
-function getOCFontMethodName(labFontWeightStr) {
-    //  Medium Bold
-    let ocFontMethodName = 'pFSize';
-    if (labFontWeightStr === 'Regular') {
-        // 粗体
-        ocFontMethodName = 'fontWithName:@"PingFangSC-Regular" size';
-    }
-    else if (labFontWeightStr === 'Medium') {
-        // 中体
-        ocFontMethodName = 'fontWithName:@"PingFangSC-Medium" size';
-    }
-    else if (labFontWeightStr === 'Bold') {
-        // 粗体
-        ocFontMethodName = 'fontWithName:@"PingFangSC-Semibold" size';
-    }
-    else {
-        // 使用系统默认的字体
-        ocFontMethodName = 'systemFontOfSize';
-    }
-    return ocFontMethodName
-}
 function getReturnObj() {
     // frame面板
     let frameDiv = document.getElementsByClassName('annotation_item')[0]
-    let frameStrs = frameDiv.innerText.split('\n').filter(str => str.includes('pt')).map(str => str.replaceAll('pt', ''))
-    let x = ''
-    let y = ''
-    let width = ''
-    let height = ''
+    let frameStrs = frameDiv.innerText.split('\n')
+    // x,y
+    let postIdx = frameStrs.indexOf('位置')
+    let x = frameStrs[postIdx+1]
+    let y = frameStrs[postIdx+2]
+    let sizeIdx = frameStrs.indexOf('大小')
+    // w,h
+    let width = frameStrs[sizeIdx+1]
+    let height = frameStrs[sizeIdx+2]
+
+    // corner
     let corner = '0'
-    if (frameStrs.length >= 4) {
-        x = frameStrs[0]
-        y = frameStrs[1]
-        width = frameStrs[2]
-        height = frameStrs[3]
-    }
-    if (frameStrs.length >= 5) {
-        corner = frameStrs[4]
+    let cornerIdx = frameStrs.indexOf('圆角')
+    if (cornerIdx >= 0) {
+        // 有圆角
+        corner = frameStrs[cornerIdx+1].replaceAll('pt', '')
         if (corner.includes('  ')) {
             // 288,52,87,24,12  0  0  12  
             // 暂不考虑不是四个角圆角的 
             corner = corner.split('  ').filter(str => parseInt(str) > 0)[0]
         }
-    }
+    } 
     // tip 键与值相同，可以简写
     return { x, y, width, height, corner }
 }
