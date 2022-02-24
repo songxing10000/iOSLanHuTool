@@ -198,6 +198,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tNSString *name = @"图片名";
 \tUIImage *img = [UIImage imageNamed:name];
 \tUIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+\timgV.contentMode = UIViewContentModeScaleAspectFit;
 \t#ifdef DEBUG
 \timgV.backgroundColor = [UIColor redColor];
 \t#endif
@@ -231,6 +232,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tNSString *name = @"图片名";
 \tUIImage *img = [UIImage imageNamed:name];
 \tUIImageView *imgV = [[UIImageView alloc] initWithImage:img];
+\timgV.contentMode = UIViewContentModeScaleAspectFit;
 \t#ifdef DEBUG
 \timgV.backgroundColor = [UIColor redColor];
 \t#endif
