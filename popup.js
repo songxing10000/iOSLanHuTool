@@ -295,7 +295,8 @@ UIView *superView = self.view; //self.contentView;
 \tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t// ${returnObj.hexColor}
 \tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
-
+\tlab.opaque = YES;
+\tlab.backgroundColor = [UIColor whiteColor];
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: lab];
 \t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -326,7 +327,8 @@ UIView *superView = self.view; //self.contentView;
 \t\tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t\t// ${returnObj.hexColor}
 \t\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
-
+\t\tlab.opaque = YES;
+\t\tlab.backgroundColor = [UIColor whiteColor];
 \t\t_statusLab = lab;
 \t}
 \treturn _statusLab;
