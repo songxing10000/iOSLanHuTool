@@ -101,12 +101,12 @@ function getReturnObj() {
     let frameStrs = frameDiv.innerText.split('\n')
     // x,y
     let postIdx = frameStrs.indexOf('位置')
-    let x = frameStrs[postIdx+1]
-    let y = frameStrs[postIdx+2]
+    let x = frameStrs[postIdx+1].replaceAll('pt', '')
+    let y = frameStrs[postIdx+2].replaceAll('pt', '')
     let sizeIdx = frameStrs.indexOf('大小')
     // w,h
-    let width = frameStrs[sizeIdx+1]
-    let height = frameStrs[sizeIdx+2]
+    let width = frameStrs[sizeIdx+1].replaceAll('pt', '')
+    let height = frameStrs[sizeIdx+2].replaceAll('pt', '')
 
     // corner
     let corner = '0'
