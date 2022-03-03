@@ -59,6 +59,12 @@ function DOMtoString(document_root) {
                 returnCodeStr = returnCodeStr.replaceAll('PingFangSC', 'PingFangSC-Regular')
                 returnCodeStr = returnCodeStr.replaceAll('DINAlternate', 'DINAlternate-Bold')
                 returnCodeStr = returnCodeStr.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
+                returnCodeStr = returnCodeStr.replaceAll('PingFang SC-Bold', 'PingFangSC-Semibold')
+                returnCodeStr = returnCodeStr.replaceAll('PingFang SC-Regular', 'PingFangSC-Regular')
+
+                
+
+                
                 returnObj.returnCodeStr = returnCodeStr
                 return returnObj
             }
@@ -69,6 +75,8 @@ function DOMtoString(document_root) {
             // DINAlternate 或者 DIN Alternate Bold 变换到OC里的 @"DINAlternate-Bold"
             fontName = fontName.replaceAll('DINAlternate', 'DINAlternate-Bold')
             fontName = fontName.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
+            fontName = fontName.replaceAll('PingFang SC-Bold', 'PingFangSC-Semibold')
+            fontName = fontName.replaceAll('PingFang SC-Regular', 'PingFangSC-Regular')
             // UILabel的alpha基本没见过不是1的这里直接写死1
             returnObj.a = 1
             returnObj.text = propertyStrs[propertyStrs.indexOf('内容')+1]
