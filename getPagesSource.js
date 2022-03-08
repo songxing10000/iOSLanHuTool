@@ -61,7 +61,8 @@ function DOMtoString(document_root) {
                 returnCodeStr = returnCodeStr.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
                 returnCodeStr = returnCodeStr.replaceAll('PingFang SC-Bold', 'PingFangSC-Semibold')
                 returnCodeStr = returnCodeStr.replaceAll('PingFang SC-Regular', 'PingFangSC-Regular')
-
+                returnCodeStr = returnCodeStr.replaceAll('苹方 粗体', 'PingFangSC-Semibold')
+                returnCodeStr = returnCodeStr.replaceAll('苹方 中等', 'PingFangSC-Medium')
                 
 
                 
@@ -77,6 +78,9 @@ function DOMtoString(document_root) {
             fontName = fontName.replaceAll('DIN Alternate Bold', 'DINAlternate-Bold')
             fontName = fontName.replaceAll('PingFang SC-Bold', 'PingFangSC-Semibold')
             fontName = fontName.replaceAll('PingFang SC-Regular', 'PingFangSC-Regular')
+            fontName = fontName.replaceAll('苹方 粗体', 'PingFangSC-Semibold')
+            fontName = fontName.replaceAll('苹方 中等', 'PingFangSC-Medium')
+
             // UILabel的alpha基本没见过不是1的这里直接写死1
             returnObj.a = 1
             returnObj.text = propertyStrs[propertyStrs.indexOf('内容')+1]
@@ -87,15 +91,29 @@ function DOMtoString(document_root) {
         }
         if (codeStr.includes('UIView')) {
 
+            
             if (propertyStrs[0] === '颜色') {
                 returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
                 return returnObj
-            } else {
+            } 
+            else  if (propertyStrs[0] === '中心边框') {
+                /*
+                中心边框,粗细,0.5pt,#000000 10%,HEX,,HEX#000000,,AHEX#1A000000,,HEXA#0000001A,,RGBA0, 0, 0, 0.1,,HSLA0, 0%, 0%, 0.1
+                */
+               if (returnObj.height == 0) {
+                   returnObj.height = propertyStrs[propertyStrs.indexOf('粗细')+1].replace('pt', '')
+                   returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
+
+               }
+            }
+           
+            else {
+                
                 alert('未知类型' + propertyStrs[0])
             }
         }
         else {
-            alert('这是啥类型')
+            alert('这是2啥类型')
             return returnObj
         }
 
