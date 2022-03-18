@@ -495,13 +495,26 @@ UIView *superView = self.view; //self.contentView;
           // 纯文字按钮
           //  return [viewX, viewY, viewWidth, viewHeight, labStr, ocFontMethodName, labFontSizeStr, LabTextColorHexStr]
           if (!showPro.checked) {
+            
+            let setTitleCode = ''
+            if (typeof returnObj.text === 'undefined' || returnObj.text.length <= 0) {
+              //  没有文字
+            } else {
+              //  有文字
+              setTitleCode = `\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
+              \tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
+              \t// ${returnObj.hexColor}
+              \t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
+              `
+              
+            }
+
+
+
 
             message.innerText = `\nUIButton *aBtn = ({
 \tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
-\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t// ${returnObj.hexColor}
-\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
+${setTitleCode}
 \t//  NSString *name = @"图片名";
 \t//  UIImage *img = [UIImage imageNamed:name];
 \t// [btn setImage:img forState:UIControlStateNormal];
