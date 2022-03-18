@@ -26,15 +26,29 @@ function DOMtoString(document_root) {
         *初始返回对象
         */
         let returnObj = getReturnObj()
-        let rgbaStrs = propertyStrs.filter(str => str.includes('RGBA'))[0].replace('RGBA', '').split(', ')
+        let rgbas = propertyStrs.filter(str => str.includes('RGBA'))
+        let rgbaStrs = []
+        if (rgbas.length > 0) {
+            rgbaStrs = rgbas[0].replace('RGBA', '').split(', ')
+        } else {
+            propertyDiv = document.getElementsByClassName('annotation_item')[2]
+            propertyStrs = propertyDiv.innerText.split('\n')
+            rgbas = propertyStrs.filter(str => str.includes('RGBA'))
+            if (rgbas.length > 0) {
+                rgbaStrs = rgbas[0].replace('RGBA', '').split(', ')
+            }
+            
+        }
+        
         if(rgbaStrs.length >= 4) {
             returnObj.r = rgbaStrs[0]
             returnObj.g = rgbaStrs[1]
             returnObj.b = rgbaStrs[2]
             returnObj.a = rgbaStrs[3]
         } else {
-            alert('获取rgba异常')
+            // alert('获取rgba异常')
         }
+        
         // 代码面板
         let codeDivs = document.getElementsByClassName(' language-c')
         if (typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
@@ -80,9 +94,13 @@ function DOMtoString(document_root) {
             fontName = fontName.replaceAll('PingFang SC-Regular', 'PingFangSC-Regular')
             fontName = fontName.replaceAll('苹方 粗体', 'PingFangSC-Semibold')
             fontName = fontName.replaceAll('苹方 中等', 'PingFangSC-Medium')
-
             // UILabel的alpha基本没见过不是1的这里直接写死1
-            returnObj.a = 1
+            if (returnObj.a != 0) {
+                // 不改变之前的
+            } else {
+                returnObj.a = 1
+            }
+            
             returnObj.text = propertyStrs[propertyStrs.indexOf('内容')+1]
             returnObj.fontName = fontName
             returnObj.fontSize = propertyStrs[propertyStrs.indexOf('字号')+1].replace('pt', '')
