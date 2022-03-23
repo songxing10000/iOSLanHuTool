@@ -386,6 +386,10 @@ UIView *superView = self.view; //self.contentView;
 
 \t\tbtn;
 \t});
+[aBtn addTarget:self action:@selector(clickaBtn:) forControlEvents:UIControlEventTouchUpInside];
+- (void)clickaBtn:(UIButton *)btn {
+
+}
 `
 
             return
@@ -421,7 +425,12 @@ UIView *superView = self.view; //self.contentView;
           // make.centerX.equalTo(@0);
           // make.centerY.equalTo(@0);
       }];
-\t`
+\t
+[aBtn addTarget:self action:@selector(clickaBtn:) forControlEvents:UIControlEventTouchUpInside];
+- (void)clickaBtn:(UIButton *)btn {
+
+}
+`
           return
         }
 
@@ -452,7 +461,10 @@ UIView *superView = self.view; //self.contentView;
 
 \t     btn;
 \t});
-\t
+[aBtn addTarget:self action:@selector(clickuseBtn:) forControlEvents:UIControlEventTouchUpInside];
+- (void)clickuseBtn:(UIButton *)btn {
+
+}
 `
 
 
@@ -488,7 +500,12 @@ UIView *superView = self.view; //self.contentView;
           // make.centerX.equalTo(@0);
           // make.centerY.equalTo(@0);
       }];
-\t`
+\t
+[useBtn addTarget:self action:@selector(clickuseBtn:) forControlEvents:UIControlEventTouchUpInside];
+- (void)clickuseBtn:(UIButton *)btn {
+
+}
+`
           }
         }
         else {
@@ -501,11 +518,12 @@ UIView *superView = self.view; //self.contentView;
               //  没有文字
             } else {
               //  有文字
-              setTitleCode = `\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
-              \tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-              \t// ${returnObj.hexColor}
-              \t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
-              `
+setTitleCode = 
+`\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
+\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
+\t// ${returnObj.hexColor}
+\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
+`
               
             }
 
@@ -535,7 +553,10 @@ ${setTitleCode}
 
 \tbtn;
 });
-\t
+[aBtn addTarget:self action:@selector(clickaBtn:) forControlEvents:UIControlEventTouchUpInside];
+- (void)clickaBtn:(UIButton *)btn {
+
+}
 `
 
           } else {
@@ -546,10 +567,10 @@ ${setTitleCode}
 -(UIButton *)useBtn {
 \tif (!_useBtn) {
 \t\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
+\t\t[btn  setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
 \t\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \t\t// ${returnObj.hexColor}
-\t\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
+\t\t[btn  setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
 \t\t//  NSString *name = @"图片名";
 \t\t//  UIImage *img = [UIImage imageNamed:name];
 \t\t// [btn setImage:img forState:UIControlStateNormal];
@@ -574,7 +595,12 @@ ${setTitleCode}
           // make.centerX.equalTo(@0);
           // make.centerY.equalTo(@0);
       }];
-\t`
+\t
+[aBtn addTarget:self action:@selector(clickuseBtn:) forControlEvents:UIControlEventTouchUpInside];
+- (void)clickuseBtn:(UIButton *)btn {
+
+}
+`
           }
         }
         return
