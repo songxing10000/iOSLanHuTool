@@ -202,8 +202,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t#ifdef DEBUG
 \timgV.backgroundColor = [UIColor redColor];
 \t#endif
-\tUIView *superView = self.view; //self.contentView;
-\t[superView addSubview: imgV];
+\t[self.view addSubview: imgV];
 \t[imgV mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@${returnObj.y});
 \t\tmake.leading.equalTo(@${returnObj.x});
@@ -241,9 +240,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           }
           return _bgImgV;
       }
-
-      UIView *superView = self.view; //self.contentView;
-      [superView addSubview: self.bgImgV];
+      [self.view addSubview: self.bgImgV];
 \t[self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@${returnObj.y});
 \t\tmake.leading.equalTo(@${returnObj.x});
@@ -270,8 +267,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           
           if(typeof returnObj.returnCodeStr !== 'undefined') {
             message.innerText = `${returnObj.returnCodeStr}  
-UIView *superView = self.view; //self.contentView;
-[superView addSubview: label];
+[self.view addSubview: label];
 [label mas_makeConstraints:^(MASConstraintMaker *make) {
 \tmake.top.equalTo(@${returnObj.y});
 \tmake.leading.equalTo(@${returnObj.x});
@@ -294,8 +290,7 @@ UIView *superView = self.view; //self.contentView;
 \tlab.text = @"${returnObj.text}";
 \tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
 \tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
-\tUIView *superView = self.view; //self.contentView;
-\t[superView addSubview: lab];
+\t[self.view addSubview: lab];
 \t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@${returnObj.y});
 \t\tmake.leading.equalTo(@${returnObj.x});
@@ -328,9 +323,7 @@ UIView *superView = self.view; //self.contentView;
 \treturn _statusLab;
 }
 
-      
-UIView *superView = self.view; //self.contentView;
-[superView addSubview: self.statusLab];
+[self.view addSubview: self.statusLab];
 [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
 \tmake.top.equalTo(@${returnObj.y});
 \tmake.leading.equalTo(@${returnObj.x});
@@ -363,8 +356,7 @@ UIView *superView = self.view; //self.contentView;
 \tUIImage *img = [UIImage imageNamed:name];
 \t[btn setImage:img forState:UIControlStateNormal];
 
-\tUIView *superView = self.view; //self.contentView;
-\t[superView addSubview: btn];
+\t[self.view addSubview: btn];
 \t[btn mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@0);
 \t\tmake.leading.equalTo(@0);
@@ -404,9 +396,7 @@ UIView *superView = self.view; //self.contentView;
 \t  return _useBtn;
           }
 
-
-\tUIView *superView = self.view; //self.contentView;
-      [superView addSubview: self.useBtn];
+      [self.view addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
 \t  make.leading.equalTo(@0);
@@ -438,8 +428,7 @@ UIView *superView = self.view; //self.contentView;
 \t     btn.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 \t     ${corner}
 
-\t     UIView *superView = self.view; //self.contentView;
-\t     [superView addSubview: btn];
+\t     [self.view addSubview: btn];
 \t     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
 \t      make.top.equalTo(@0);
 \t      make.leading.equalTo(@0);
@@ -479,9 +468,7 @@ UIView *superView = self.view; //self.contentView;
 \t  return _useBtn;
           }
 
-
-\tUIView *superView = self.view; //self.contentView;
-      [superView addSubview: self.useBtn];
+      [self.view addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
 \t  make.leading.equalTo(@0);
@@ -529,8 +516,7 @@ ${setTitleCode}
 \t//  NSString *name = @"图片名";
 \t//  UIImage *img = [UIImage imageNamed:name];
 \t// [btn setImage:img forState:UIControlStateNormal];
-\tUIView *superView = self.view; //self.contentView;
-\t[superView addSubview: btn];
+\t[self.view addSubview: btn];
 \t[btn mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@0);
 \t\tmake.leading.equalTo(@0);
@@ -573,8 +559,8 @@ ${setTitleCode}
 }
 
 
-\tUIView *superView = self.view; //self.contentView;
-      [superView addSubview: self.useBtn];
+\t
+      [self.view addSubview: self.useBtn];
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
 \t  make.leading.equalTo(@0);
@@ -609,8 +595,7 @@ ${setTitleCode}
 \tline.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
 \t  ${cornerStgr}
 
-\t  UIView *superView = self.view; //self.contentView;
-\t  [superView addSubview: line];
+\t  [self.view addSubview: line];
 \t  [line mas_makeConstraints:^(MASConstraintMaker *make) {
 \t    make.top.equalTo(@${returnObj.y});
 \t  make.leading.equalTo(@${returnObj.x});
