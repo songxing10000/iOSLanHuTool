@@ -293,10 +293,7 @@ UIView *superView = self.view; //self.contentView;
 \tUILabel *lab = [UILabel new];
 \tlab.text = @"${returnObj.text}";
 \tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t// ${returnObj.hexColor}
-\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
-\tlab.opaque = YES;
-\tlab.backgroundColor = [UIColor whiteColor];
+\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
 \tUIView *superView = self.view; //self.contentView;
 \t[superView addSubview: lab];
 \t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -325,10 +322,7 @@ UIView *superView = self.view; //self.contentView;
 \t\tUILabel *lab = [UILabel new];
 \t\tlab.text = @"${returnObj.text}";
 \t\tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t\t// ${returnObj.hexColor}
-\t\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
-\t\tlab.opaque = YES;
-\t\tlab.backgroundColor = [UIColor whiteColor];
+\t\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
 \t\t_statusLab = lab;
 \t}
 \treturn _statusLab;
@@ -521,8 +515,7 @@ UIView *superView = self.view; //self.contentView;
 setTitleCode = 
 `\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
 \tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t// ${returnObj.hexColor}
-\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
+\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal]; // ${returnObj.hexColor}
 `
               
             }
@@ -569,8 +562,7 @@ ${setTitleCode}
 \t\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t\t[btn  setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
 \t\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t\t// ${returnObj.hexColor}
-\t\t[btn  setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal];
+\t\t[btn  setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal]; // ${returnObj.hexColor}
 \t\t//  NSString *name = @"图片名";
 \t\t//  UIImage *img = [UIImage imageNamed:name];
 \t\t// [btn setImage:img forState:UIControlStateNormal];
@@ -614,8 +606,7 @@ ${setTitleCode}
 \t  CGRect frame = CGRectMake(${returnObj.x}, ${returnObj.y}, ${returnObj.width}, ${returnObj.height});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
 \t  line.userInteractionEnabled = NO;
-\t// ${returnObj.hexColor}
-\tline.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
+\tline.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
 \t  ${cornerStgr}
 
 \t  UIView *superView = self.view; //self.contentView;
