@@ -302,7 +302,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \tUILabel *lab = [UILabel new];
 \tlab.text = @"${returnObj.text}";
 \tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
+
+\t// ${returnObj.hexColor}
+\tlab.textColor =
+\t[UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; 
+
 \t[self.view addSubview: lab];
 \t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@${returnObj.y});
@@ -333,7 +337,12 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\tUILabel *lab = [UILabel new];
 \t\tlab.text = @"${returnObj.text}";
 \t\tlab.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t\tlab.textColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
+
+\t\t// ${returnObj.hexColor}
+\t\tlab.textColor =
+\t\t[UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; 
+
+
 \t\t_statusLab = lab;
 \t}
 \treturn _statusLab;
@@ -487,7 +496,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t-(UIButton *)useBtn {
 \t  if (!_useBtn) {
 \t    UIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
-\t    btn.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
+
+\t    // ${returnObj.hexColor}
+\t    btn.backgroundColor = 
+\t    [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}];
 \t     ${corner}
 \t       
 \t    _useBtn = btn;
@@ -532,7 +544,10 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 setTitleCode = 
 `\t[btn setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
 \tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal]; // ${returnObj.hexColor}
+
+\t// ${returnObj.hexColor}
+\t[btn setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] 
+\t\tforState: UIControlStateNormal]; 
 `
               
             }
@@ -581,7 +596,11 @@ ${setTitleCode}
 \t\tUIButton *btn = [UIButton buttonWithType: UIButtonTypeCustom];
 \t\t[btn  setTitle: @"${returnObj.text}" forState: UIControlStateNormal];
 \t\tbtn.titleLabel.font = [UIFont fontWithName:@"${returnObj.fontName}" size: ${returnObj.fontSize}];
-\t\t[btn  setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}] forState: UIControlStateNormal]; // ${returnObj.hexColor}
+
+\t\t// ${returnObj.hexColor}
+\t\t[btn  setTitleColor: [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]
+\t\t\t forState: UIControlStateNormal]; 
+
 \t\t//  NSString *name = @"图片名";
 \t\t//  UIImage *img = [UIImage imageNamed:name];
 \t\t// [btn setImage:img forState:UIControlStateNormal];
@@ -628,7 +647,11 @@ ${setTitleCode}
 \t  CGRect frame = CGRectMake(${returnObj.x}, ${returnObj.y}, ${returnObj.width}, ${returnObj.height});
 \t  UIView *line = [[UIView alloc] initWithFrame: frame];
 \t  line.userInteractionEnabled = NO;
-\tline.backgroundColor = [UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; // ${returnObj.hexColor}
+
+\t// ${returnObj.hexColor}
+\tline.backgroundColor = 
+\t[UIColor colorWithRed:${returnObj.r}/255.0 green:${returnObj.g}/255.0 blue:${returnObj.b}/255.0 alpha:${returnObj.a}]; 
+
 \t  ${cornerStgr}
 
 \t  [self.view addSubview: line];
