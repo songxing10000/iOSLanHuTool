@@ -53,6 +53,11 @@ function DOMtoString(document_root) {
         let codeDivs = document.getElementsByClassName(' language-c')
         if (typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
             // 切图可下载
+            let imgNames = document.getElementsByClassName('layer_name layer_name_wrap')
+            if (imgNames.length > 0) {
+                returnObj.imgName = imgNames[0].innerText
+            }
+             
             return returnObj
         }
         let codeStr = codeDivs[0].innerText
