@@ -148,26 +148,66 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       return
     }
     if (op === 'flutter') {
-       
+      if (img.checked) {
+        message.innerText = `
+Image.asset('images/${returnObj.imgName}.png'),
+          `;
+        return
+      }
+      let flutterColor = returnObj.hexColor
+      if(flutterColor.includes('#') &&
+      flutterColor.includes(' ') &&
+      flutterColor.includes('%')){
+
+        // #333333 100%
+        flutterColor = flutterColor.replaceAll('#', '')
+        if(flutterColor.split(' ')[1].includes('100')) {
+          flutterColor = '0xFF'+flutterColor.split(' ')[0];
+        }
+
+      }
       if (lab.checked) {
+       
         message.innerText = `\n
 \tText(
 \t\t'${returnObj.text}',
 \t\tstyle: TextStyle(
 \t\tfontFamily: '${returnObj.fontName}',
-\t\tfontSize: 22,
-\t\tcolor: Color(${returnObj.hexColor})),
+\t\tfontSize: ${returnObj.fontSize},
+\t\tcolor: Color(${flutterColor})),
 \t),\n`;
         return
       }
 
-      if (img.checked) {
+      
+       if (showLine.checked) {
+         if(returnObj.corner === '0') {
+          message.innerText = ` 
+        Container(
+          // width:${returnObj.width},
+          // height:${returnObj.height},
+          // padding: EdgeInsets.fromLTRB(6, 5, 6, 5),
+          color: Color(${flutterColor}),
+          child: Text('未开始')
+        ),
+        `;
+           return
+         }
         message.innerText = `\n
-          Image.asset('images/ren.png'),
+        Container(
+          // width:${returnObj.width},
+          // height:${returnObj.height},
+          // padding: EdgeInsets.fromLTRB(6, 5, 6, 5),
+          decoration: BoxDecoration(
+            borderRadius:
+                BorderRadius.circular(${returnObj.corner}),
+            color: Color(${flutterColor}),
+          ),
+          child: Text('未开始')
+        ),
           \n`;
         return
       }
-
       if (btn.checked) {
         message.innerText = `\n
           TextButton(
@@ -177,7 +217,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\tstyle: TextStyle(
 \t\tfontFamily: '${returnObj.fontName}',
 \t\tfontSize: ${returnObj.fontSize},
-\t\tcolor: Color(${returnObj.hexColor})),
+\t\tcolor: Color(${flutterColor})),
 \t)),
           \n`;
 
@@ -210,7 +250,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\t//make.trailing.equalTo(@0);
 \t\t//make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t\t// make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
 \t\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -249,11 +289,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t[self.bgImgV mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@${returnObj.y});
 \t\tmake.leading.equalTo(@${returnObj.x});
-\t\t//.bottom.equalTo(@0);
-\t\t//.trailing.equalTo(@0);
-\t\t//.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t\t//make.bottom.equalTo(@0);
+\t\t//make.trailing.equalTo(@0);
+\t\t//make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t\t// make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
 \t\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -281,11 +321,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 [label mas_makeConstraints:^(MASConstraintMaker *make) {
 \tmake.top.equalTo(@${returnObj.y});
 \tmake.leading.equalTo(@${returnObj.x});
-\t//.bottom.equalTo(@0);
-\t//.trailing.equalTo(@0);
-\t//.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t//make.bottom.equalTo(@0);
+\t//make.trailing.equalTo(@0);
+\t//make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t// make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
 \t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -311,11 +351,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t[lab mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@${returnObj.y});
 \t\tmake.leading.equalTo(@${returnObj.x});
-\t\t//.bottom.equalTo(@0);
-\t\t//.trailing.equalTo(@0);
-\t\t//.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t\t//make.bottom.equalTo(@0);
+\t\t//make.trailing.equalTo(@0);
+\t\t//make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t\t// make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
 \t\t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -352,11 +392,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 [self.statusLab mas_makeConstraints:^(MASConstraintMaker *make) {
 \tmake.top.equalTo(@${returnObj.y});
 \tmake.leading.equalTo(@${returnObj.x});
-\t//.bottom.equalTo(@0);
-\t//.trailing.equalTo(@0);
-\t//.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t//make.bottom.equalTo(@0);
+\t//make.trailing.equalTo(@0);
+\t//make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t// make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t// make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
 \t// make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -392,7 +432,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t\tmake.leading.equalTo(@0);
 \t\tmake.bottom.equalTo(@0);
 \t\tmake.trailing.equalTo(@0);
-\t\t//make.top.equalTo(superView.mas_top).offset(0);
+\t\t//make.top.equalTo(superView.mas_bottom).offset(0);
 \t\t//make.leading.equalTo(superView.mas_leading).offset(0);
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -402,10 +442,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 \t\tbtn;
 \t});
-[aBtn addTarget:self action:@selector(clickaBtn:) forControlEvents:UIControlEventTouchUpInside];
-- (void)clickaBtn:(UIButton *)btn {
-
-}
 `
 
             return
@@ -430,11 +466,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
 \t  make.leading.equalTo(@0);
-\t  //.bottom.equalTo(@0);
-\t  //.trailing.equalTo(@0);
-\t  //.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t  //make.bottom.equalTo(@0);
+\t  //make.trailing.equalTo(@0);
+\t  //make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.top.equalTo(superView.mas_bottom).offset(0);
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -443,10 +479,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           // make.centerY.equalTo(@0);
       }];
 \t
-[aBtn addTarget:self action:@selector(clickaBtn:) forControlEvents:UIControlEventTouchUpInside];
-- (void)clickaBtn:(UIButton *)btn {
-
-}
 `
           return
         }
@@ -465,11 +497,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 \t     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
 \t      make.top.equalTo(@0);
 \t      make.leading.equalTo(@0);
-\t      //.bottom.equalTo(@0);
-\t      //.trailing.equalTo(@0);
-\t      //.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t      //make.bottom.equalTo(@0);
+\t      //make.trailing.equalTo(@0);
+\t      //make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t      // make.top.equalTo(superView.mas_top).offset(0);
+\t      // make.top.equalTo(superView.mas_bottom).offset(0);
 \t      // make.leading.equalTo(superView.mas_leading).offset(0);
 \t       // make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t       // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -480,10 +512,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 \t     btn;
 \t});
-[aBtn addTarget:self action:@selector(clickuseBtn:) forControlEvents:UIControlEventTouchUpInside];
-- (void)clickuseBtn:(UIButton *)btn {
-
-}
 `
 
 
@@ -511,11 +539,11 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
 \t  make.leading.equalTo(@0);
-\t  //.bottom.equalTo(@0);
-\t  //.trailing.equalTo(@0);
-\t  //.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t  //make.bottom.equalTo(@0);
+\t  //make.trailing.equalTo(@0);
+\t  //make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.top.equalTo(superView.mas_bottom).offset(0);
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -524,10 +552,6 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
           // make.centerY.equalTo(@0);
       }];
 \t
-[useBtn addTarget:self action:@selector(clickuseBtn:) forControlEvents:UIControlEventTouchUpInside];
-- (void)clickuseBtn:(UIButton *)btn {
-
-}
 `
           }
         }
@@ -565,11 +589,11 @@ ${setTitleCode}
 \t[btn mas_makeConstraints:^(MASConstraintMaker *make) {
 \t\tmake.top.equalTo(@0);
 \t\tmake.leading.equalTo(@0);
-\t\t//.bottom.equalTo(@0);
-\t\t//.trailing.equalTo(@0);
-\t\t//.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t\t//make.bottom.equalTo(@0);
+\t\t//make.trailing.equalTo(@0);
+\t\t//make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-\t\t// make.top.equalTo(superView.mas_top).offset(0);
+\t\t// make.top.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.leading.equalTo(superView.mas_leading).offset(0);
 \t\t// make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t\t// make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -580,10 +604,6 @@ ${setTitleCode}
 
 \tbtn;
 });
-[aBtn addTarget:self action:@selector(clickaBtn:) forControlEvents:UIControlEventTouchUpInside];
-- (void)clickaBtn:(UIButton *)btn {
-
-}
 `
 
           } else {
@@ -616,11 +636,11 @@ ${setTitleCode}
       [self.useBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(@0);
 \t  make.leading.equalTo(@0);
-\t  //.bottom.equalTo(@0);
-\t  //.trailing.equalTo(@0);
-\t  //.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
+\t  //make.bottom.equalTo(@0);
+\t  //make.trailing.equalTo(@0);
+\t  //make.edges.mas_equalTo(UIEdgeInsetsMake(0, 0, 0, 0));
 
-        // make.top.equalTo(superView.mas_top).offset(0);
+        // make.top.equalTo(superView.mas_bottom).offset(0);
         // make.leading.equalTo(superView.mas_leading).offset(0);
           // make.bottom.equalTo(superView.mas_bottom).offset(0);
           // make.trailing.equalTo(superView.mas_trailing).offset(0);
@@ -629,10 +649,6 @@ ${setTitleCode}
           // make.centerY.equalTo(@0);
       }];
 \t
-[aBtn addTarget:self action:@selector(clickuseBtn:) forControlEvents:UIControlEventTouchUpInside];
-- (void)clickuseBtn:(UIButton *)btn {
-
-}
 `
           }
         }
@@ -660,7 +676,7 @@ ${setTitleCode}
 \t  make.leading.equalTo(@${returnObj.x});
 \t  make.bottom.equalTo(@0);
 \t  make.trailing.equalTo(@0);
-\t  //   make.top.equalTo(superView.mas_top).offset(${returnObj.y});
+\t  //   make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
 \t  // make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
