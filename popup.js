@@ -150,11 +150,28 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     if (op === 'flutter') {
       if (img.checked) {
         message.innerText = `
-Image.asset('images/${returnObj.imgName}.png'),
-          `;
+        Image.asset('images/${returnObj.imgName}.png'),
+                  `;
+        
         return
       }
+      // 有可能是图片类型的按钮
+
       let flutterColor = returnObj.hexColor
+if (typeof flutterColor === 'undefined') {
+  message.innerText = `
+  IconButton(
+    icon: Image.asset('images/${returnObj.imgName}.png'),
+    onPressed: (){
+      
+    },
+  ), 
+    `;
+  // 没有颜色
+  return;
+}
+
+
       if(flutterColor.includes('#') &&
       flutterColor.includes(' ') &&
       flutterColor.includes('%')){
