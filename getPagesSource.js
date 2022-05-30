@@ -74,6 +74,7 @@ function DOMtoString(document_root) {
             if (isAttStr) {
                 let returnCodeStr = codeStr.replaceAll('苹方-简 常规体', 'PingFangSC-Regular')
                 returnCodeStr = returnCodeStr.replaceAll('苹方-简 中黑体', 'PingFangSC-Medium')
+                returnCodeStr = returnCodeStr.replaceAll('PingFang SC-中黑体', 'PingFangSC-Medium')
                 returnCodeStr = returnCodeStr.replaceAll('苹方-简 中粗体', 'PingFangSC-Semibold')
                 returnCodeStr = returnCodeStr.replaceAll('PingFangSC', 'PingFangSC-Regular')
                 returnCodeStr = returnCodeStr.replaceAll('DINAlternate', 'DINAlternate-Bold')
@@ -82,7 +83,7 @@ function DOMtoString(document_root) {
                 returnCodeStr = returnCodeStr.replaceAll('PingFang SC-Regular', 'PingFangSC-Regular')
                 returnCodeStr = returnCodeStr.replaceAll('苹方 粗体', 'PingFangSC-Semibold')
                 returnCodeStr = returnCodeStr.replaceAll('苹方 中等', 'PingFangSC-Medium')
-                
+ 
 
                 
                 returnObj.returnCodeStr = returnCodeStr
@@ -91,6 +92,7 @@ function DOMtoString(document_root) {
             let fontName =  propertyStrs[propertyStrs.indexOf('字体')+1]
             fontName = fontName.replaceAll('苹方-简 常规体', 'PingFangSC-Regular')
             fontName = fontName.replaceAll('苹方-简 中黑体', 'PingFangSC-Medium')
+            fontName = fontName.replaceAll('PingFang SC-中黑体', 'PingFangSC-Medium')
             fontName = fontName.replaceAll('苹方-简 中粗体', 'PingFangSC-Semibold')
             // DINAlternate 或者 DIN Alternate Bold 变换到OC里的 @"DINAlternate-Bold"
             fontName = fontName.replaceAll('DINAlternate', 'DINAlternate-Bold')
