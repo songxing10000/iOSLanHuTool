@@ -133,7 +133,10 @@ function DOMtoString(document_root) {
             }
            
             else {
-                
+                if (propertyStrs[0].includes('#') && propertyStrs[0].includes('%')) {
+                    returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
+                    return returnObj
+                }
                 alert('未知类型' + propertyStrs[0])
             }
         }
