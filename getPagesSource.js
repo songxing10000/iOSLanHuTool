@@ -137,6 +137,18 @@ function DOMtoString(document_root) {
                     returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
                     return returnObj
                 }
+                /*
+                未知类型 内边框,粗细,0.5pt,#B02D1C 100%,HEX,,HEX#B02D1C,,AHEX#FFB02D1C,,HEXA#b02d1cFF,,RGBA176, 45, 28, 1,,HSLA7, 73%, 40%, 1
+                */
+                if (propertyStrs[0] === '内边框' &&
+                    propertyStrs[1] === '粗细' &&
+                    propertyStrs[2].includes('pt') &&
+                    propertyStrs[3].includes('#') && propertyStrs[3].includes('%')) {
+                        
+                    returnObj.borderWidth = propertyStrs[2].replace('pt', '')
+                    returnObj.borderColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
+                    return returnObj
+                }
                 alert('未知类型' + propertyStrs[0])
             }
         }
