@@ -164,6 +164,9 @@ function DOMtoString(document_root) {
 function getReturnObj() {
     // frame面板
     let frameDiv = document.getElementsByClassName('annotation_item')[0]
+    if (frameDiv.innerText.length <= 0) {
+        frameDiv = document.getElementsByClassName('annotation_item')[1]
+    }
     let frameStrs = frameDiv.innerText.split('\n')
     // x,y
     let postIdx = frameStrs.indexOf('位置')
