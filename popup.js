@@ -69,7 +69,17 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
   }
   if (url.includes('lanhuapp.com/web') || url.includes('app.mockplus.cn')) {
     savedRequest = request;
-    let returnObj = request.source;
+    processCodeOutput(request)
+    return
+  }
+  // 其他情况直接显示返回的
+  message.innerText = request.source;
+
+}
+);
+
+function processCodeOutput(request) {
+  let returnObj = request.source;
     // 多行 拼接 变量 ${变量名} innerText
     let op = document.getElementById('op').value;
     if (op === 'swift_code') {
@@ -711,13 +721,7 @@ ${setTitleCode}
         return
       }
     }
-    return
-  }
-  // 其他情况直接显示返回的
-  message.innerText = request.source;
-
 }
-);
 function onWindowLoad() {
 
   // 获取 popup.html里的元素进行字符串设定
@@ -781,7 +785,8 @@ function copyStr(str) {
   input.remove();
 }
 // 保存配置事件
-document.getElementById('save').addEventListener('click', function () {
+document.getElementById('save').addEventListener('click', saveConfig);
+function saveConfig() {
   let op = document.getElementById('op').value;
   let ocCodeStr = '';
   if (img.checked) {
@@ -806,31 +811,50 @@ document.getElementById('save').addEventListener('click', function () {
     document.getElementById('status').textContent = '保存成功！';
     setTimeout(() => { document.getElementById('status').textContent = ''; }, 800);
   });
-});
-
+}
 // checked 事件互斥
 
 img.addEventListener('change', function () {
   btn.checked = false;
   lab.checked = false;
   showLine.checked = false;
+  // 直接保存
+  saveConfig()
+  // 刷新 代码区域
+  processCodeOutput(savedRequest)
 });
 document.getElementById('show_btn').addEventListener('change', function () {
   img.checked = false;
   lab.checked = false;
   showLine.checked = false;
+  // 直接保存
+  saveConfig()
+  // 刷新 代码区域
+  processCodeOutput(savedRequest)
 });
 document.getElementById('show_lab').addEventListener('change', function () {
   img.checked = false;
   btn.checked = false;
   showLine.checked = false;
+  // 直接保存
+  saveConfig()
+  // 刷新 代码区域
+  processCodeOutput(savedRequest)
 });
 document.getElementById('show_line').addEventListener('change', function () {
   img.checked = false;
   btn.checked = false;
   lab.checked = false;
+  // 直接保存
+  saveConfig()
+  // 刷新 代码区域
+  processCodeOutput(savedRequest)
 });
 // 属性引用打钩事件
 document.getElementById('show_pro').addEventListener('change', function (e) {
   proNameInput.hidden = !showPro.checked;
+  // 直接保存
+  saveConfig()
+  // 刷新 代码区域
+  processCodeOutput(savedRequest)
 });
