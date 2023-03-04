@@ -5,9 +5,6 @@ function DOMtoString(document_root) {
     if (loadUrl.includes('cnblogs.com')) {
         moveReleaseDataToTop()
     }
-    else if (loadUrl.includes('91hiwork')) {
-        return 'fix ' + document.getElementsByClassName('editable-field inactive')[0].innerText + ' ' + loadUrl
-    }
     else if (loadUrl.includes('pgyer.com')) {
 
         let div = document.getElementsByClassName('span12 gray-text')[1]
@@ -32,10 +29,15 @@ function DOMtoString(document_root) {
             rgbaStrs = rgbas[0].replace('RGBA', '').split(', ')
         } else {
             propertyDiv = document.getElementsByClassName('annotation_item')[2]
-            propertyStrs = propertyDiv.innerText.split('\n')
-            rgbas = propertyStrs.filter(str => str.includes('RGBA'))
-            if (rgbas.length > 0) {
-                rgbaStrs = rgbas[0].replace('RGBA', '').split(', ')
+            if(typeof propertyDiv === 'undefined') {
+                // 选中的是图片，没有RGB
+            } else {
+                propertyStrs = propertyDiv.innerText.split('\n')
+           
+                rgbas = propertyStrs.filter(str => str.includes('RGBA'))
+                if (rgbas.length > 0) {
+                    rgbaStrs = rgbas[0].replace('RGBA', '').split(', ')
+                }
             }
             
         }

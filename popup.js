@@ -1,5 +1,6 @@
 var title;
 var url;
+var savedRequest;
 /**
  * 把控件认为是UIImageView
 */
@@ -67,6 +68,7 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
     return
   }
   if (url.includes('lanhuapp.com/web') || url.includes('app.mockplus.cn')) {
+    savedRequest = request;
     let returnObj = request.source;
     // 多行 拼接 变量 ${变量名} innerText
     let op = document.getElementById('op').value;
