@@ -823,6 +823,21 @@ img.addEventListener('change', function () {
   // 刷新 代码区域
   processCodeOutput(savedRequest)
 });
+// 语言选择事件
+document.getElementById('op').addEventListener('change', function (data) {
+  //获取选中项的值
+  // var value = $("#op option:selected").attr("value");
+  let chooseLanElement = document.getElementById('op')
+  let value = chooseLanElement.options[chooseLanElement.selectedIndex].value;
+  //输出日志
+  // console.log(`${value}`);
+  // todo
+});
+ 
+  
+ 
+
+
 document.getElementById('show_btn').addEventListener('change', function () {
   img.checked = false;
   lab.checked = false;
