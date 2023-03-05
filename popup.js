@@ -1,6 +1,20 @@
+
 var title;
 var url;
 var savedRequest;
+const brPlugin = {
+  "before:highlightBlock": ({ block }) => {
+    block.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ /]*>/g, '\n');
+  },
+  "after:highlightBlock": ({ result }) => {
+    result.value = result.value.replace(/\n/g, "<br>");
+  }
+};
+
+// how to use it
+hljs.addPlugin(brPlugin);
+
+
 /**
  * 把控件认为是UIImageView
 */
@@ -84,20 +98,22 @@ function processCodeOutput(request) {
     let op = document.getElementById('op').value;
     if (op === 'swift_code') {
       if (lab.checked) {
-        message.innerText = `\nlet aLab: UILabel = {
+        message.innerText = `
+let aLab: UILabel = {
 \tlet lab = UILabel()
-\tlab.text = "${returnObj.text}"
-\tlab.textColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
-\tlab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
+lab.text = "${returnObj.text}"
+lab.textColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
+lab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
+view.addSubview(lab)
+lab.snp.makeConstraints { (make) in
+make.centerX.equalToSuperview()
+make.top.equalToSuperview().offset(10)
+}
+return lab
+}()
+`
 
-\tview.addSubview(lab)
-\tlab.snp.makeConstraints { (make) in
-\t\tmake.centerX.equalToSuperview()
-\t\tmake.top.equalToSuperview().offset(10)
-\t}
-
-\treturn lab
-\t}()`
+hljs.highlightAll()
         return
       }
 
@@ -721,6 +737,8 @@ ${setTitleCode}
         return
       }
     }
+
+    
 }
 function onWindowLoad() {
 
@@ -785,7 +803,7 @@ function copyStr(str) {
   input.remove();
 }
 // 保存配置事件
-document.getElementById('save').addEventListener('click', saveConfig);
+// document.getElementById('save').addEventListener('click', saveConfig);
 function saveConfig() {
   let op = document.getElementById('op').value;
   let ocCodeStr = '';
@@ -808,8 +826,13 @@ function saveConfig() {
     isShowPro: showProStr
   };
   chrome.storage.sync.set(saveDict, function () {
-    document.getElementById('status').textContent = '保存成功！';
-    setTimeout(() => { document.getElementById('status').textContent = ''; }, 800);
+    const status = document.getElementById('status')
+    status.style.display = 'block';
+    status.textContent = '保存成功！';
+    setTimeout(() => {
+      status.textContent = '';
+      status.style.display = 'none';
+    }, 800);
   });
 }
 // checked 事件互斥
@@ -826,12 +849,8 @@ img.addEventListener('change', function () {
 // 语言选择事件
 document.getElementById('op').addEventListener('change', function (data) {
   //获取选中项的值
-  // var value = $("#op option:selected").attr("value");
-  let chooseLanElement = document.getElementById('op')
-  let value = chooseLanElement.options[chooseLanElement.selectedIndex].value;
-  //输出日志
-  // console.log(`${value}`);
-  // todo
+  saveConfig()
+  processCodeOutput(savedRequest)
 });
  
   
