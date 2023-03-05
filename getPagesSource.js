@@ -51,22 +51,43 @@ function DOMtoString(document_root) {
             // alert('获取rgba异常')
         }
         
-        // 代码面板
+        
+        
+        
+        // 默认在iOS平台开发
+        let developmentPlatform = 'iOS'
+        // 代码面板默认取objc
         let codeDivs = document.getElementsByClassName(' language-c')
-        if (typeof codeDivs === 'undefined' || codeDivs.length <= 0) {
+
+        // 开发平台 iOS  Android Web 小程序
+        let developmentPlatformElements = document.getElementsByClassName('not_define')
+        if (typeof developmentPlatformElements !== 'undefined'  && developmentPlatformElements.length > 0) {
+
+            developmentPlatform = developmentPlatformElements[0].innerText
+        }
+        let isiOS = developmentPlatform == 'iOS'
+        let isAndroid = developmentPlatform == 'Android'
+        if (isAndroid) {
+            codeDivs = document.getElementsByClassName('language-xml')
+        }
+        
+
+        if (isiOS && (typeof codeDivs === 'undefined' || codeDivs.length <= 0)) {
             // 切图可下载
             let imgNames = document.getElementsByClassName('layer_name layer_name_wrap')
             if (imgNames.length > 0) {
                 returnObj.imgName = imgNames[0].innerText
             }
-             
             return returnObj
         }
+
         let codeStr = codeDivs[0].innerText
+        
         if (codeStr.includes('UIImageView')) {
             return returnObj
         }
-        if (codeStr.includes('UILabel')) {
+        // 安卓的lab 是 TextView
+        if (codeStr.includes('UILabel') || codeStr.includes('TextView')) {
             /** 
             * 大于两个NSMutableAttributedString才算是富文本
             * 获取字符串中特定串的个数

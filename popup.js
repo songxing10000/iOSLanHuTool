@@ -1,7 +1,7 @@
 
-var title;
-var url;
 var savedRequest;
+
+// 让你的代码高亮后支持换行 1.brPlugin 2.hljs.addPlugin(brPlugin);
 const brPlugin = {
   "before:highlightBlock": ({ block }) => {
     block.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ /]*>/g, '\n');
@@ -10,8 +10,6 @@ const brPlugin = {
     result.value = result.value.replace(/\n/g, "<br>");
   }
 };
-
-// how to use it
 hljs.addPlugin(brPlugin);
 
 
@@ -40,42 +38,53 @@ let showPro = document.getElementById('show_pro');
  * 把控件认为是UIView里的线
  */
 let showLine = document.getElementById('show_line');
+/**
+ * 显示代码
+ */
 let msgDiv = document.getElementById('message')
+
+/**
+ * 语言选择
+ */
+let language_select_element = document.getElementById('op')
+
 /**
  * 失去焦点时，替换属性名
  */
 const inputHandler = function (e) {
   let proName = e.target.value
   if (proName.length > 1) {
+    let oldStr = msgDiv.innerText
     if (lab.checked) {
-      let oldStr = msgDiv.innerText
       // replaceAll https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/replaceAll
       let new1 = oldStr.replaceAll('aLab', proName + 'Lab')
       msgDiv.innerText = new1.replaceAll('statusLab', proName + 'Lab')
     }
     else if (btn.checked) {
-      let oldStr = msgDiv.innerText
       let new1 = oldStr.replaceAll('aBtn', proName + 'Btn')
       msgDiv.innerText = new1.replaceAll('useBtn', proName + 'Btn')
     }
     else if (img.checked) {
-      let oldStr = msgDiv.innerText
       let new1 = oldStr.replaceAll('aImgV', proName + 'ImgV')
       msgDiv.innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
     }
     else if (showLine.checked) {
-      let oldStr = msgDiv.innerText
       let new1 = oldStr.replaceAll('vLine', proName + 'View')
       msgDiv.innerText = new1.replaceAll('bgImgV', proName + 'ImgV')
     }
+    hljs.highlightAll()
+
   }
 }
 
 // 监听来消息 getSource
 chrome.runtime.onMessage.addListener(function (request, sender) {
+
+  let url = sender.tab.url;
   if (request.action != "getSource") {
     return
   }
+
   if (url.includes('cnblogs.com') || url.includes('localhost') || url.includes('pgyer.com')) {
     // 在博客完时，只是追加日期而，面板不用显示出来
     document.body.hidden = true
@@ -91,29 +100,34 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
 
 }
 );
-
+/**
+ * 刷新代码区域
+ * @param    参数request
+ */
 function processCodeOutput(request) {
   let returnObj = request.source;
     // 多行 拼接 变量 ${变量名} innerText
-    let op = document.getElementById('op').value;
-    if (op === 'swift_code') {
+    let op = language_select_element.value;
+    if (op === 'swift') {
+      msgDiv.className = 'language-swift'
       if (lab.checked) {
-        message.innerText = `
-let aLab: UILabel = {
+        message.innerText = `\nlet aLab: UILabel = {
 \tlet lab = UILabel()
-lab.text = "${returnObj.text}"
-lab.textColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
-lab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
-view.addSubview(lab)
-lab.snp.makeConstraints { (make) in
-make.centerX.equalToSuperview()
-make.top.equalToSuperview().offset(10)
-}
-return lab
-}()
-`
+\tlab.text = "${returnObj.text}"
+\tlab.textColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
+\tlab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
 
-hljs.highlightAll()
+\tview.addSubview(lab)
+\tlab.snp.makeConstraints { (make) in
+\t\tmake.centerX.equalToSuperview()
+\t\tmake.top.equalToSuperview().offset(10)
+\t}
+
+
+\treturn lab
+\t}()`
+        
+        hljs.highlightAll()
         return
       }
 
@@ -130,6 +144,8 @@ hljs.highlightAll()
 \t}
 \treturn btn
 \t}()`
+hljs.highlightAll()
+
         return
       }
 
@@ -151,6 +167,8 @@ hljs.highlightAll()
 \t}
 \treturn line
 \t}()`
+hljs.highlightAll()
+
         return
       }
 
@@ -159,7 +177,7 @@ hljs.highlightAll()
         24,141,320,20,识别到的字符串,fontWithName:@"PingFangSC-Medium" size,15,0x333333
         */
         message.innerText = `\nlet aImgV: UIImageView = {
-\tet img = UIImage(named: "imgName")
+\tlet img = UIImage(named: "imgName")
 \tlet imgV = UIImageView(image: img)
 \timgV.backgroundColor = .red
     
@@ -171,32 +189,37 @@ hljs.highlightAll()
 \t}
 \treturn imgV
 \t}()`
+hljs.highlightAll()
+
         return
       }
       return
     }
-    if (op === 'flutter') {
+    if (op === 'dart') {
+      msgDiv.className = 'language-plaintext'
+
       if (img.checked) {
-        message.innerText = `
-        Image.asset('images/${returnObj.imgName}.png'),
-                  `;
-        
+        message.innerText = `Image.asset('images/${returnObj.imgName}.png'),`;
+        hljs.highlightAll()
         return
       }
       // 有可能是图片类型的按钮
 
       let flutterColor = returnObj.hexColor
-if (typeof flutterColor === 'undefined') {
-  message.innerText = `
-  IconButton(
-    icon: Image.asset('images/${returnObj.imgName}.png'),
-    onPressed: (){
-      
-    },
-  ), 
+
+      if (typeof flutterColor === 'undefined') {
+        message.innerText = `
+IconButton(
+  icon: Image.asset('images/${returnObj.imgName}.png'),
+  onPressed: (){
+    
+  },
+), 
     `;
-  // 没有颜色
-  return;
+        hljs.highlightAll()
+
+        // 没有颜色
+        return;
 }
 
 
@@ -213,14 +236,16 @@ if (typeof flutterColor === 'undefined') {
       }
       if (lab.checked) {
        
-        message.innerText = `\n
-\tText(
-\t\t'${returnObj.text}',
-\t\tstyle: TextStyle(
-\t\tfontFamily: '${returnObj.fontName}',
-\t\tfontSize: ${returnObj.fontSize},
-\t\tcolor: Color(${flutterColor})),
-\t),\n`;
+        message.innerText =`
+Text(
+\t'${returnObj.text}',
+\tstyle: TextStyle(
+\tfontFamily: '${returnObj.fontName}',
+\tfontSize: ${returnObj.fontSize},
+\tcolor: Color(${flutterColor})),
+),`;
+hljs.highlightAll()
+
         return
       }
 
@@ -236,10 +261,12 @@ if (typeof flutterColor === 'undefined') {
           child: Text('未开始')
         ),
         `;
+        hljs.highlightAll()
+
            return
          }
-        message.innerText = `\n
-        Container(
+        message.innerText = 
+        `Container(
           // width:${returnObj.width},
           // height:${returnObj.height},
           // padding: EdgeInsets.fromLTRB(6, 5, 6, 5),
@@ -249,13 +276,14 @@ if (typeof flutterColor === 'undefined') {
             color: Color(${flutterColor}),
           ),
           child: Text('未开始')
-        ),
-          \n`;
+        ),`;
+          hljs.highlightAll()
+
         return
       }
       if (btn.checked) {
-        message.innerText = `\n
-          TextButton(
+        message.innerText = 
+`TextButton(
 \tonPressed: () {},
 \tchild: Text(
 \t\t'${returnObj.text}',
@@ -263,15 +291,17 @@ if (typeof flutterColor === 'undefined') {
 \t\tfontFamily: '${returnObj.fontName}',
 \t\tfontSize: ${returnObj.fontSize},
 \t\tcolor: Color(${flutterColor})),
-\t)),
-          \n`;
+\t)),`;
+          hljs.highlightAll()
 
         return
       }
       return
     }
 
-    if (op === 'oc_code') {
+    if (op === 'objc') {
+      msgDiv.className = 'language-objc'
+
       // 类型判断 typeof strs === 'string'
       // 以字符串开始 startsWith
       if (img.checked) {
@@ -353,6 +383,8 @@ if (typeof flutterColor === 'undefined') {
       }];
 
         `}
+        hljs.highlightAll()
+
         return
       }
 
@@ -380,6 +412,8 @@ if (typeof flutterColor === 'undefined') {
 }];
           
               `
+              hljs.highlightAll()
+
               return
           }
           message.innerText = `UILabel *aLab = ({
@@ -456,6 +490,8 @@ if (typeof flutterColor === 'undefined') {
 }];
         `;
         }
+        hljs.highlightAll()
+
         return
       }
 
@@ -488,6 +524,7 @@ if (typeof flutterColor === 'undefined') {
 \t\tbtn;
 \t});
 `
+hljs.highlightAll()
 
             return
           }
@@ -525,6 +562,8 @@ if (typeof flutterColor === 'undefined') {
       }];
 \t
 `
+hljs.highlightAll()
+
           return
         }
 
@@ -697,6 +736,8 @@ ${setTitleCode}
 `
           }
         }
+        hljs.highlightAll()
+
         return
       }
 
@@ -717,12 +758,12 @@ ${setTitleCode}
 
 \t  [self.view addSubview: line];
 \t  [line mas_makeConstraints:^(MASConstraintMaker *make) {
-\t    make.top.equalTo(@${returnObj.y});
-\t  make.leading.equalTo(@${returnObj.x});
-\t  make.bottom.equalTo(@0);
-\t  make.trailing.equalTo(@0);
-\t  //   make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
-\t  // make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
+\t\t  make.top.equalTo(@${returnObj.y});
+\t\t  make.leading.equalTo(@${returnObj.x});
+\t\t  make.bottom.equalTo(@0);
+\t\t  make.trailing.equalTo(@0);
+\t    // make.top.equalTo(superView.mas_bottom).offset(${returnObj.y});
+\t    // make.leading.equalTo(superView.mas_leading).offset(${returnObj.x});
 \t    // make.bottom.equalTo(superView.mas_bottom).offset(0);
 \t    // make.trailing.equalTo(superView.mas_trailing).offset(0);
 \t    // make.width.equalTo(@${returnObj.width});
@@ -734,21 +775,61 @@ ${setTitleCode}
 \t  
 \t  line;
           });`
+          hljs.highlightAll()
+
         return
       }
     }
 
+
+    if (op === 'Android') {
+      if (lab.checked) {
+        /*
+        <TextView 
+android:layout_width="26dp" 
+android:layout_height="14dp"
+android:text="吴京"
+android:textColor="#ff333333"
+android:textSize="13sp"
+/>
+
+{"x":"106.5dp",
+"y":"266dp",
+"width":"25.5dp",
+"height":"13.5dp",
+"corner":"0",
+"r":"51",
+"g":"51",
+"b":"51",
+"a":"1",
+"text":"吴京",
+"fontName":"MicrosoftYaHeiUI",
+"fontSize":"13sp",
+"hexColor":"#333333 100%"}
+*/
+msgDiv.className = 'language-xml'
+message.innerText = 
+`<TextView 
+
+<!-- android:layout_width="${returnObj.width}" -->
+<!-- android:layout_height="${returnObj.height}" -->
+
+android:text="${returnObj.text}"
+android:textColor="#ff333333"
+android:textSize="${returnObj.fontSize}"
+/>`
+hljs.highlightAll()
+
+      }
+      
+    }
     
 }
 function onWindowLoad() {
 
   // 获取 popup.html里的元素进行字符串设定
   var message = document.querySelector('#message');
-  // 获取 当前选择的tab的title 和 url
-  chrome.tabs.getSelected(null, function (tab) {//获取当前tab
-    title = tab.title;
-    url = tab.url;
-  });
+  
   // 注入脚本，接收错误回显
   chrome.tabs.executeScript(null, {
     file: "getPagesSource.js"
@@ -765,10 +846,10 @@ window.onload = onWindowLoad;
 /// 新加面板
 document.addEventListener('DOMContentLoaded', function () {
   // 默认配置
-  var defaultConfig = { 'op': 'oc_code', 'ocCode': 'btn', 'isShowPro': false };
+  var defaultConfig = { 'op': 'objc', 'ocCode': 'btn', 'isShowPro': false };
   // 读取数据，第一个参数是指定要读取的key以及设置默认值
   chrome.storage.sync.get(defaultConfig, function (items) {
-    document.getElementById('op').value = items.op;
+    language_select_element.value = items.op;
     let ocCodeStr = items.ocCode;
     if (ocCodeStr === 'img') {
       img.checked = true;
@@ -784,11 +865,7 @@ document.addEventListener('DOMContentLoaded', function () {
     proNameInput.hidden = !showPro.checked
   });
 });
-// 复制代码事件
-document.getElementById('copyCode').addEventListener('click', function () {
-  copyStr(msgDiv.innerText)
 
-});
 /**
  * 复制字符串到粘贴板
  */
@@ -802,10 +879,12 @@ function copyStr(str) {
   document.execCommand('Copy');
   input.remove();
 }
-// 保存配置事件
-// document.getElementById('save').addEventListener('click', saveConfig);
+
+/**
+ * 保存配置事件
+ */ 
 function saveConfig() {
-  let op = document.getElementById('op').value;
+  let op = language_select_element.value;
   let ocCodeStr = '';
   if (img.checked) {
     ocCodeStr = 'img';
@@ -825,6 +904,7 @@ function saveConfig() {
     ocCode: ocCodeStr,
     isShowPro: showProStr
   };
+  // 保存配置到谷歌
   chrome.storage.sync.set(saveDict, function () {
     const status = document.getElementById('status')
     status.style.display = 'block';
@@ -835,20 +915,26 @@ function saveConfig() {
     }, 800);
   });
 }
-// checked 事件互斥
 
+// 复制代码事件
+document.getElementById('copyCode').addEventListener('click', function () {
+  copyStr(msgDiv.innerText)
+
+});
+
+// img打钩事件
 img.addEventListener('change', function () {
   btn.checked = false;
   lab.checked = false;
   showLine.checked = false;
-  // 直接保存
+
   saveConfig()
-  // 刷新 代码区域
   processCodeOutput(savedRequest)
 });
+
 // 语言选择事件
-document.getElementById('op').addEventListener('change', function (data) {
-  //获取选中项的值
+language_select_element.addEventListener('change', function (data) {
+
   saveConfig()
   processCodeOutput(savedRequest)
 });
@@ -856,39 +942,42 @@ document.getElementById('op').addEventListener('change', function (data) {
   
  
 
+// btn打钩事件
+btn.addEventListener('change', function () {
+  img.checked = false;
+  lab.checked = false;
+  showLine.checked = false;
 
-document.getElementById('show_btn').addEventListener('change', function () {
-  img.checked = false;
-  lab.checked = false;
-  showLine.checked = false;
-  // 直接保存
   saveConfig()
-  // 刷新 代码区域
   processCodeOutput(savedRequest)
 });
-document.getElementById('show_lab').addEventListener('change', function () {
+
+// lab打钩事件
+lab.addEventListener('change', function () {
   img.checked = false;
   btn.checked = false;
   showLine.checked = false;
-  // 直接保存
+
   saveConfig()
-  // 刷新 代码区域
   processCodeOutput(savedRequest)
 });
-document.getElementById('show_line').addEventListener('change', function () {
+
+// UIView打钩事件
+showLine.addEventListener('change', function () {
   img.checked = false;
   btn.checked = false;
   lab.checked = false;
-  // 直接保存
+
   saveConfig()
-  // 刷新 代码区域
   processCodeOutput(savedRequest)
 });
+
 // 属性引用打钩事件
-document.getElementById('show_pro').addEventListener('change', function (e) {
+showPro.addEventListener('change', function (e) {
   proNameInput.hidden = !showPro.checked;
-  // 直接保存
+
   saveConfig()
-  // 刷新 代码区域
   processCodeOutput(savedRequest)
 });
+
+  
