@@ -18,6 +18,11 @@ function DOMtoString(document_root) {
 
         // 属性面板
         let propertyDiv = document.getElementsByClassName('annotation_item')[1]
+        if(typeof propertyDiv === 'undefined') {
+            // 没有选中某个元素
+            return
+        }
+
         let propertyStrs = propertyDiv.innerText.split('\n')
         /** 
         *初始返回对象
@@ -82,7 +87,10 @@ function DOMtoString(document_root) {
         }
 
         let codeStr = codeDivs[0].innerText
-        
+        if(codeStr.length <= 0) {
+            // 没有选中某个元素
+            return
+        }
         if (codeStr.includes('UIImageView')) {
             return returnObj
         }
@@ -137,6 +145,7 @@ function DOMtoString(document_root) {
             returnObj.hexColor = propertyStrs.filter(str => str.includes('#') && str.includes('%'))[0]
             return returnObj
         }
+
         if (codeStr.includes('UIView')) {
 
             
@@ -190,7 +199,15 @@ function getReturnObj() {
     if (frameDiv.innerText.length <= 0) {
         frameDiv = document.getElementsByClassName('annotation_item')[1]
     }
+    if(typeof frameDiv === 'undefined') {
+        // 没有选中某个元素
+        return
+    }
     let frameStrs = frameDiv.innerText.split('\n')
+    if(frameStrs.length == 1 && frameStrs[0] === '') {
+        // 没有选中某个元素
+        return
+    }
     // x,y
     let postIdx = frameStrs.indexOf('位置')
     let x = frameStrs[postIdx+1].replaceAll('pt', '')

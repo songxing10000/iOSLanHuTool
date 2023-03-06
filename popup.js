@@ -106,6 +106,16 @@ chrome.runtime.onMessage.addListener(function (request, sender) {
  */
 function processCodeOutput(request) {
   let returnObj = request.source;
+  if(typeof returnObj === 'undefined') {
+    // 没有选中某个元素
+    message.innerText = JSON.stringify(savedData);
+    msgDiv.className = 'language-json'
+    hljs.highlightAll()
+    return
+  }
+
+
+
     // 多行 拼接 变量 ${变量名} innerText
     let op = language_select_element.value;
     if (op === 'swift') {
@@ -987,3 +997,12 @@ var bg = chrome.extension.getBackgroundPage();
 //再在返回的对象上调用background.js 里面的函数
 alert(bg.fetchSavedData());
 */
+
+// 在弹出pop页面时，直接存有效的信息
+let savedData;
+let bg = chrome.extension.getBackgroundPage();
+let inputData = bg.fetchSavedData();
+if (typeof inputData !== 'undefined') {
+  savedData = inputData
+}
+ 

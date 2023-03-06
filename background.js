@@ -18,7 +18,10 @@ chrome.runtime.onInstalled.addListener(function() {
   let savedData;
 // 接收到拦截的响应，将器发送到requestUrl变量配置的地址上
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-  savedData = request.data;
+  if (typeof request.data !== 'undefined') {
+    savedData = request.data;
+  }
+  
     // 异步响应sendMessage的写法：
     // 异步接收要求返回turn，从而使sendMessage可以异步接收回应消息
     return true;

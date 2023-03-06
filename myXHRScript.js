@@ -22,7 +22,6 @@
           if (resJSONObj['isPage'] === true) {
             // 因为inject_script不能直接向background传递消息, 所以先传递消息到content_script
             window.postMessage(resJSONObj, '*');
-
           }
         } catch (error) {
 
