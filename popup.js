@@ -937,11 +937,36 @@ document.getElementById('copyCode').addEventListener('click', function () {
   copyStr(msgDiv.innerText)
 
 });
-// 下载xib文件
+// ------------------------------------下载xib文件-----------------------
 document.getElementById('downloadXibFile').addEventListener('click', function () {
   // 下载文件
-  const blob = new Blob([JSON.stringify(savedData)], {type: "text/plain;charset=utf-8"});
-  saveAs(blob, "list.txt");
+  let subViewStrs = ''
+    for (let aview of savedData['info']) {
+      if (aview['visible'] === true && aview['type'] === 'textLayer') {
+        
+        let textInfo = aview['textInfo']
+        let r = textInfo['color']['r']!==0 ?? 0;
+        let g = textInfo['color']['g']!==0 ?? 0;
+        let b = textInfo['color']['b']!==0 ?? 0;
+        let a = textInfo['color']['a']!==0 ?? 1;
+        subViewStrs += getUILabelXMLString(aview['left']*0.5, aview['top']*0.5, aview['width']*0.5, aview['height']*0.5, 
+        textInfo['text'],textInfo['fontPostScriptName'],textInfo['size']*0.5,r, g,b,a);
+      } else if (aview['visible'] === true && aview['type'] === 'layerSection') {
+        subViewStrs += getUIImageViewXMLString(aview['left']*0.5, aview['top']*0.5, aview['width']*0.5, aview['height']*0.5);
+      } else if (aview['visible'] === true && aview['type'] === 'shapeLayer') {
+        
+        let r = aview['fill']['color']['red'] ?? 0;
+        let g = aview['fill']['color']['green'] ?? 0;
+        let b = aview['fill']['color']['blue'] ?? 0;
+        let a = aview['fill']['color']['alpha'] ?? 1;
+        subViewStrs += getUIViewXMLString(aview['left']*0.5, aview['top']*0.5, aview['width']*0.5, aview['height']*0.5, r, g,b,a);
+      }
+    }
+
+
+
+  const blob = new Blob([getXibXMLString(subViewStrs)], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, "page.xib");
 });
 
 
@@ -1018,4 +1043,92 @@ let inputData = bg.fetchSavedData();
 if (typeof inputData !== 'undefined') {
   savedData = inputData
 }
+
+function getUILabelXMLString(x, y, width, height, text, fontName, fontSize, r, g, b ,a) {
+  
+  return `
+  <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="${text}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="${getXibRandomIDString()}">
+      <rect key="frame" x="${x}" y="${y}" width="${width}" height="${height}"/>
+      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+      <fontDescription key="fontDescription" type="${fontName}" pointSize="${fontSize}"/>
+      <color key="textColor" red="${r}" green="${g}" blue="${b}" alpha="${a}" colorSpace="calibratedRGB"/>
+      <nil key="highlightedColor"/>
+</label>
+`
+}
+function getUIImageViewXMLString(x, y, width, height) {
+return`
+<imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="${getXibRandomIDString()}">
+      <rect key="frame" x="${x}" y="${y}" width="${width}" height="${height}"/>
+      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+</imageView>
+
+`
+}
+function getUIViewXMLString(x, y, width, height, r, g, b ,a) {
+  return`
+  <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="${getXibRandomIDString()}">
+      <rect key="frame" x="${x}" y="${y}" width="${width}" height="${height}"/>
+      <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+      <color key="backgroundColor" red="${r}" green="${g}" blue="${b}" alpha="${a}" colorSpace="calibratedRGB"/>
+  </view>
+  
+  `
+  }
+
+/**
+ * 生成xib xml 格式
+ */
+  function getXibXMLString(subviews) {
+
  
+ return `<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="${getXibRandomIDString()}">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                 
+                ${subviews}
+
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="${getXibRandomIDString()}"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <point key="canvasLocation" x="130.43478260869566" y="-11.383928571428571"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>`
+}
+/**
+ * 生成xib上的随机id
+ */
+function getXibRandomIDString(length) {
+  return `${getRandomString(3)}-${getRandomString(2)}-${getRandomString(3)}`;
+}
+
+/**
+ * 生成随机的串 数字大小写字母
+ */
+function getRandomString(length) {
+  var str = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  var result = '';
+  for (var i = length; i > 0; --i) 
+      result += str[Math.floor(Math.random() * str.length)];
+  return result;
+}
