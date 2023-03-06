@@ -979,5 +979,11 @@ showPro.addEventListener('change', function (e) {
   saveConfig()
   processCodeOutput(savedRequest)
 });
+/*
+以下代码可以获取到整页控件信息
 
-  
+// 先获取background页面
+var bg = chrome.extension.getBackgroundPage();
+//再在返回的对象上调用background.js 里面的函数
+alert(bg.fetchSavedData());
+*/

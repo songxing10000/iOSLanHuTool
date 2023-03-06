@@ -6,5 +6,16 @@
   "browser_action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["clipboardWrite","contextMenus", "tabs", "<all_urls>", "storage"]
+  "background":{
+    "scripts":["background.js"]
+},
+"web_accessible_resources": ["myXHRScript.js"],
+"content_scripts": [
+  { 
+   "matches": ["*://*/*"],
+    "run_at": "document_start",
+    "js": ["inject.js","content_script.js"]
+  }
+],
+  "permissions": ["clipboardWrite","contextMenus", "tabs", "<all_urls>", "storage", "webRequest", "webRequestBlocking"]
 }

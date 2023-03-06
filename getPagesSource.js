@@ -48,7 +48,7 @@ function DOMtoString(document_root) {
             returnObj.b = rgbaStrs[2]
             returnObj.a = rgbaStrs[3]
         } else {
-            // alert('获取rgba异常')
+            // 获取rgba异常
         }
         
         
