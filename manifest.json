@@ -17,5 +17,5 @@
     "js": ["inject.js","content_script.js"]
   }
 ],
-  "permissions": ["clipboardWrite","contextMenus", "tabs", "<all_urls>", "storage", "webRequest", "webRequestBlocking"]
+  "permissions": ["downloads", "clipboardWrite","contextMenus", "tabs", "<all_urls>", "storage", "webRequest", "webRequestBlocking"]
 }

@@ -108,11 +108,17 @@ function processCodeOutput(request) {
   let returnObj = request.source;
   if(typeof returnObj === 'undefined') {
     // 没有选中某个元素
+
+    // 显示下载xib文件按钮
+    document.getElementById("downloadXibFile").style.display="";
+
     message.innerText = JSON.stringify(savedData);
     msgDiv.className = 'language-json'
     hljs.highlightAll()
     return
   }
+  // 隐藏下载xib文件按钮
+  document.getElementById("downloadXibFile").style.display="none";
 
 
 
@@ -931,6 +937,13 @@ document.getElementById('copyCode').addEventListener('click', function () {
   copyStr(msgDiv.innerText)
 
 });
+// 下载xib文件
+document.getElementById('downloadXibFile').addEventListener('click', function () {
+  // 下载文件
+  const blob = new Blob([JSON.stringify(savedData)], {type: "text/plain;charset=utf-8"});
+  saveAs(blob, "list.txt");
+});
+
 
 // img打钩事件
 img.addEventListener('change', function () {

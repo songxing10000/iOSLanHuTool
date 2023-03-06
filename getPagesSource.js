@@ -64,6 +64,10 @@ function DOMtoString(document_root) {
         // 代码面板默认取objc
         let codeDivs = document.getElementsByClassName(' language-c')
 
+        if(codeDivs.length <= 0) {
+            // 没有选中某个元素
+            return
+        }
         // 开发平台 iOS  Android Web 小程序
         let developmentPlatformElements = document.getElementsByClassName('not_define')
         if (typeof developmentPlatformElements !== 'undefined'  && developmentPlatformElements.length > 0) {
