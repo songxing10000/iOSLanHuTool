@@ -945,20 +945,25 @@ document.getElementById('downloadXibFile').addEventListener('click', function ()
       if (aview['visible'] === true && aview['type'] === 'textLayer') {
         
         let textInfo = aview['textInfo']
-        let r = textInfo['color']['r']!==0 ?? 0;
-        let g = textInfo['color']['g']!==0 ?? 0;
-        let b = textInfo['color']['b']!==0 ?? 0;
-        let a = textInfo['color']['a']!==0 ?? 1;
+        let textColorInfo = textInfo['color']
+        
+        let r = textColorInfo.hasOwnProperty('r') ? textColorInfo['r'] : 0;
+        let g = textColorInfo.hasOwnProperty('g') ? textColorInfo['g'] : 0;
+        let b = textColorInfo.hasOwnProperty('b') ? textColorInfo['b'] : 0;
+        let a = textColorInfo.hasOwnProperty('a') ? textColorInfo['a'] : 1;
+
+
         subViewStrs += getUILabelXMLString(aview['left']*0.5, aview['top']*0.5, aview['width']*0.5, aview['height']*0.5, 
         textInfo['text'],textInfo['fontPostScriptName'],textInfo['size']*0.5,r, g,b,a);
       } else if (aview['visible'] === true && aview['type'] === 'layerSection') {
         subViewStrs += getUIImageViewXMLString(aview['left']*0.5, aview['top']*0.5, aview['width']*0.5, aview['height']*0.5);
       } else if (aview['visible'] === true && aview['type'] === 'shapeLayer') {
         
-        let r = aview['fill']['color']['red'] ?? 0;
-        let g = aview['fill']['color']['green'] ?? 0;
-        let b = aview['fill']['color']['blue'] ?? 0;
-        let a = aview['fill']['color']['alpha'] ?? 1;
+        let colorInfo = aview['fill']['color']
+        let r = colorInfo.hasOwnProperty('red') ? colorInfo['red'] : 0;
+        let g = colorInfo.hasOwnProperty('green') ? colorInfo['green'] : 0;
+        let b = colorInfo.hasOwnProperty('blue') ? colorInfo['blue'] : 0;
+        let a = colorInfo.hasOwnProperty('alpha') ? colorInfo['alpha'] : 1;
         subViewStrs += getUIViewXMLString(aview['left']*0.5, aview['top']*0.5, aview['width']*0.5, aview['height']*0.5, r, g,b,a);
       }
     }
@@ -1048,10 +1053,10 @@ function getUILabelXMLString(x, y, width, height, text, fontName, fontSize, r, g
   
   return `
   <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="${text}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="${getXibRandomIDString()}">
-      <rect key="frame" x="${x}" y="${y}" width="${width}" height="${height}"/>
+      <rect key="frame" x="${x}" y="${y}" width="${width+6}" height="${height+4}"/>
       <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
       <fontDescription key="fontDescription" type="${fontName}" pointSize="${fontSize}"/>
-      <color key="textColor" red="${r}" green="${g}" blue="${b}" alpha="${a}" colorSpace="calibratedRGB"/>
+      <color key="textColor" red="${r/255.0}" green="${g/255.0}" blue="${b/255.0}" alpha="${a}" colorSpace="calibratedRGB"/>
       <nil key="highlightedColor"/>
 </label>
 `
