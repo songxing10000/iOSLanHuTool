@@ -1075,7 +1075,7 @@ function getUIViewXMLString(x, y, width, height, r, g, b ,a) {
   <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="${getXibRandomIDString()}">
       <rect key="frame" x="${x}" y="${y}" width="${width}" height="${height}"/>
       <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-      <color key="backgroundColor" red="${r}" green="${g}" blue="${b}" alpha="${a}" colorSpace="calibratedRGB"/>
+      <color key="backgroundColor" red="${r/255.0}" green="${g/255.0}" blue="${b/255.0}" alpha="${a}" colorSpace="calibratedRGB"/>
   </view>
   
   `
