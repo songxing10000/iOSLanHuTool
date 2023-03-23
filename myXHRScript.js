@@ -19,7 +19,7 @@
       if (this._url && this.responseType.length == 0) {
         try {
           let resJSONObj = JSON.parse(this.responseText);
-          if (resJSONObj['isPage'] === true) {
+          if (resJSONObj['isPage'] === true || this._url.includes('SketchJSON')) {
             // 因为inject_script不能直接向background传递消息, 所以先传递消息到content_script
             window.postMessage(resJSONObj, '*');
           }
