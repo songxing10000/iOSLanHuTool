@@ -954,9 +954,34 @@ document.getElementById('downloadXibFile').addEventListener('click', function ()
         let a = textColorInfo.hasOwnProperty('a') ? textColorInfo['a'] : 1;
 
 
-        subViewStrs += getUILabelXMLString(aview['ddsOriginFrame']['x']*0.5, aview['ddsOriginFrame']['y']*0.5, aview['ddsOriginFrame']['width']*0.5, aview['ddsOriginFrame']['height']*0.5, 
+        subViewStrs += getUILabelXMLString(aview['ddsOriginFrame']['x'], aview['ddsOriginFrame']['y'], aview['ddsOriginFrame']['width'], aview['ddsOriginFrame']['height'], 
         textInfo['content'],textInfo['font'],textInfo['size'],r, g,b,a);
         
+      }
+      else if (aview['isVisible'] === true && aview['type'] === 'shape') {
+        if (aview.hasOwnProperty('borders')) {
+          // UIView
+          let colorInfo = aview['borders'][0]['color']
+          let r = colorInfo.hasOwnProperty('r') ? colorInfo['r'] : 0;
+          let g = colorInfo.hasOwnProperty('g') ? colorInfo['g'] : 0;
+          let b = colorInfo.hasOwnProperty('b') ? colorInfo['b'] : 0;
+          let a = colorInfo.hasOwnProperty('a') ? colorInfo['a'] : 1;
+          subViewStrs += getUIViewXMLString(aview['ddsOriginFrame']['x'], aview['ddsOriginFrame']['y'], aview['ddsOriginFrame']['width'], aview['ddsOriginFrame']['height'], r, g, b, a);
+        } else if (aview.hasOwnProperty('fills')) {
+          // UIView
+          let colorInfo = aview['fills'][0]['color']
+          let r = colorInfo.hasOwnProperty('r') ? colorInfo['r'] : 0;
+          let g = colorInfo.hasOwnProperty('g') ? colorInfo['g'] : 0;
+          let b = colorInfo.hasOwnProperty('b') ? colorInfo['b'] : 0;
+          let a = colorInfo.hasOwnProperty('a') ? colorInfo['a'] : 1;
+
+          subViewStrs += getUIViewXMLString(aview['ddsOriginFrame']['x'], aview['ddsOriginFrame']['y'], aview['ddsOriginFrame']['width'], aview['ddsOriginFrame']['height'], r, g, b, a);
+        }
+        else if (!aview.hasOwnProperty('fills')) {
+          // UIImageView
+          subViewStrs += getUIImageViewXMLString(aview['ddsOriginFrame']['x'], aview['ddsOriginFrame']['y'], aview['ddsOriginFrame']['width'], aview['ddsOriginFrame']['height']);
+        }
+
       }
       else if (aview['visible'] === true && aview['type'] === 'textLayer') {
         
