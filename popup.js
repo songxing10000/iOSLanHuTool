@@ -942,7 +942,23 @@ document.getElementById('downloadXibFile').addEventListener('click', function ()
   // 下载文件
   let subViewStrs = ''
     for (let aview of savedData['info']) {
-      if (aview['visible'] === true && aview['type'] === 'textLayer') {
+      // ["shape", "layer-group", "symbol", "bitmap", "text"]
+      if (aview['isVisible'] === true && aview['type'] === 'text') {
+        
+        let textInfo = aview['font']
+        let textColorInfo = textInfo['color']
+        
+        let r = textColorInfo.hasOwnProperty('r') ? textColorInfo['r'] : 0;
+        let g = textColorInfo.hasOwnProperty('g') ? textColorInfo['g'] : 0;
+        let b = textColorInfo.hasOwnProperty('b') ? textColorInfo['b'] : 0;
+        let a = textColorInfo.hasOwnProperty('a') ? textColorInfo['a'] : 1;
+
+
+        subViewStrs += getUILabelXMLString(aview['ddsOriginFrame']['x']*0.5, aview['ddsOriginFrame']['y']*0.5, aview['ddsOriginFrame']['width']*0.5, aview['ddsOriginFrame']['height']*0.5, 
+        textInfo['content'],textInfo['font'],textInfo['size'],r, g,b,a);
+        
+      }
+      else if (aview['visible'] === true && aview['type'] === 'textLayer') {
         
         let textInfo = aview['textInfo']
         let textColorInfo = textInfo['color']
@@ -1050,12 +1066,18 @@ if (typeof inputData !== 'undefined') {
 }
 
 function getUILabelXMLString(x, y, width, height, text, fontName, fontSize, r, g, b ,a) {
+  // 系统 type="system"
+  // 平方 name="PingFangSC-Regular" family="PingFang SC"
+  let fontValue = `type="system"`
+  if (fontName.includes('PingFangSC')) {
+    fontValue = `name="${fontName}" family="PingFang SC"`
+  }
   
   return `
   <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="${text}" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="${getXibRandomIDString()}">
       <rect key="frame" x="${x}" y="${y}" width="${width+6}" height="${height+4}"/>
       <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-      <fontDescription key="fontDescription" type="${fontName}" pointSize="${fontSize}"/>
+      <fontDescription key="fontDescription" ${fontValue} pointSize="${fontSize}"/>
       <color key="textColor" red="${r/255.0}" green="${g/255.0}" blue="${b/255.0}" alpha="${a}" colorSpace="calibratedRGB"/>
       <nil key="highlightedColor"/>
 </label>
