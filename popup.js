@@ -967,7 +967,7 @@ document.getElementById('downloadXibFile').addEventListener('click', function ()
           let b = colorInfo.hasOwnProperty('b') ? colorInfo['b'] : 0;
           let a = colorInfo.hasOwnProperty('a') ? colorInfo['a'] : 1;
           subViewStrs += getUIViewXMLString(aview['ddsOriginFrame']['x'], aview['ddsOriginFrame']['y'], aview['ddsOriginFrame']['width'], aview['ddsOriginFrame']['height'], r, g, b, a);
-        } else if (aview.hasOwnProperty('fills')) {
+        } else if (aview.hasOwnProperty('fills') && aview['fills'].length > 0 && aview['fills'][0].hasOwnProperty('color')) {
           // UIView
           let colorInfo = aview['fills'][0]['color']
           let r = colorInfo.hasOwnProperty('r') ? colorInfo['r'] : 0;
