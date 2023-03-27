@@ -125,6 +125,7 @@ function DOMtoString(document_root) {
                 return returnObj
             }
             let fontName =  propertyStrs[propertyStrs.indexOf('字体')+1]
+            fontName = fontName.replaceAll('苹方-简 细体', 'PingFangSC-Light')
             fontName = fontName.replaceAll('苹方-简 常规体', 'PingFangSC-Regular')
             fontName = fontName.replaceAll('苹方-简 中黑体', 'PingFangSC-Medium')
             fontName = fontName.replaceAll('PingFang SC-中黑体', 'PingFangSC-Medium')

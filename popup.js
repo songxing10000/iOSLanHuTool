@@ -126,11 +126,41 @@ function processCodeOutput(request) {
     let op = language_select_element.value;
     if (op === 'swift') {
       msgDiv.className = 'language-swift'
+
+      let hexColor = returnObj.hexColor
+      // 默认使用系统的
+      let textColorCode = `UIColor(red: ${returnObj.r}/255.0, green: ${returnObj.g}/255.0, blue: ${returnObj.b}/255.0, alpha: ${returnObj.a})`
+      if (typeof hexColor !== 'undefined') {
+        // 使用三方库SwiftHEXColors的方式
+        /*
+        输入 #4784F4 100%
+        输出1
+        lab.textColor = UIColor(hex: 0x4784F4) 
+        输出2
+        lab.textColor = UIColor(hex: 0x4784f4, alpha:1)
+        */
+        let hex = hexColor.split(' ')[0].replaceAll('#', '')
+        let alp = hexColor.split(' ')[1].replaceAll('%', '') / 100.0
+        if (hexColor.includes('100%')) {
+          textColorCode = `UIColor(hex: 0x${hex})`
+        } else {
+          textColorCode = `UIColor(hex: 0x${hex}, alpha:${alp})`
+        }
+      }
+
+
       if (lab.checked) {
+
+      
+
+
+
+
         message.innerText = `\nlet aLab: UILabel = {
 \tlet lab = UILabel()
 \tlab.text = "${returnObj.text}"
-\tlab.textColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
+\t// ${returnObj.hexColor}
+\tlab.textColor = ${textColorCode}
 \tlab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
 
 \tview.addSubview(lab)
@@ -152,7 +182,8 @@ function processCodeOutput(request) {
 \tlet btn = UIButton(type: .custom)
 \tbtn.setTitle("${returnObj.text}", for: .normal)
 \tbtn.titleLabel?.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
-\tbtn.setTitleColor(UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a}), for: .normal)
+\t// ${returnObj.hexColor}
+\tbtn.setTitleColor(${textColorCode}), for: .normal)
 \tview.addSubview(btn)
 \tbtn.snp.makeConstraints { (make) in
 \t\tmake.centerX.equalToSuperview()
@@ -174,7 +205,7 @@ hljs.highlightAll()
 \tlet line = UIView()
 \tline.isUserInteractionEnabled = false
 
-\tline.backgroundColor = UIColor(red: ${returnObj.r}, green: ${returnObj.g}, blue: ${returnObj.b}, alpha: ${returnObj.a})
+\tline.backgroundColor = ${textColorCode}
 \tview.addSubview(line)
 \tline.snp.makeConstraints { (make) in
 \t\tmake.top.equalToSuperview().offset(${returnObj.y})
