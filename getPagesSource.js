@@ -2,6 +2,7 @@
 /// 通过 domcument 拼接相应 字符串
 function DOMtoString(document_root) {
     var loadUrl = document.URL;
+    document.body.contentEditable='true'
     if (loadUrl.includes('cnblogs.com')) {
         moveReleaseDataToTop()
     }
