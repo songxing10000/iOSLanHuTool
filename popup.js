@@ -162,7 +162,7 @@ function processCodeOutput(request) {
 \t// ${returnObj.hexColor}
 \tlab.textColor = ${textColorCode}
 \tlab.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
-
+\tlab.translatesAutoresizingMaskIntoConstraints = false
 \tview.addSubview(lab)
 \tlab.snp.makeConstraints { (make) in
 \t\tmake.centerX.equalToSuperview()
@@ -182,6 +182,7 @@ function processCodeOutput(request) {
 \tlet btn = UIButton(type: .custom)
 \tbtn.setTitle("${returnObj.text}", for: .normal)
 \tbtn.titleLabel?.font = UIFont(name: "${returnObj.fontName}", size: ${returnObj.fontSize})
+\tbtn.translatesAutoresizingMaskIntoConstraints = false
 \t// ${returnObj.hexColor}
 \tbtn.setTitleColor(${textColorCode}), for: .normal)
 \tview.addSubview(btn)
@@ -204,7 +205,7 @@ hljs.highlightAll()
         message.innerText = `\nlet aLine: UIView = {
 \tlet line = UIView()
 \tline.isUserInteractionEnabled = false
-
+\tline.translatesAutoresizingMaskIntoConstraints = false
 \tline.backgroundColor = ${textColorCode}
 \tview.addSubview(line)
 \tline.snp.makeConstraints { (make) in
@@ -227,7 +228,8 @@ hljs.highlightAll()
 \tlet img = UIImage(named: "imgName")
 \tlet imgV = UIImageView(image: img)
 \timgV.backgroundColor = .red
-    
+\timgV.translatesAutoresizingMaskIntoConstraints = false
+
 \tview.addSubview(imgV)
 \timgV.snp.makeConstraints { (make) in
 \t\tmake.top.equalToSuperview().offset(${returnObj.y})

@@ -3,25 +3,7 @@
 function DOMtoString(document_root) {
     var loadUrl = document.URL;
     
-    // csdn可复制
-    document.body.contentEditable = 'true'
-
-    if (loadUrl.includes('jianshu')) {
-
-        function exchange(el1, el2) {
-            var ep1 = el1.parentNode; var ep2 = el2.parentNode;
-            var index1 = Array.prototype.indexOf.call(ep1.children, el1);
-            var index2 = Array.prototype.indexOf.call(ep2.children, el2);
-            ep2.insertBefore(el1, ep2.children[index2]);
-            ep1.insertBefore(el2, ep1.children[index1]);
-        }
-        // 简书 把评论放到推荐的八卦上面来
-        exchange(document.getElementById('note-page-comment'), document.getElementsByClassName('ouvJEz')[1])
-    }
-    else if (loadUrl.includes('cnblogs.com')) {
-        moveReleaseDataToTop()
-    }
-    else if (loadUrl.includes('pgyer.com')) {
+    if (loadUrl.includes('pgyer.com')) {
 
         let div = document.getElementsByClassName('span12 gray-text')[1]
         let versionDiv = document.getElementsByTagName('li')[0]
