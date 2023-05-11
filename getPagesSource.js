@@ -68,7 +68,7 @@ function DOMtoString(document_root) {
         }
         // 开发平台 iOS  Android Web 小程序
         let developmentPlatformElements = document.getElementsByClassName('not_define')
-        if (typeof developmentPlatformElements !== 'undefined' && developmentPlatformElements.length > 0) {
+        if (developmentPlatformElements?.length > 0) {
 
             developmentPlatform = developmentPlatformElements[0].innerText
         }
